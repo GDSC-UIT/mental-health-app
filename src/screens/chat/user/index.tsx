@@ -1,14 +1,15 @@
 import {scaleSize} from '@core/utils';
 import {IMAGES} from '@src/assets';
 import {COLORS, FONTS} from '@src/assets/const';
-import React from 'react';
+import React, {useState} from 'react';
 import Button from '@src/components/Button';
+import Box from '@src/components/Box';
 import {Alert, Image, StyleSheet, Text, View, TouchableOpacity, TextInput} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 const UserChatHomeScreen = ({navigation}) => {
     return (
-        <SafeAreaView style={styles.container}>
+        <Box bgColor={COLORS.gray_1} container>
             <Text style={styles.new_label}>New Contact</Text>
             <View>
                 <Button
@@ -41,7 +42,7 @@ const UserChatHomeScreen = ({navigation}) => {
                 </View>
                 <Image source={IMAGES.line} style={styles.line} />
             </View>
-        </SafeAreaView>
+        </Box>
     );
 };
 
