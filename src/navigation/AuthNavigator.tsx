@@ -5,6 +5,10 @@ import ExpertLoginScreen from '@src/screens/login/expert';
 import UserLoginScreen from '@src/screens/login/user';
 import RegisterScreen from '@src/screens/register';
 import RoleScreen from '@src/screens/role';
+import UserChatHomeScreen from '@src/screens/chat/user';
+import WithExpertChatScreen from '@src/screens/chat/user/withExpert';
+import WithStrangerChatScreen from '@src/screens/chat/user/withStranger';
+import ExpertChatHomeScreen from '@src/screens/chat/expert';
 import React from 'react';
 import {AuthStackParamList} from './AuthStackParams';
 
@@ -19,11 +23,17 @@ const AuthNavigator: React.FC = () => {
                 headerShadowVisible: false,
                 title: '',
             })}
-            initialRouteName={'EmotionDiary'}>
+            initialRouteName={'UserChatHome'}>
             <AuthStack.Screen name="ExpertLogin" component={ExpertLoginScreen} />
             <AuthStack.Screen name="UserLogin" component={UserLoginScreen} />
             <AuthStack.Screen name="Register" component={RegisterScreen} />
             <AuthStack.Screen name="RoleChoose" component={RoleScreen} />
+
+            <AuthStack.Screen name="UserChatHome" component={UserChatHomeScreen} />
+            <AuthStack.Screen name="WithExpertChat" component={WithExpertChatScreen} />
+            <AuthStack.Screen name="WithStrangerChat" component={WithStrangerChatScreen} />
+
+            <AuthStack.Screen name="ExpertChatHome" component={ExpertChatHomeScreen} />
             <AuthStack.Group
                 screenOptions={{
                     title: 'Emotion Diary',

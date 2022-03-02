@@ -8,6 +8,10 @@ export type AuthStackParamList = {
     RoleChoose: undefined;
     ExpertLogin: undefined;
     UserLogin: undefined;
+    UserChatHome: undefined;
+    WithExpertChat: undefined;
+    WithStrangerChat: undefined;
+    ExpertChatHome: undefined;
 
     //Root Stack
     Root: undefined;
@@ -24,6 +28,10 @@ export type HomeStackParamList = {
     RoleChoose: undefined;
     ExpertLogin: undefined;
     UserLogin: undefined;
+    UserChatHome: undefined;
+    WithExpertChat: undefined;
+    WithStrangerChat: undefined;
+    ExpertChatHome: undefined;
 
     //Root Stack
     Root: undefined;
@@ -38,6 +46,12 @@ type UserLoginScreenProps = NativeStackScreenProps<AuthStackParamList, 'UserLogi
 type RegisterScreenProps = NativeStackScreenProps<AuthStackParamList, 'Register'>;
 type IntroScreenProps = NativeStackScreenProps<AuthStackParamList, 'Intro'>;
 type RoleChooseScreenProps = NativeStackScreenProps<AuthStackParamList, 'RoleChoose'>;
+
+// Chat
+type UserChatHomeScreenProps = NativeStackScreenProps<AuthStackParamList, 'UserChatHome'>;
+type WithExpertChatScreenProps = NativeStackScreenProps<AuthStackParamList, 'WithExpertChat'>;
+type WithStrangerChatScreenProps = NativeStackScreenProps<AuthStackParamList, 'WithStrangerChat'>;
+type ExpertChatHomeScreenProps = NativeStackScreenProps<AuthStackParamList, 'ExpertChatHome'>;
 
 type RootStackProps = NativeStackScreenProps<AuthStackParamList, 'Root'>;
 
@@ -54,4 +68,8 @@ export type {
     EmotionDiaryScreenProps,
     DashboardEmotionDiaryScreenProps,
     RootStackProps,
+    UserChatHomeScreenProps,
+    WithExpertChatScreenProps,
+    WithStrangerChatScreenProps,
+    ExpertChatHomeScreenProps,
 };
