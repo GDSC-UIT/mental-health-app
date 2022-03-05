@@ -13,4 +13,6 @@ export default {
         worry: require('./feelings/worry.png'),
         angry: require('./feelings/angry.png'),
     },
+    line: require('./line.png'),
+    user_avatar: require('./user_avatar.png'),
 };

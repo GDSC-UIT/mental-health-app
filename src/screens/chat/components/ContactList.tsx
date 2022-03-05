@@ -1,30 +1,39 @@
+import {scaleSize} from '@core/utils';
 import React from 'react';
-import {View, FlatList, StyleSheet, Text, Image} from 'react-native';
-import ContactData from './ContactData';
+import {View, FlatList, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
+import ContactData from './contact';
 import {COLORS, FONTS} from '@src/assets/const';
+import {IMAGES} from '@src/assets';
+import {useNavigation} from '@react-navigation/native';
+import {ExpertChatHomeScreenProps} from '@src/navigation/AuthStackParams';
 
-const ContactList = () => {
+type Props = {};
+
+const ContactList: React.FC<Props> = props => {
+    const navigation = useNavigation<ExpertChatHomeScreenProps['navigation']>();
+
     const renderItem = ({item}) => {
         return (
-            <View style={styles.userDataContainer}>
-                <Image source={item.image} style={styles.userAvatar} />
-                <View style={styles.userDetailsContainer}>
-                    <Text style={styles.userName}>{item.username}</Text>
-                    <Text style={styles.LastMessage}>{item.lastMessage}</Text>
+            <TouchableOpacity onPress={() => navigation.push('WithUserChat', {username: item.username})}>
+                <View style={styles.userDataContainer}>
+                    <Image source={{uri: item.image}} style={styles.userAvatar} />
+                    <View style={styles.userDetailsContainer}>
+                        <Text style={styles.userName}>{item.username}</Text>
+                        <Text numberOfLines={2} ellipsizeMode="tail" style={styles.lastMessage}>
+                            {item.lastmessage}
+                        </Text>
+                    </View>
                 </View>
-            </View>
+            </TouchableOpacity>
         );
     };
     const SeperateLine = () => {
         return (
-            <View
+            <Image
                 style={{
-                    height: 2,
-                    width: '90%',
-                    backgroundColor: COLORS.black_2,
                     alignSelf: 'center',
-                    opacity: 0.1,
                 }}
+                source={IMAGES.line}
             />
         );
     };
@@ -33,7 +42,7 @@ const ContactList = () => {
         <FlatList
             data={ContactData}
             renderItem={renderItem}
-            keyExtractor={item => item.key}
+            keyExtractor={item => item.id}
             ItemSeparatorComponent={SeperateLine}
         />
     );
@@ -42,25 +51,29 @@ export default ContactList;
 
 const styles = StyleSheet.create({
     userDataContainer: {
-        display: 'flex',
         flexDirection: 'row',
-        padding: 15,
-        alignItems: 'center',
+        marginHorizontal: scaleSize(20),
+        height: scaleSize(95),
     },
     userAvatar: {
-        height: 74,
-        width: 74,
-        borderRadius: 44.5,
+        height: scaleSize(74),
+        width: scaleSize(74),
+        borderRadius: scaleSize(44.5),
+        alignSelf: 'center',
     },
     userDetailsContainer: {
-        marginLeft: 15,
+        margin: scaleSize(15),
+        flexDirection: 'column',
+        width: '70%',
     },
     userName: {
-        ...FONTS.h3,
+        fontSize: scaleSize(22),
+        fontWeight: '500',
         color: COLORS.black_1,
+        marginBottom: scaleSize(3),
     },
-    LastMessage: {
-        ...FONTS.body4,
+    lastMessage: {
+        fontSize: scaleSize(17),
         color: COLORS.gray_2,
     },
 });

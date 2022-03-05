@@ -1,23 +1,23 @@
-import {scaleSize} from '../../../../core/utils';
-import {COLORS} from '../../../assets/const';
-import {IMAGES} from '../../../assets';
+import {scaleSize} from '@core/utils';
+import {COLORS, STYLES} from '@src/assets/const';
+import {IMAGES} from '@src/assets';
 import React from 'react';
-import {TouchableOpacity, View, Image, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import IconButton from '@src/components/IconButton';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type Props = {};
 
-interface Iprops {
-    navigate: void;
-}
-
 const BackButton = () => {
-    const {navigate} = useNavigation();
+    const navigation = useNavigation();
 
     return (
-        <TouchableOpacity style={styles.back_button} onPress={() => navigate('UserChatHome')}>
-            <Image style={styles.back_button_img} />
-        </TouchableOpacity>
+        <IconButton
+            style={styles.back_button}
+            onPress={() => navigation.goBack()}
+            icon={<Ionicons name="chevron-back-outline" size={scaleSize(30)} color={COLORS.dark_gray_2} />}
+        />
     );
 };
 
@@ -32,18 +32,6 @@ const styles = StyleSheet.create({
         marginLeft: scaleSize(16),
         justifyContent: 'center',
         alignItems: 'center',
-
-        shadowOffset: {
-            width: 2,
-            height: 2,
-        },
-        shadowOpacity: 0.3,
-        elevation: 5,
-        shadowColor: '#8A9BBD',
-    },
-    back_button_img: {
-        height: scaleSize(20),
-        width: scaleSize(20),
-        alignSelf: 'center',
+        ...STYLES.deepShadow,
     },
 });
