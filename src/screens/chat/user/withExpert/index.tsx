@@ -1,28 +1,26 @@
-import {
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-    Alert,
-    Image,
-    Modal,
-    Pressable,
-    TextInput,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-} from 'react-native';
-import React, {useState} from 'react';
-import {SafeAreaView} from 'react-native-safe-area-context';
 import {scaleSize} from '@core/utils';
 import {IMAGES} from '@src/assets';
 import {COLORS} from '@src/assets/const';
-import Button from '@src/components/Button';
+import AnotherMessage from '@src/screens/chat/components/AnotherMessage';
 import BackButton from '@src/screens/chat/components/BackButton';
+import BottomChatBar from '@src/screens/chat/components/BottomChatBar';
 import ChatTitle from '@src/screens/chat/components/ChatTitle';
 import SelfMessage from '@src/screens/chat/components/SelfMessage';
-import AnotherMessage from '@src/screens/chat/components/AnotherMessage';
-import BottomChatBar from '@src/screens/chat/components/BottomChatBar';
+import React, {useState} from 'react';
+import {
+    Alert,
+    Image,
+    KeyboardAvoidingView,
+    Modal,
+    Platform,
+    ScrollView,
+    StyleSheet,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 type Props = {};
 

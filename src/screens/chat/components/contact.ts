@@ -1,6 +1,6 @@
-import {Data} from './types';
+import {Contact} from './types';
 
-const ContactData: Data[] = [
+const ContactData: Contact[] = [
     {
         id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
         username: 'Karry',

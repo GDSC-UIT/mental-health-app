@@ -4,21 +4,22 @@ import {IMAGES} from '@src/assets';
 import {COLORS, STYLES} from '@src/assets/const';
 import Box from '@src/components/Box';
 import Button from '@src/components/Button';
+import {UserProfileScreenProps} from '@src/navigation/expert/type';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import BackButton from '../components/BackButton';
 
-interface ExpertCardProps {
-    image: string;
-    name: string;
-    email: string;
-    about: string;
-}
+// interface ExpertCardProps {
+//     image: string;
+//     name: string;
+//     email: string;
+//     about: string;
+// }
 
-const UserProfile: React.FC<ExpertCardProps> = props => {
-    const {image, name, email, about} = props;
-    const navigation = useNavigation();
+const UserProfileScreen: React.FC = props => {
+    const {image, name, email, about} = {image: 'image', name: 'Dat Dt', email: 'datdt12@gmail.com', about: 'about'};
+    const navigation = useNavigation<UserProfileScreenProps['navigation']>();
     const {t} = useTranslation();
 
     return (
@@ -52,7 +53,7 @@ const UserProfile: React.FC<ExpertCardProps> = props => {
     );
 };
 
-export default UserProfile;
+export default UserProfileScreen;
 
 const styles = StyleSheet.create({
     avatarContainer: {

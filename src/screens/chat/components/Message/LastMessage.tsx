@@ -1,6 +1,5 @@
 import {scaleSize} from '@core/utils';
 import {COLORS, STYLES} from '@src/assets/const';
-import IconButton from '@src/components/IconButton';
 import React, {useCallback, useEffect, useState} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Bubble, GiftedChat, InputToolbar, Send} from 'react-native-gifted-chat';
@@ -12,9 +11,13 @@ type IMessage = {
     createdAt: Date | number;
     user?: User;
 };
-
-const Messages: React.FC<IMessage> = () => {
-    const [messages, setMessages] = useState([]);
+type User = {
+    _id: string;
+    name: string;
+    avatar: string;
+};
+const Messages: React.FC = props => {
+    const [messages, setMessages] = useState<IMessage[]>([]);
 
     useEffect(() => {
         setMessages([
@@ -45,7 +48,7 @@ const Messages: React.FC<IMessage> = () => {
         setMessages(previousMessages => GiftedChat.append(previousMessages, message));
     }, []);
 
-    const renderSend = props => {
+    const renderSend = (props: any) => {
         return (
             <Send {...props} containerStyle={{width: 40, height: 40}}>
                 <View>
@@ -55,10 +58,10 @@ const Messages: React.FC<IMessage> = () => {
         );
     };
 
-    const renderBubble = props => {
+    const renderBubble = (propsBubble: any) => {
         return (
             <Bubble
-                {...props}
+                {...propsBubble}
                 wrapperStyle={{
                     right: {
                         backgroundColor: COLORS.light_blue_2,
@@ -87,8 +90,8 @@ const Messages: React.FC<IMessage> = () => {
         return <Ionicons name="chevron-down-outline" size={22} color="#8F9BB2" />;
     };
 
-    const renderInputToolbar = (props: InputToolbar['props']) => {
-        return <InputToolbar {...props} containerStyle={styles.toolbar} />;
+    const renderInputToolbar = (toolBarProps: InputToolbar['props']) => {
+        return <InputToolbar {...toolBarProps} containerStyle={styles.toolbar} />;
     };
 
     return (

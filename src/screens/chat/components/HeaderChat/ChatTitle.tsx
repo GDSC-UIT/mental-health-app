@@ -1,8 +1,7 @@
 import {scaleSize} from '@core/utils';
-import {COLORS} from '@src/assets/const';
 import {IMAGES} from '@src/assets';
 import React from 'react';
-import {TouchableOpacity, View, Image, StyleSheet, Text} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 
 interface ChatTitleProps {
     name: string;
