@@ -1,9 +1,10 @@
 import {scaleSize} from '@core/utils';
-import React, {useState, useCallback, useEffect, FC} from 'react';
-import {Bubble, GiftedChat, Send, InputToolbar} from 'react-native-gifted-chat';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import {View, StyleSheet} from 'react-native';
 import {COLORS, STYLES} from '@src/assets/const';
+import IconButton from '@src/components/IconButton';
+import React, {useCallback, useEffect, useState} from 'react';
+import {StyleSheet, View} from 'react-native';
+import {Bubble, GiftedChat, InputToolbar, Send} from 'react-native-gifted-chat';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type IMessage = {
     _id: string | number;
@@ -86,8 +87,8 @@ const Messages: React.FC<IMessage> = () => {
         return <Ionicons name="chevron-down-outline" size={22} color="#8F9BB2" />;
     };
 
-    const renderInputToolbar = props => {
-        return <InputToolbar {...props} containerStyle={styles.toolbar} textInputStyle={{paddingTop: 10}} />;
+    const renderInputToolbar = (props: InputToolbar['props']) => {
+        return <InputToolbar {...props} containerStyle={styles.toolbar} />;
     };
 
     return (
@@ -116,6 +117,18 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: scaleSize(20),
         borderColor: COLORS.dark_gray_2,
+        bottom: scaleSize(10),
         marginLeft: scaleSize(60),
+    },
+    button: {
+        borderRadius: scaleSize(60),
+        backgroundColor: '#E9F0F7',
+        marginLeft: scaleSize(16),
+        justifyContent: 'center',
+        alignItems: 'center',
+        ...STYLES.deepShadow,
+        position: 'absolute',
+        bottom: scaleSize(3),
+        zIndex: 3,
     },
 });

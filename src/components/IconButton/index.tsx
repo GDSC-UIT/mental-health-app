@@ -1,15 +1,7 @@
 import {scaleSize} from '@core/utils';
 import {COLORS} from '@src/assets/const';
 import React from 'react';
-import {
-    ColorValue,
-    StyleProp,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    TouchableWithoutFeedbackProps,
-    ViewStyle,
-} from 'react-native';
+import {ColorValue, StyleSheet, TouchableOpacity, TouchableWithoutFeedbackProps} from 'react-native';
 
 interface IProps extends TouchableWithoutFeedbackProps {
     icon: React.ReactNode;
