@@ -1,6 +1,6 @@
 // import {Shadow} from 'react-native-neomorph-shadows';
 // import Text from '../Text';
-import {scaleSize} from '@core/utils/DeviceUtils';
+import {scaleSize, isAndroid} from '@core/utils/DeviceUtils';
 import {COLORS} from '@src/assets/const';
 import React, {FC} from 'react';
 import {StyleProp, StyleSheet, Text, TextInput, TextInputProps, TextStyle, View, ViewStyle} from 'react-native';
@@ -22,27 +22,36 @@ const Input: FC<InputProps> = props => {
                 flexDirection: 'row-reverse',
             }) ||
         undefined;
+    const renderIcon = () => {
+        return (
+            <View
+                style={[
+                    styles.icon,
+                    iconPosition === 'start' ? {marginRight: scaleSize(4)} : {marginLeft: scaleSize(4)},
+                ]}>
+                {icon}
+            </View>
+        );
+    };
+    const renderError = () => {
+        if (error) {
+            return <Text style={styles.error}>{error}</Text>;
+        }
+        return <></>;
+    };
     return (
         <View style={style}>
-            {/* FIXME: Implement inner shadow */}
             <View style={[styles.inputWrapper, iconInputStyle, inputStyle]}>
-                {icon && (
-                    <View
-                        style={[
-                            styles.icon,
-                            iconPosition === 'start' ? {marginRight: scaleSize(4)} : {marginLeft: scaleSize(4)},
-                        ]}>
-                        {icon}
-                    </View>
-                )}
+                {icon && renderIcon()}
                 <TextInput
                     style={[styles.input, textInputStyle]}
                     {...inputProps}
                     autoComplete="off"
                     autoCorrect={false}
+                    autoCapitalize={'none'}
                 />
             </View>
-            {error && <Text style={styles.error}>{error}</Text>}
+            {renderError()}
         </View>
     );
 };
@@ -55,11 +64,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         paddingHorizontal: scaleSize(10),
-        paddingVertical: scaleSize(2),
+        paddingVertical: 0,
         backgroundColor: COLORS.white_1,
         borderRadius: scaleSize(40),
         borderColor: COLORS.dark_gray_2,
         borderWidth: 1,
+        height: scaleSize(46),
     },
     input: {
         flex: 1,

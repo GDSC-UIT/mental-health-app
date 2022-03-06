@@ -1,18 +1,19 @@
 import {scaleSize} from '@core/utils';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {COLORS} from '@src/assets/const';
+import {COLORS, STYLES} from '@src/assets/const';
 import TabBarButton from '@src/components/TabBarButton';
 import ChatScreen from '@src/screens/chat';
-import HomeScreen from '@src/screens/home';
+import ExpertHomeScreen from '@src/screens/home/expert';
+import HomeScreen from '@src/screens/home/user';
 import ProfileScreen from '@src/screens/profile';
 import React from 'react';
 import {View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import ExploreStackScreen from './ExploreStackScreen';
-import {RootNavigatorParamsList} from './RootNavigatorParams';
+import ExploreStackScreen from '../ExploreStackScreen';
+import {TabNavigatorParamsList} from '../TabNavigatorParams';
 
-const Tab = createBottomTabNavigator<RootNavigatorParamsList>();
-const RootNavigator: React.FC = () => {
+const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
+const ExpertRootNavigator: React.FC = () => {
     return (
         <Tab.Navigator
             initialRouteName="Explore"
@@ -29,15 +30,7 @@ const RootNavigator: React.FC = () => {
                     borderRadius: scaleSize(24),
                     marginHorizontal: scaleSize(6),
                     height: scaleSize(64),
-                    shadowColor: COLORS.dark_gray_1,
-                    shadowOffset: {
-                        width: 6,
-                        height: 6,
-                    },
-                    shadowOpacity: 0.68,
-                    shadowRadius: 10,
-
-                    elevation: 5,
+                    ...STYLES.shadow,
                 },
             }}>
             <Tab.Screen
@@ -72,4 +65,4 @@ const RootNavigator: React.FC = () => {
     );
 };
 
-export default RootNavigator;
+export default ExpertRootNavigator;
