@@ -8,6 +8,14 @@ export type AuthStackParamList = {
     RoleChoose: undefined;
     ExpertLogin: undefined;
     UserLogin: undefined;
+    HomeChat: undefined;
+    WithStrangerChat: undefined;
+    WithExpertChat: undefined;
+    ExpertHome: undefined;
+    ExpertProfile: undefined;
+    UserProfile: undefined;
+    EditUserProfile: undefined;
+    EditExpertProfile: undefined;
 
     //Root Stack
     Root: undefined;
@@ -24,6 +32,14 @@ export type HomeStackParamList = {
     RoleChoose: undefined;
     ExpertLogin: undefined;
     UserLogin: undefined;
+    HomeChat: undefined;
+    WithStrangerChat: undefined;
+    WithExpertChat: undefined;
+    ExpertHome: undefined;
+    ExpertProfile: undefined;
+    UserProfile: undefined;
+    EditUserProfile: undefined;
+    EditExpertProfile: undefined;
 
     //Root Stack
     Root: undefined;
@@ -38,6 +54,14 @@ type UserLoginScreenProps = NativeStackScreenProps<AuthStackParamList, 'UserLogi
 type RegisterScreenProps = NativeStackScreenProps<AuthStackParamList, 'Register'>;
 type IntroScreenProps = NativeStackScreenProps<AuthStackParamList, 'Intro'>;
 type RoleChooseScreenProps = NativeStackScreenProps<AuthStackParamList, 'RoleChoose'>;
+type HomeChatScreenProps = NativeStackScreenProps<AuthStackParamList, 'HomeChat'>;
+type WithStrangerChatProps = NativeStackScreenProps<AuthStackParamList, 'WithStrangerChat'>;
+type WithExpertChatProps = NativeStackScreenProps<AuthStackParamList, 'WithExpertChat'>;
+type ExpertHomeProps = NativeStackScreenProps<AuthStackParamList, 'ExpertHome'>;
+type ExpertProfileProps = NativeStackScreenProps<AuthStackParamList, 'ExpertProfile'>;
+type UserProfileProps = NativeStackScreenProps<AuthStackParamList, 'UserProfile'>;
+type EditUserProfileProps = NativeStackScreenProps<AuthStackParamList, 'EditUserProfile'>;
+type EditExpertProfileProps = NativeStackScreenProps<AuthStackParamList, 'EditExpertProfile'>;
 
 type RootStackProps = NativeStackScreenProps<AuthStackParamList, 'Root'>;
 
@@ -54,4 +78,12 @@ export type {
     EmotionDiaryScreenProps,
     DashboardEmotionDiaryScreenProps,
     RootStackProps,
+    HomeChatScreenProps,
+    WithStrangerChatProps,
+    WithExpertChatProps,
+    ExpertHomeProps,
+    ExpertProfileProps,
+    UserProfileProps,
+    EditUserProfileProps,
+    EditExpertProfileProps,
 };
