@@ -12,44 +12,31 @@ const UserChatHome = () => {
                 <Text style={styles.new_label}>New Contact</Text>
             </View>
             <View>
-                <TouchableOpacity 
-                    style={styles.stranger_button}
-                >
+                <TouchableOpacity style={styles.stranger_button}>
                     <Text style={styles.button_text}>With stranger</Text>
                 </TouchableOpacity>
-                <TouchableOpacity 
-                    style={styles.expert_button}
-                >
+                <TouchableOpacity style={styles.expert_button}>
                     <Text style={styles.button_text}>With expert</Text>
                 </TouchableOpacity>
             </View>
             <View>
                 <Text style={styles.msg_label}>Message</Text>
             </View>
-            
-            <View style={styles.search_container}>
-                <Image 
-                    source={IMAGES.search}
-                    style={styles.search_img}>
-                </Image>
 
-                <TextInput 
-                    placeholder='Search'
-                    style={styles.search_input}>
-                </TextInput>
+            <View style={styles.search_container}>
+                <Image source={IMAGES.search} style={styles.search_img} />
+
+                <TextInput placeholder="Search" style={styles.search_input} />
             </View>
 
             <View style={styles.container_msg}>
-                <Image
-                    source={IMAGES.user_chat}
-                    style={styles.profile_img}>
-                </Image>
+                <Image source={IMAGES.user_chat} style={styles.profile_img} />
 
                 <View style={styles.name_container}>
                     <Text style={styles.name_text}>The Vi</Text>
                     <Text style={styles.message}>Sai Gon than yeu</Text>
                 </View>
-                <Image source={IMAGES.line} style={styles.line}></Image>
+                <Image source={IMAGES.line} style={styles.line} />
             </View>
         </SafeAreaView>
     );
@@ -70,7 +57,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: '#193566',
         marginLeft: 25,
-        marginTop: 20
+        marginTop: 20,
     },
     msg_label: {
         fontSize: 25,
@@ -78,11 +65,11 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: '#193566',
         marginLeft: 25,
-        marginTop: 21
+        marginTop: 21,
     },
     stranger_button: {
         width: 211,
-        height:44,
+        height: 44,
         borderRadius: 60,
         marginTop: 14,
         alignSelf: 'center',
@@ -96,11 +83,11 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.48,
         elevation: 10,
-        shadowColor: '#8A9BBD'
+        shadowColor: '#8A9BBD',
     },
     expert_button: {
         width: 211,
-        height:44,
+        height: 44,
         borderRadius: 60,
         marginTop: 23,
         alignSelf: 'center',
@@ -123,13 +110,12 @@ const styles = StyleSheet.create({
         color: '#8F9BB2',
     },
 
-    
     search_input: {
-        marginTop:11,
+        marginTop: 11,
         fontSize: 20,
         fontFamily: 'Roboto',
         color: '#8F9BB2',
-        marginLeft: 13
+        marginLeft: 13,
     },
     search_container: {
         width: 359,
@@ -147,7 +133,7 @@ const styles = StyleSheet.create({
         width: 18,
         height: 18,
         alignSelf: 'center',
-        marginLeft: 13
+        marginLeft: 13,
     },
 
     container_msg: {
@@ -157,7 +143,7 @@ const styles = StyleSheet.create({
     profile_img: {
         height: 74,
         width: 74,
-        marginLeft: 22
+        marginLeft: 22,
     },
 
     name_container: {
@@ -165,7 +151,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         width: 252,
         height: 71,
-        flexWrap: 'wrap'
+        flexWrap: 'wrap',
     },
     name_text: {
         fontSize: 22,
@@ -177,10 +163,10 @@ const styles = StyleSheet.create({
         fontSize: 17,
         fontWeight: 'normal',
         fontFamily: 'Roboto',
-        color: '#8F9BB2'
+        color: '#8F9BB2',
     },
     line: {
         width: 358,
-        height: 1
-    }
+        height: 1,
+    },
 });

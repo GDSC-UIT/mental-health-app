@@ -1,75 +1,81 @@
 import {scaleSize} from '@core/utils';
 import {IMAGES} from '@src/assets';
-import {COLORS} from '@src/assets/const';
+import {COLORS, SIZES} from '@src/assets/const';
 import Button from '@src/components/Button';
 import React from 'react';
-import {Alert, Image, ListRenderItem, StyleSheet, Text, View, TouchableOpacity, ScrollView, FlatList} from 'react-native';
+import {
+    Alert,
+    Image,
+    ListRenderItem,
+    StyleSheet,
+    Text,
+    View,
+    TouchableOpacity,
+    ScrollView,
+    FlatList,
+} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import AvatarContainer from '../components/AvatarContainer';
 import EventCard from '../components/EventCard';
-import { Event } from '../components/types';
+import {Event} from '../components/types';
 import Events from '../components/events';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useTranslation} from 'react-i18next';
 
 interface ExpertCardProps {
-    image: string,
-    name: string,
-    email: string,
-    about: string,
-    varient?: 'primary' | 'secondary';
-};
+    image: string;
+    name: string;
+    email: string;
+    about: string;
+    variant?: 'primary' | 'secondary';
+}
 
-const ExpertProfile: React.FC<ExpertCardProps> = props => {
+const ExpertProfileScreen: React.FC<ExpertCardProps> = props => {
     const {image, name, email, about} = props;
-    
-    const renderItem: ListRenderItem<Event> = ({item}) => {
-        return <EventCard event={item}/>;
-    }
 
+    const renderItem = (item: Event) => {
+        return <EventCard event={item} key={item.id} />;
+    };
     const {t} = useTranslation();
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView> 
+            <ScrollView contentContainerStyle={{paddingBottom: SIZES.bottomBarHeight + scaleSize(20)}}>
                 <TouchableOpacity style={styles.editButton}>
-                    {<Ionicons name='pencil-outline' size={20} />}
+                    {<Ionicons name="pencil-outline" size={20} />}
                 </TouchableOpacity>
-                
-                <AvatarContainer name='Tan Expert'/>
+
+                <AvatarContainer name="Tan Expert" />
 
                 <Text style={styles.aboutText}>{t('About me')}</Text>
 
                 <View style={styles.emailDescriptionContainer}>
-                    <Text style={styles.descriptionText}>{t('Email')}: {email}</Text>
+                    <Text style={styles.descriptionText}>
+                        {t('Email')}: {email}
+                    </Text>
                 </View>
 
                 <View style={styles.aboutDescriptionContainer}>
-                    <Text style={styles.descriptionText}>{t('About')}: {about}</Text>
+                    <Text style={styles.descriptionText}>
+                        {t('About')}: {about}
+                    </Text>
                 </View>
 
                 <Text style={styles.activitiesText}>{t('Activities')}</Text>
 
-                {
-                    <FlatList
-                    data = {Events}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.id}
-                    style={{marginTop: 11}}
-                    />
-                }
+                {Events.map(renderItem)}
+
                 {/* <Text style={styles.noEventText}>No posts or events</Text> */}
-                
             </ScrollView>
         </SafeAreaView>
     );
 };
 
-export default ExpertProfile;
+export default ExpertProfileScreen;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.gray_1
+        backgroundColor: COLORS.gray_1,
     },
     avatarContainer: {
         width: scaleSize(232),
@@ -77,21 +83,21 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: '#F5F9FD',
         alignSelf: 'center',
-        marginTop: 20
+        marginTop: 20,
     },
     profileImage: {
         width: scaleSize(89),
         height: scaleSize(89),
-        borderRadius: scaleSize(89)/2,
+        borderRadius: scaleSize(89) / 2,
         marginTop: 13,
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     name: {
         fontSize: scaleSize(26),
         fontFamily: 'Roboto',
         fontWeight: 'bold',
         color: '#334C78',
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     aboutText: {
         fontSize: scaleSize(20),
@@ -99,7 +105,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: '#8F9BB2',
         marginLeft: scaleSize(16),
-        marginTop: scaleSize(30)
+        marginTop: scaleSize(30),
     },
     emailDescriptionContainer: {
         width: scaleSize(358),
@@ -109,7 +115,7 @@ const styles = StyleSheet.create({
         marginTop: scaleSize(11),
         backgroundColor: '#F5F9FD',
         justifyContent: 'center',
-        paddingLeft: scaleSize(15)
+        paddingLeft: scaleSize(15),
     },
     aboutDescriptionContainer: {
         width: scaleSize(358),
@@ -119,7 +125,7 @@ const styles = StyleSheet.create({
         marginTop: scaleSize(11),
         backgroundColor: '#F5F9FD',
         justifyContent: 'center',
-        paddingLeft: scaleSize(15)
+        paddingLeft: scaleSize(15),
     },
     descriptionText: {
         fontSize: scaleSize(20),
@@ -133,17 +139,17 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: '#8F9BB2',
         marginLeft: scaleSize(16),
-        marginTop: scaleSize(28)
+        marginTop: scaleSize(28),
     },
     editButton: {
         height: scaleSize(40),
         width: scaleSize(40),
-        marginTop: 16, 
-        marginRight: 16, 
+        marginTop: 16,
+        marginRight: 16,
         alignSelf: 'flex-end',
         borderRadius: 60,
         backgroundColor: '#F5F9FD',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
 });

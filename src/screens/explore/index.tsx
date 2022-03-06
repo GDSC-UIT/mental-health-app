@@ -14,7 +14,7 @@ import SearchScreen from './search';
 
 const ExploreScreen: React.FC<ExploreScreenProps> = ({navigation}) => {
     const {t} = useTranslation();
-    const [route, setRoute] = useState<'Post' | 'Event'>('Event');
+    const [route, setRoute] = useState<'Post' | 'Event'>('Post');
     return (
         <Box bgColor={COLORS.gray_1} container paddingHorizontal={scaleSize(10)}>
             <ExploreHeader route={route} navigate={tab => setRoute(tab)} />

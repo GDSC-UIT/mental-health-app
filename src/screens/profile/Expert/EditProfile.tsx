@@ -2,40 +2,33 @@ import {scaleSize} from '@core/utils';
 import {IMAGES} from '@src/assets';
 import {COLORS} from '@src/assets/const';
 import BackButton from '@src/screens/chat/components/BackButton'; //đem ra ngoài compoents chung
-import React, { useState } from 'react';
-import {Alert, StyleProp, ViewStyle, Image, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import React from 'react';
 import {useTranslation} from 'react-i18next';
+import {Alert, Image, StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 interface EditProfileProps {
-    name: string,
-    email: string,
+    name: string;
+    email: string;
     style?: StyleProp<ViewStyle>;
-};
+}
 
 const ExpertEditProfile: React.FC<EditProfileProps> = props => {
-
     const {t} = useTranslation();
     const {name, email, style} = props;
 
-    function arletBack(){
-        Alert.alert(
-            "Notice", "If you cancel now, your changes will be discarded.",
-            [
-                {text: "OK", onPress: () => console.log("OK Pressed")},
-                {text: "Cancel", onPress: () => console.log("Cancel Pressed")}
-            ]
-        )
+    function arletBack() {
+        Alert.alert('Notice', 'If you cancel now, your changes will be discarded.', [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+            {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
+        ]);
     }
 
-    function arletLogout(){
-        Alert.alert(
-            "Notice", "Are you sure want to log out",
-            [
-                {text: "OK", onPress: () => console.log("OK Pressed")},
-                {text: "Cancel", onPress: () => console.log("Cancel Pressed")}
-            ]
-        )
+    function arletLogout() {
+        Alert.alert('Notice', 'Are you sure want to log out', [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+            {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
+        ]);
     }
     // const OpenLibrary =() => {
     //     let options = {
@@ -59,13 +52,13 @@ const ExpertEditProfile: React.FC<EditProfileProps> = props => {
     //         }
     //     })
     // };
-    
+
     //const [imgUri,setimgUri] = useState({});
 
     return (
-        <SafeAreaView style={styles.container}>                                                                                                     
+        <SafeAreaView style={styles.container}>
             <View style={styles.topview}>
-                <BackButton/>
+                <BackButton />
                 <Text style={styles.profile_text}>{t('Edit Profile')}</Text>
                 <TouchableOpacity style={styles.done_button}>
                     <Text style={styles.done_text}>{t('Done')}</Text>
@@ -74,44 +67,30 @@ const ExpertEditProfile: React.FC<EditProfileProps> = props => {
 
             <View style={styles.view_img}>
                 <View style={styles.img_container}>
-                    <Image
-                        source={IMAGES.profile}
-                        style={{height: 89, width: 89}}    
-                    >
-                    </Image>
+                    <Image source={IMAGES.profile} style={{height: 89, width: 89}}></Image>
                 </View>
-                <TouchableOpacity 
+                <TouchableOpacity
                     style={styles.edit_img_button}
-                    onPress={() =>{
+                    onPress={() => {
                         // OpenLibrary();
                     }}>
-                        <Text style={styles.edit_img_text}>{t('CHANGE AVATAR')}</Text>
+                    <Text style={styles.edit_img_text}>{t('CHANGE AVATAR')}</Text>
                 </TouchableOpacity>
             </View>
 
             <View>
                 <Text style={styles.label_name}>{t('Name')}</Text>
                 <View style={styles.textInputContainer}>
-                    <TextInput 
-                        style={styles.text_input}
-                        value={name}
-                        placeholder="Edit Name Here"
-                    />   
+                    <TextInput style={styles.text_input} value={name} placeholder="Edit Name Here" />
                 </View>
                 <Text style={styles.label_email}>{t('About')}</Text>
                 <View style={styles.textInputContainer}>
-                    <TextInput 
-                        style={styles.text_input}
-                        value={email}
-                        placeholder="Edit About Here"
-                    />
+                    <TextInput style={styles.text_input} value={email} placeholder="Edit About Here" />
                 </View>
             </View>
 
             <View>
-                <TouchableOpacity 
-                    style={styles.logout_button}
-                    onPress={arletLogout}>
+                <TouchableOpacity style={styles.logout_button} onPress={arletLogout}>
                     <Text style={styles.logout_text}>Log Out</Text>
                 </TouchableOpacity>
             </View>
@@ -139,7 +118,7 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         justifyContent: 'center',
         marginTop: 21,
-        color: '#193566'
+        color: '#193566',
     },
     done_button: {
         marginTop: 16,
@@ -157,7 +136,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.48,
         elevation: 10,
-        shadowColor: '#8A9BBD'
+        shadowColor: '#8A9BBD',
     },
     done_text: {
         color: '#274170',
@@ -185,7 +164,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.48,
         elevation: 10,
-        shadowColor: '#8A9BBD'
+        shadowColor: '#8A9BBD',
     },
     edit_img_button: {
         borderRadius: 60,
@@ -202,7 +181,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.48,
         elevation: 10,
-        shadowColor: '#8A9BBD'
+        shadowColor: '#8A9BBD',
     },
     edit_img_text: {
         fontSize: 18,
@@ -219,7 +198,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: '#8F9BB2',
         marginLeft: 15,
-        marginTop: 14
+        marginTop: 14,
     },
     label_email: {
         fontFamily: 'Roboto',
@@ -227,7 +206,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: '#8F9BB2',
         marginLeft: 15,
-        marginTop: 22
+        marginTop: 22,
     },
     text_input: {
         fontSize: 20,
@@ -252,7 +231,7 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.48,
         elevation: 10,
-        shadowColor: '#8A9BBD'
+        shadowColor: '#8A9BBD',
     },
     logout_text: {
         color: '#274170',
@@ -260,7 +239,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         justifyContent: 'center',
-    } ,
+    },
     textInputContainer: {
         width: scaleSize(358),
         height: scaleSize(40),
@@ -269,6 +248,6 @@ const styles = StyleSheet.create({
         borderWidth: scaleSize(1),
         borderColor: '#8F9BB2',
         justifyContent: 'center',
-        alignSelf: 'center'
-    }
+        alignSelf: 'center',
+    },
 });
