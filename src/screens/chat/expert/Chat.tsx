@@ -22,7 +22,6 @@ const WithUserChatScreen = () => {
                     style={[styles.button, {left: scaleSize(-4)}]}
                     icon={<Ionicons name="images" size={20} color={COLORS.dark_gray_2} />}
                 />
-
                 <Messages />
 
                 <IconButton
@@ -45,7 +44,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         ...STYLES.deepShadow,
         position: 'absolute',
-        bottom: scaleSize(3),
+        bottom: scaleSize(14),
         zIndex: 3,
     },
 });

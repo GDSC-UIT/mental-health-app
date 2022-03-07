@@ -1,10 +1,9 @@
 import {scaleSize} from '@core/utils';
-import {COLORS, STYLES} from '@src/assets/const';
-import {IMAGES} from '@src/assets';
-import React from 'react';
-import {View, StyleSheet, Text} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {COLORS, STYLES} from '@src/assets/const';
 import IconButton from '@src/components/IconButton';
+import React from 'react';
+import {StyleSheet} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type Props = {};

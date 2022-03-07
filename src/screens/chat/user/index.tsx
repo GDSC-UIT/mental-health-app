@@ -1,11 +1,10 @@
 import {scaleSize} from '@core/utils';
 import {IMAGES} from '@src/assets';
 import {COLORS, FONTS} from '@src/assets/const';
-import React, {useState} from 'react';
-import Button from '@src/components/Button';
 import Box from '@src/components/Box';
-import {Alert, Image, StyleSheet, Text, View, TouchableOpacity, TextInput} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import Button from '@src/components/Button';
+import React from 'react';
+import {Image, StyleSheet, Text, TextInput, View} from 'react-native';
 
 const UserChatHomeScreen = ({navigation}) => {
     return (

@@ -33,9 +33,53 @@ export const COLORS = {
     error_1: '#FF4906',
 };
 
+export const SIZES = {
+    // global sizes
+    base: 8,
+    font: 14,
+    radius: 12,
+    padding: 24,
+    padding2: 36,
+
+    // font sizes
+    largeTitle: scaleSize(50),
+    h1: scaleSize(32),
+    h2: scaleSize(24),
+    h3: scaleSize(18),
+    h4: scaleSize(14),
+    body1: scaleSize(32),
+    body2: scaleSize(24),
+    body3: scaleSize(18),
+    body4: scaleSize(14),
+
+    circleButton: scaleSize(36),
+    bottomBarHeight: scaleSize(64),
+    // app dimensions
+    WindowWidth,
+    WindowHeight,
+};
+
+export const FONTS = StyleSheet.create({
+    largeTitle: {fontFamily: 'Roboto-Bold', color: COLORS.black_2, fontSize: SIZES.largeTitle, lineHeight: 55},
+    h1: {fontFamily: 'Roboto-Bold', color: COLORS.black_2, fontSize: SIZES.h1, lineHeight: 36},
+    h2: {fontFamily: 'Roboto-Bold', color: COLORS.black_2, fontSize: SIZES.h2, lineHeight: 30},
+    h3: {fontFamily: 'Roboto-Bold', color: COLORS.black_2, fontSize: SIZES.h3, lineHeight: 22},
+    h4: {fontFamily: 'Roboto-Bold', color: COLORS.black_2, fontSize: SIZES.h4, lineHeight: 22},
+
+    subtitle1: {fontFamily: 'Roboto-Medium', color: COLORS.black_2, fontSize: SIZES.body1, lineHeight: 36},
+    subtitle2: {fontFamily: 'Roboto-Medium', color: COLORS.black_2, fontSize: SIZES.body2, lineHeight: 30},
+    subtitle3: {fontFamily: 'Roboto-Medium', color: COLORS.black_2, fontSize: SIZES.body3, lineHeight: 22},
+    subtitle4: {fontFamily: 'Roboto-Medium', color: COLORS.black_2, fontSize: SIZES.body4, lineHeight: 22},
+
+    body1: {fontFamily: 'Roboto-Regular', color: COLORS.black_2, fontSize: SIZES.body1, lineHeight: 36},
+    body2: {fontFamily: 'Roboto-Regular', color: COLORS.black_2, fontSize: SIZES.body2, lineHeight: 30},
+    body3: {fontFamily: 'Roboto-Regular', color: COLORS.black_2, fontSize: SIZES.body3, lineHeight: 22},
+    body4: {fontFamily: 'Roboto-Regular', color: COLORS.black_2, fontSize: SIZES.body4, lineHeight: 22},
+});
+
 export const STYLES = StyleSheet.create({
     deepShadow: {
-        shadowColor: COLORS.dark_blue_1,
+        shadowColor: COLORS.dark_gray_2,
         shadowOffset: {
             width: 4,
             height: 4,
@@ -67,47 +111,15 @@ export const STYLES = StyleSheet.create({
 
         elevation: 6,
     },
-});
-
-export const SIZES = {
-    // global sizes
-    base: 8,
-    font: 14,
-    radius: 12,
-    padding: 24,
-    padding2: 36,
-
-    // font sizes
-    largeTitle: scaleSize(50),
-    h1: scaleSize(32),
-    h2: scaleSize(24),
-    h3: scaleSize(18),
-    h4: scaleSize(14),
-    body1: scaleSize(32),
-    body2: scaleSize(24),
-    body3: scaleSize(18),
-    body4: scaleSize(14),
-
-    circleButton: scaleSize(36),
-    // app dimensions
-    WindowWidth,
-    WindowHeight,
-};
-
-export const FONTS = StyleSheet.create({
-    largeTitle: {fontFamily: 'Roboto-Bold', color: COLORS.black_2, fontSize: SIZES.largeTitle, lineHeight: 55},
-    h1: {fontFamily: 'Roboto-Bold', color: COLORS.black_2, fontSize: SIZES.h1, lineHeight: 36},
-    h2: {fontFamily: 'Roboto-Bold', color: COLORS.black_2, fontSize: SIZES.h2, lineHeight: 30},
-    h3: {fontFamily: 'Roboto-Bold', color: COLORS.black_2, fontSize: SIZES.h3, lineHeight: 22},
-    h4: {fontFamily: 'Roboto-Bold', color: COLORS.black_2, fontSize: SIZES.h4, lineHeight: 22},
-
-    subtitle1: {fontFamily: 'Roboto-Medium', color: COLORS.black_2, fontSize: SIZES.body1, lineHeight: 36},
-    subtitle2: {fontFamily: 'Roboto-Medium', color: COLORS.black_2, fontSize: SIZES.body2, lineHeight: 30},
-    subtitle3: {fontFamily: 'Roboto-Medium', color: COLORS.black_2, fontSize: SIZES.body3, lineHeight: 22},
-    subtitle4: {fontFamily: 'Roboto-Medium', color: COLORS.black_2, fontSize: SIZES.body4, lineHeight: 22},
-
-    body1: {fontFamily: 'Roboto-Regular', color: COLORS.black_2, fontSize: SIZES.body1, lineHeight: 36},
-    body2: {fontFamily: 'Roboto-Regular', color: COLORS.black_2, fontSize: SIZES.body2, lineHeight: 30},
-    body3: {fontFamily: 'Roboto-Regular', color: COLORS.black_2, fontSize: SIZES.body3, lineHeight: 22},
-    body4: {fontFamily: 'Roboto-Regular', color: COLORS.black_2, fontSize: SIZES.body4, lineHeight: 22},
+    center: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    error: {
+        ...FONTS.body4,
+        color: COLORS.error_1,
+        fontSize: scaleSize(16),
+        marginTop: scaleSize(4),
+        marginLeft: scaleSize(8),
+    },
 });

@@ -2,6 +2,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import RootNavigator from './UserRootNavigator';
 import {UserStackParamList} from './type';
+import FeelingModal from '@src/screens/home/user/components/FeelingModal';
+import {SearchScreen} from '@src/screens/explore';
 const UserStack = createNativeStackNavigator<UserStackParamList>();
 
 const UserStackNavigator = () => {
@@ -12,9 +14,8 @@ const UserStackNavigator = () => {
                 headerShown: false,
             }}>
             <UserStack.Screen name="UserRoot" component={RootNavigator} />
-            <UserStack.Group screenOptions={{presentation: 'modal'}}>
-                <UserStack.Screen name="FeelingModal" component={RootNavigator} />
-            </UserStack.Group>
+            <UserStack.Screen name="Search" component={SearchScreen} />
+            {/* <UserStack.Screen name="" component={SearchScreen} /> */}
         </UserStack.Navigator>
     );
 };

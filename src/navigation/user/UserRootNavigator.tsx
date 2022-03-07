@@ -1,11 +1,11 @@
 import {scaleSize} from '@core/utils';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {COLORS, STYLES} from '@src/assets/const';
+import {COLORS, SIZES, STYLES} from '@src/assets/const';
 import TabBarButton from '@src/components/TabBarButton';
 import ChatScreen from '@src/screens/chat';
 import ExpertHomeScreen from '@src/screens/home/expert';
 import HomeScreen from '@src/screens/home/user';
-import ProfileScreen from '@src/screens/profile';
+import UserProfileScreen from '@src/screens/profile/User';
 import React from 'react';
 import {View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -29,7 +29,7 @@ const ExpertRootNavigator: React.FC = () => {
                     bottom: scaleSize(12),
                     borderRadius: scaleSize(24),
                     marginHorizontal: scaleSize(6),
-                    height: scaleSize(64),
+                    height: SIZES.bottomBarHeight,
                     ...STYLES.shadow,
                 },
             }}>
@@ -56,7 +56,7 @@ const ExpertRootNavigator: React.FC = () => {
             />
             <Tab.Screen
                 name="Profile"
-                component={ProfileScreen}
+                component={UserProfileScreen}
                 options={{
                     tabBarIcon: props => <Ionicons name="person" {...props} />,
                 }}

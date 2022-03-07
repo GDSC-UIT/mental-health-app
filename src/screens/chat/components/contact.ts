@@ -1,6 +1,6 @@
-import {Data} from './types';
+import {Contact} from './types';
 
-const ContactData: Data[] = [
+const ContactData: Contact[] = [
     {
         id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
         username: 'Karry',
@@ -20,7 +20,7 @@ const ContactData: Data[] = [
         lastmessage: 'Chao em,\nem dep lam!',
     },
     {
-        id: 'd9vnw4n3-02xo-471f-tjlk-30823xnaowm4',
+        id: 'd9vnw4n3-02xo-471f-tjlk-30823xnao123',
         username: 'Tan Mot Cu',
         image: 'https://placeimg.com/640/480/animals',
         lastmessage: 'Em an com chua?',
@@ -33,13 +33,13 @@ const ContactData: Data[] = [
             'Em an com chua?Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur saepe obcaecati sequi iusto tenetur odit doloribus ducimus perferendis assumenda atque sint repudiandae distinctio odio excepturi sit, nulla est? Quis, sapiente?',
     },
     {
-        id: 'd9vnw4n3-02xo-471f-tjlk-30823xnaowm4',
+        id: 'd9vnw4n3-02xo-471f-tjlk-30823xna1244',
         username: 'Tan Mot Cu',
         image: 'https://placeimg.com/640/480/animals',
         lastmessage: 'Em an com chua?',
     },
     {
-        id: 'd9vnw4n3-02xo-471f-tjlk-30823xnaowm4',
+        id: 'd9vnw4n3-02xo-471f-tjlk-30823x412311',
         username: 'Tan Mot Cu',
         image: 'https://placeimg.com/640/480/animals',
         lastmessage: 'Em an com chua?',

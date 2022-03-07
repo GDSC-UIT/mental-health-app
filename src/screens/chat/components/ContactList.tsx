@@ -1,20 +1,22 @@
 import {scaleSize} from '@core/utils';
-import React from 'react';
-import {View, FlatList, StyleSheet, Text, Image, TouchableOpacity} from 'react-native';
-import ContactData from './contact';
-import {COLORS, FONTS} from '@src/assets/const';
-import {IMAGES} from '@src/assets';
 import {useNavigation} from '@react-navigation/native';
-import {ExpertChatHomeScreenProps} from '@src/navigation/AuthStackParams';
+import {IMAGES} from '@src/assets';
+import {COLORS} from '@src/assets/const';
+import {ExpertChatScreenCompositeProps} from '@src/navigation/expert/type';
+import React from 'react';
+import {FlatList, Image, ListRenderItem, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import ContactData from './contact';
+import {Contact} from './types';
 
 type Props = {};
 
 const ContactList: React.FC<Props> = props => {
-    const navigation = useNavigation<ExpertChatHomeScreenProps['navigation']>();
+    const navigation = useNavigation<ExpertChatScreenCompositeProps['navigation']>();
 
-    const renderItem = ({item}) => {
+    const renderItem = ({item}: ListRenderItem<Contact>) => {
         return (
-            <TouchableOpacity onPress={() => navigation.push('WithUserChat', {username: item.username})}>
+            <TouchableOpacity
+                onPress={() => navigation.push('ChatStack', {screen: 'WithUserChat', username: item.username})}>
                 <View style={styles.userDataContainer}>
                     <Image source={{uri: item.image}} style={styles.userAvatar} />
                     <View style={styles.userDetailsContainer}>
