@@ -4,6 +4,7 @@ export default {
     bg_login_1: require('./bg_login_1.png'),
     facebook_logo: require('./facebook_logo.png'),
     google_logo: require('./google_logo.png'),
+    modalLine: require('./modalLine.png'),
     feelings: {
         happy: require('./feelings/happy.png'),
         sad: require('./feelings/sad.png'),

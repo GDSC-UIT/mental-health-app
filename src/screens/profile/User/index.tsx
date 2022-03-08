@@ -1,0 +1,95 @@
+import {scaleSize} from '@core/utils';
+import {useNavigation} from '@react-navigation/native';
+import {COLORS, SIZES} from '@src/assets/const';
+import Button from '@src/components/Button';
+// import {ExpertProfileCompositeProps} from '@src/navigation/expert/type';
+import { ExpertHomeScreenNavigationProps } from '@src/navigation/expert/type';
+//import {ProfileTabProps} from '@src/navigation/TabNavigatorParams';
+import React from 'react';
+import {useTranslation} from 'react-i18next';
+import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AvatarContainer from '../components/AvatarContainer';
+import EventCard from '../components/EventCard';
+import Events from '../components/events';
+import {Event} from '../components/types';
+
+const UserProfileScreen = () => {
+    const navigation = useNavigation<ExpertHomeScreenNavigationProps['navigation']>();
+    const renderItem = (item: Event) => {
+        return <EventCard event={item} key={item.id} />;
+    };
+    const {t} = useTranslation();
+    return (
+        <SafeAreaView style={styles.container}>
+            <ScrollView /*contentContainerStyle={{paddingBottom: SIZES.bottomBarHeight + scaleSize(20)}}*/>
+                <TouchableOpacity style={styles.editButton} onPress={() => navigation.navigate('Profile')}>
+                    {<Ionicons name="pencil-outline" size={20} />}
+                </TouchableOpacity>
+
+                <AvatarContainer name="Tan Expert" image=''/>
+
+                <View style={styles.emailDescriptionContainer}>
+                    <Text style={styles.descriptionText}>
+                        {t('Email')}: {'@gmail.com'}
+                    </Text>
+                </View>
+
+                <Button title='Emotion Diary' style={{width: scaleSize(152), height: scaleSize(40), alignSelf: 'center', marginTop: scaleSize(25)}} textStyle={{color: '#334C78', fontSize: scaleSize(16)}}/>
+
+                <Text style={styles.activitiesText}>{t('Activities')}</Text>
+
+                {/* {Events.map(renderItem)} */}
+
+                {/* <Text style={styles.noEventText}>No posts or events</Text> */}
+            </ScrollView>
+        </SafeAreaView>
+    );
+};
+
+export default UserProfileScreen;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: COLORS.gray_1,
+    },
+    emailDescriptionContainer: {
+        width: scaleSize(358),
+        height: 'auto',
+        borderRadius: 60,
+        alignSelf: 'center',
+        marginTop: scaleSize(11),
+        backgroundColor: '#F5F9FD',
+        justifyContent: 'center',
+        paddingLeft: scaleSize(15),
+        paddingRight: scaleSize(15),
+        minHeight: scaleSize(48),
+    },
+    descriptionText: {
+        fontSize: scaleSize(20),
+        fontFamily: 'Roboto',
+        fontWeight: '500',
+        color: '#334C78',
+    },
+    activitiesText: {
+        fontSize: scaleSize(20),
+        fontFamily: 'Roboto',
+        fontWeight: '500',
+        color: '#8F9BB2',
+        marginLeft: scaleSize(16),
+        marginTop: scaleSize(28),
+    },
+    editButton: {
+        height: scaleSize(40),
+        width: scaleSize(40),
+        marginTop: 16,
+        marginRight: 16,
+        alignSelf: 'flex-end',
+        borderRadius: 60,
+        backgroundColor: '#F5F9FD',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+});

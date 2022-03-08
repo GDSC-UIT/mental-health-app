@@ -5,11 +5,15 @@ import TabBarButton from '@src/components/TabBarButton';
 import ChatScreen from '@src/screens/chat';
 import ExploreScreen from '@src/screens/explore';
 import ExpertHomeScreen from '@src/screens/home/expert';
-import ProfileScreen from '@src/screens/profile';
+import ProfileScreen from '@src/screens/profile/Expert/index';
 import React from 'react';
 import {View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {TabNavigatorParamsList} from '../TabNavigatorParams';
+
+//Profile
+import ExpertProfileScreen from '@src/screens/profile/Expert/index';
+import ExpertEditProfileScreen from '@src/screens/profile/Expert/ExpertEditProfile';
 
 const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
 const ExpertRootNavigator: React.FC = () => {
@@ -55,7 +59,7 @@ const ExpertRootNavigator: React.FC = () => {
             />
             <Tab.Screen
                 name="Profile"
-                component={ProfileScreen}
+                component={ExpertProfileScreen}
                 options={{
                     tabBarIcon: props => <Ionicons name="person" {...props} />,
                 }}
