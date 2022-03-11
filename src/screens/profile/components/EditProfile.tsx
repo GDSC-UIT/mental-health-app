@@ -5,7 +5,18 @@ import React, {useEffect, useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useTranslation} from 'react-i18next';
 import {CameraOptions, launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {TouchableOpacity, View, Image, StyleSheet, Text, TextInput, Alert, Modal, Pressable} from 'react-native';
+import {
+    TouchableOpacity,
+    View,
+    Image,
+    StyleSheet,
+    Text,
+    TextInput,
+    Alert,
+    Modal,
+    Pressable,
+    PermissionsAndroid,
+} from 'react-native';
 import BottomModal from './BottomModal';
 import Input from '@src/components/Input';
 import {ProfileData} from '../types';
@@ -23,12 +34,12 @@ const EditProfile = (props: EditProfileProps) => {
     const [profileImage, setProfileImage] = useState<string | undefined>('https://picsum.photos/200');
     const [changeAvatarModalVisible, setChangeAvatarModalVisible] = useState(false);
     const [name, setName] = useState(defaultName);
-    const openCamera = () => {
+    const openCamera = async () => {
         const option: CameraOptions = {
             mediaType: 'photo',
             quality: 1,
         };
-
+        await requestCameraPermission();
         launchCamera(option, res => {
             if (res.didCancel) {
                 console.log('User Cancelled image picker');
@@ -71,7 +82,24 @@ const EditProfile = (props: EditProfileProps) => {
             {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
         ]);
     }
-
+    const requestCameraPermission = async () => {
+        try {
+            const granted = await PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.CAMERA, {
+                title: 'App Camera Permission',
+                message: 'App needs access to your camera ',
+                buttonNeutral: 'Ask Me Later',
+                buttonNegative: 'Cancel',
+                buttonPositive: 'OK',
+            });
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                console.log('Camera permission given');
+            } else {
+                console.log('Camera permission denied');
+            }
+        } catch (err) {
+            console.warn(err);
+        }
+    };
     return (
         <View>
             <View style={{marginTop: scaleSize(28), alignItems: 'center'}}>
