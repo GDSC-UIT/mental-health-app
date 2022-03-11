@@ -24,32 +24,27 @@ const AppNavigator: React.FC = () => {
     return (
         <AppStack.Navigator
             screenOptions={{
-                headerShown: true,
-                headerTransparent: true,
-                headerShadowVisible: false,
-                title: '',
+                headerShown: false,
             }}
             initialRouteName={'RoleChoose'}>
             {!auth.token ? (
                 <>
-                    <AppStack.Screen name="ExpertLogin" component={ExpertLoginScreen} />
-                    <AppStack.Screen name="UserLogin" component={UserLoginScreen} />
-                    <AppStack.Screen name="Register" component={RegisterScreen} />
-                    <AppStack.Screen name="RoleChoose" component={RoleScreen} />
+                    <AppStack.Group
+                        screenOptions={{
+                            headerShown: true,
+                            headerTransparent: true,
+                            headerShadowVisible: false,
+                            title: '',
+                        }}>
+                        <AppStack.Screen name="ExpertLogin" component={ExpertLoginScreen} />
+                        <AppStack.Screen name="UserLogin" component={UserLoginScreen} />
+                        <AppStack.Screen name="Register" component={RegisterScreen} />
+                        <AppStack.Screen name="RoleChoose" component={RoleScreen} />
+                    </AppStack.Group>
                 </>
             ) : (
                 <>{renderRoot()}</>
             )}
-            {/* <AppStack.Group
-                screenOptions={{
-                    title: 'Emotion Diary',
-                    headerShadowVisible: false,
-                    headerShown: true,
-                    header: props => <Header {...props} />,
-                }}>
-                <AppStack.Screen name="EmotionDiary" component={EmotionDiaryScreen} />
-                <AppStack.Screen name="DashboardEmotionDiary" component={DashboardEmotionDiaryScreen} />
-            </AppStack.Group> */}
         </AppStack.Navigator>
     );
 };

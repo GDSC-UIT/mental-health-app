@@ -1,9 +1,8 @@
 import {scaleSize} from '@core/utils';
 import {useNavigation} from '@react-navigation/native';
-import {COLORS, SIZES} from '@src/assets/const';
-//import {ExpertProfileCompositeProps} from '@src/navigation/expert/type';
-import { ExpertHomeScreenNavigationProps } from '@src/navigation/expert/type';
-import {ProfileTabProps} from '@src/navigation/TabNavigatorParams';
+import {COLORS, FONTS} from '@src/assets/const';
+import {ExpertProfileCompositeProps} from '@src/navigation/expert/type';
+import {Event} from '@src/screens/explore/event/types';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
@@ -11,12 +10,8 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AvatarContainer from '../components/AvatarContainer';
 import EventCard from '../components/EventCard';
-import Events from '../components/events';
-import {Event} from '../components/types';
 
-
-const ExpertProfileScreen = () => {
-const navigation = useNavigation<ExpertHomeScreenNavigationProps['navigation']>();
+const ExpertProfileScreen: React.FC<ExpertProfileCompositeProps> = ({navigation}) => {
     const renderItem = (item: Event) => {
         return <EventCard event={item} key={item.id} />;
     };
@@ -24,11 +19,11 @@ const navigation = useNavigation<ExpertHomeScreenNavigationProps['navigation']>(
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView /*contentContainerStyle={{paddingBottom: SIZES.bottomBarHeight + scaleSize(20)}}*/>
-                <TouchableOpacity style={styles.editButton} onPress={() => navigation.navigate('Profile')}>
+                <TouchableOpacity style={styles.editButton} onPress={() => navigation.navigate('EditProfile')}>
                     {<Ionicons name="pencil-outline" size={20} />}
                 </TouchableOpacity>
 
-                <AvatarContainer name="Tan Expert" image=''/>
+                <AvatarContainer name="Tan Expert" image="" />
 
                 <Text style={styles.aboutText}>{t('About me')}</Text>
 
@@ -79,7 +74,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingLeft: scaleSize(15),
         minHeight: scaleSize(48),
-        paddingRight: scaleSize(15)
+        paddingRight: scaleSize(15),
     },
     aboutDescriptionContainer: {
         width: scaleSize(358),
@@ -90,7 +85,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5F9FD',
         justifyContent: 'center',
         paddingLeft: scaleSize(15),
-        minHeight: scaleSize(48)
+        minHeight: scaleSize(48),
     },
     descriptionText: {
         fontSize: scaleSize(20),
@@ -99,10 +94,9 @@ const styles = StyleSheet.create({
         color: '#334C78',
     },
     activitiesText: {
+        ...FONTS.body3,
         fontSize: scaleSize(20),
-        fontFamily: 'Roboto',
-        fontWeight: '500',
-        color: '#8F9BB2',
+        color: COLORS.dark_gray_2,
         marginLeft: scaleSize(16),
         marginTop: scaleSize(28),
     },

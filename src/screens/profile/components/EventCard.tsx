@@ -1,7 +1,8 @@
+import {COLORS, STYLES} from '@src/assets/const';
+import {Event} from '@src/screens/explore/event/types';
 import React from 'react';
 import {StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
 import {scaleSize} from '../../../../core/utils';
-import {Event} from './types';
 
 interface EventCardProps {
     event: Event;
@@ -10,12 +11,12 @@ interface EventCardProps {
 
 const EventCard = (props: EventCardProps) => {
     const {
-        event: {title, time},
+        event: {title, createdAt},
     } = props;
 
     return (
-        <TouchableOpacity style={styles.container}>
-            <Text style={styles.time}>{time}</Text>
+        <TouchableOpacity style={[STYLES.mediumShadow, styles.container]}>
+            <Text style={styles.time}>{createdAt.toUTCString()}</Text>
             <Text style={styles.content}>{title}</Text>
         </TouchableOpacity>
     );
@@ -25,16 +26,11 @@ export default EventCard;
 
 const styles = StyleSheet.create({
     container: {
-        height: 'auto',
-        width: scaleSize(358),
-        alignSelf: 'center',
         borderRadius: scaleSize(10),
-        backgroundColor: '#F5F9FD',
-        paddingLeft: scaleSize(14),
-        paddingTop: 18,
-        paddingBottom: 24,
-        paddingRight: 16,
-        marginTop: 11,
+        backgroundColor: COLORS.white_1,
+        padding: scaleSize(16),
+        marginVertical: scaleSize(10),
+        minHeight: scaleSize(96),
     },
     time: {
         fontSize: 16,

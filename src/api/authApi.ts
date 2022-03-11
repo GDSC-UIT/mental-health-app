@@ -10,7 +10,7 @@ const authApi = {
                         id: 'userId',
                         name: 'name',
                         email: 'email',
-                        role: 'user',
+                        role: 'expert',
                     },
                 });
             }, 1000);

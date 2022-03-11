@@ -79,6 +79,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         right: scaleSize(10),
-        backgroundColor: 'red',
     },
 });

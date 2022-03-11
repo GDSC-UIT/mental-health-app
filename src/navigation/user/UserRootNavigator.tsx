@@ -12,13 +12,13 @@ import ExploreStackScreen from '../ExploreStackScreen';
 import {TabNavigatorParamsList} from '../TabNavigatorParams';
 
 //Profile
-import UserProfileScreen from '@src/screens/profile/User/index';
-import UserEditProfileScreen from '@src/screens/profile/User/UserEditProfile';
-import ExpertProfileScreen from '@src/screens/profile/Expert';
-
+import UserProfileScreen from '@src/screens/profile/user/index';
+import UserEditProfileScreen from '@src/screens/profile/user/UserEditProfile';
+import ExpertProfileScreen from '@src/screens/profile/expert';
+import UserProfileStackNavigator from './ProfileStackNavigator';
 
 const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
-const ExpertRootNavigator: React.FC = () => {
+const UserRootNavigator: React.FC = () => {
     return (
         <Tab.Navigator
             initialRouteName="Explore"
@@ -61,7 +61,7 @@ const ExpertRootNavigator: React.FC = () => {
             />
             <Tab.Screen
                 name="Profile"
-                component={UserEditProfileScreen}
+                component={UserProfileScreen}
                 options={{
                     tabBarIcon: props => <Ionicons name="person" {...props} />,
                 }}
@@ -70,4 +70,4 @@ const ExpertRootNavigator: React.FC = () => {
     );
 };
 
-export default ExpertRootNavigator;
+export default UserRootNavigator;

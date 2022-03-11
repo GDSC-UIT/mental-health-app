@@ -1,21 +1,17 @@
 import {scaleSize} from '@core/utils';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {unwrapResult} from '@reduxjs/toolkit';
 import {COLORS, STYLES} from '@src/assets/const';
 import Button from '@src/components/Button';
 import Input from '@src/components/Input';
 import Text from '@src/components/Text';
-import {auth} from '@src/config/firebase';
 import {emailPasswordLogin} from '@src/services/auth';
 import {useAppDispatch, useAppSelector} from '@src/store';
 import {authActions} from '@src/store/authSlice';
 import {FirebaseError} from 'firebase/app';
-import {signInWithEmailAndPassword, User} from 'firebase/auth';
 import React from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
 import {Alert, StyleSheet, View} from 'react-native';
-import {useSelector} from 'react-redux';
 import * as yup from 'yup';
 
 const schema = yup
@@ -49,11 +45,7 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
         try {
             dispatch(authActions.loading());
             const user = await emailPasswordLogin({email, password});
-            console.log('firebase user:', user);
-            const actionResult = await dispatch(authActions.login(user));
-            const res = unwrapResult(actionResult);
-
-            console.log('Mic check: ', res);
+            await dispatch(authActions.login(user));
         } catch (error: any) {
             dispatch(authActions.stopLoading());
             if (error instanceof FirebaseError) {

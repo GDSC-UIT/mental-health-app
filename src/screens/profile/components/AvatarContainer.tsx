@@ -1,27 +1,19 @@
-import { scaleSize } from '../../../../core/utils';
-import { COLORS } from '../../../assets/const';
-import {IMAGES} from '../../../assets'
+import {FONTS, STYLES} from '@src/assets/const';
+import {scaleSize} from '@core/utils/DeviceUtils';
 import React from 'react';
-import {FONTS} from '@src/assets/const';
-import {
-  TouchableOpacity,
-  View,
-  Image,
-  StyleSheet,
-  Text,
-} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 
 interface avatarContainerProps {
-    name: string,
-    image: string
-};
+    name: string;
+    image: string;
+}
 
 const AvatarContainer = (props: avatarContainerProps) => {
     const {name, image} = props;
     return (
         <View style={styles.avatarContainer}>
-            <Image 
-                source={{uri: image}}
+            <Image
+                source={{uri: 'https://picsum.photos/200'}}
                 //source={IMAGES.profile}
                 style={styles.profileImage}
             />
@@ -36,9 +28,9 @@ const styles = StyleSheet.create({
     profileImage: {
         width: scaleSize(89),
         height: scaleSize(89),
-        borderRadius: scaleSize(89/2),
+        borderRadius: scaleSize(89 / 2),
         marginTop: scaleSize(13),
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     name: {
         alignSelf: 'center',
@@ -53,6 +45,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: '#F5F9FD',
         alignSelf: 'center',
-        marginTop: scaleSize(20)
+        marginTop: scaleSize(20),
+        ...STYLES.deepShadow,
     },
 });

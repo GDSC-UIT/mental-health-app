@@ -1,170 +1,110 @@
-import { scaleSize } from '../../../../core/utils';
-import { COLORS, FONTS, STYLES } from '../../../assets/const';
-import {IMAGES} from '../../../assets'
-import React, {useState} from 'react';
+import {scaleSize} from '../../../../core/utils';
+import {COLORS, FONTS, STYLES} from '../../../assets/const';
+import {IMAGES} from '../../../assets';
+import React, {useEffect, useState} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useTranslation} from 'react-i18next';
-import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
-import {
-  TouchableOpacity,
-  View,
-  Image,
-  StyleSheet,
-  Text,
-  TextInput,
-  Alert,
-  Modal,
-  Pressable
-} from 'react-native';
-
+import {CameraOptions, launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {TouchableOpacity, View, Image, StyleSheet, Text, TextInput, Alert, Modal, Pressable} from 'react-native';
+import BottomModal from './BottomModal';
+import Input from '@src/components/Input';
+import {ProfileData} from '../types';
+import {useNavigation} from '@react-navigation/native';
 
 type EditProfileProps = {
-    name: string, 
-    image: string,
+    name: string;
+    image: string;
+    onChangeData: (name: string, value: any) => void;
 };
 
 const EditProfile = (props: EditProfileProps) => {
-    const [profileImage, setProfileImage] = useState(null)
-    const [changeAvatarModalVisible, setChangeAvatarModalVisible] = useState(false);
-
-    const {name, image} = props;
+    const {name: defaultName, image = 'https://picsum.photos/200', onChangeData} = props;
     const {t} = useTranslation();
-
+    const [profileImage, setProfileImage] = useState<string | undefined>('https://picsum.photos/200');
+    const [changeAvatarModalVisible, setChangeAvatarModalVisible] = useState(false);
+    const [name, setName] = useState(defaultName);
     const openCamera = () => {
-        const option = {
+        const option: CameraOptions = {
             mediaType: 'photo',
-            quality: 1
-        }
-    
-        launchCamera(option, (res) =>{
-            if(res.didCancel){
-                console.log('User Cancelled image picker')
+            quality: 1,
+        };
+
+        launchCamera(option, res => {
+            if (res.didCancel) {
+                console.log('User Cancelled image picker');
+            } else if (res.errorCode) {
+                console.log(res.errorMessage);
+            } else {
+                const data = res && res.assets && res.assets[0];
+                setProfileImage(data?.uri);
+                console.log(data);
+                onChangeData('avatar', data?.uri);
+                setChangeAvatarModalVisible(false);
             }
-            else if(res.errorCode){
-                console.log(res.errorMessage)
-            }
-            else{
-                const data = res.assets[0]
-                setProfileImage(data)
-                console.log(data)
-                setChangeAvatarModalVisible(false)
-            }
-        })
-    }
+        });
+    };
 
     const openLibrary = () => {
-        const option = {
+        const option: CameraOptions = {
             mediaType: 'photo',
-            quality: 1
-        }
+            quality: 1,
+        };
 
-        launchImageLibrary(option, (res) =>{
-            if(res.didCancel){
-                console.log('User Cancelled image picker')
+        launchImageLibrary(option, res => {
+            if (res.didCancel) {
+                console.log('User Cancelled image picker');
+            } else if (res.errorCode) {
+                console.log(res.errorMessage);
+            } else {
+                const data = res && res.assets && res.assets[0];
+                setProfileImage(data?.uri);
+                console.log(data);
+                setChangeAvatarModalVisible(false);
+                onChangeData('avatar', data?.uri);
             }
-            else if(res.errorCode){
-                console.log(res.errorMessage)
-            }
-            else{
-                const data = res.assets[0]
-                setProfileImage(data)
-                console.log(data)
-                setChangeAvatarModalVisible(false)
-            }
-        })
+        });
+    };
+
+    function alertBack() {
+        Alert.alert('Notice', 'If you cancel now, your changes will be discarded.', [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+            {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
+        ]);
     }
 
-    function alertBack(){
-        Alert.alert(
-            "Notice", "If you cancel now, your changes will be discarded.",
-            [
-                {text: "OK", onPress: () => console.log("OK Pressed")},
-                {text: "Cancel", onPress: () => console.log("Cancel Pressed")}
-            ]
-        )
-    }
-    
     return (
         <View>
-            <Modal
-                animationType="fade"
-                transparent={true}
-                visible={changeAvatarModalVisible}
-            >
-                <View style={{flex: 1, paddingBottom: scaleSize(33), justifyContent: "flex-end", alignItems: "center", alignSelf: 'center', backgroundColor: 'rgba(0,0,0,0.5)'}}>
-                    <View style={styles.modalView}>
-                        <View style={styles.takePhotoModalOption}>
-                            <Pressable
-                                onPress={openCamera}
-                                style={{marginTop: scaleSize(14)}}
-                            >
-                                <Text style={{fontSize: scaleSize(23), color: '#1D325E'}}>Take Photo</Text>
-                            </Pressable>
-                            <View style={{backgroundColor: '#BABCC1', height: scaleSize(1), width: scaleSize(376)}}/>
-                            <Pressable
-                                onPress={openLibrary}
-                                style={{marginTop: scaleSize(10)}}
-                            >
-                                <Text style={{fontSize: scaleSize(23), color: '#1D325E', marginBottom: scaleSize(19)}}>Choose From Library</Text>
-                            </Pressable>
-                        </View>
-                        
-                        <View style={styles.chooseLibraryModalOption}>
-                        <Pressable
-                            onPress={() => setChangeAvatarModalVisible(!changeAvatarModalVisible)}
-                            style={{marginBottom: scaleSize(14)}}
-                        >
-                            <Text style={{fontSize: scaleSize(23), color: '#1D325E', fontWeight: 'bold', marginTop: scaleSize(14)}}>Cancel</Text>
-                        </Pressable>
-                        </View>
-                    </View>
-                </View>
-            </Modal>
-
-            <View style={styles.top}> 
-                <TouchableOpacity 
-                    style={styles.backButton}
-                    onPress={alertBack}
-                >
-                    <Ionicons name="chevron-back-outline" size={scaleSize(20)} color={COLORS.dark_gray_2}/>
-                </TouchableOpacity>
-                
-                <Text style={styles.editText}>{t('Edit Profile')}</Text>
-
-                <TouchableOpacity style={styles.doneButton}>
-                    <Text style={styles.doneButtonText}>{t('Done')}</Text>
-                </TouchableOpacity>
-            </View>
-
             <View style={{marginTop: scaleSize(28), alignItems: 'center'}}>
-                
-                {
-                    profileImage != null &&
+                {!!profileImage && (
                     <Image
-                        source={{uri: profileImage.uri}}
+                        source={{uri: profileImage}}
                         // source={IMAGES.profile}
-                        style={{height: scaleSize(89), width: scaleSize(89), borderRadius: scaleSize(89/2)}}
+                        style={{height: scaleSize(89), width: scaleSize(89), borderRadius: scaleSize(89 / 2)}}
                     />
-                }
-                
-                <TouchableOpacity 
-                    style={styles.changeAvatarButton}
-                    onPress={() => setChangeAvatarModalVisible(true)}
-                >
+                )}
+
+                <TouchableOpacity style={styles.changeAvatarButton} onPress={() => setChangeAvatarModalVisible(true)}>
                     <Text style={{...FONTS.h1, fontSize: scaleSize(18), color: '#193566'}}>{t('CHANGE AVATAR')}</Text>
                 </TouchableOpacity>
             </View>
 
             <View>
-                <Text style={styles.nameLabel}>{t('About me')}</Text>
-                <View style={styles.textInputContainer}>
-                    <TextInput 
-                        style={{...FONTS.body2, fontSize: scaleSize(20), paddingLeft: scaleSize(15)}}
-                        value={name}
-                        placeholder="Edit Name Here"
-                    />   
-                </View>
+                <Text style={styles.nameLabel}>{t('Name')}</Text>
+                <Input
+                    defaultValue={name}
+                    onChangeText={text => {
+                        onChangeData('name', text);
+                        console.log(text);
+                    }}
+                />
             </View>
+
+            <BottomModal
+                visible={changeAvatarModalVisible}
+                onCancel={() => setChangeAvatarModalVisible(false)}
+                onOpenCameraPress={() => openCamera()}
+                onOpenLibraryPress={() => openLibrary()}
+            />
         </View>
     );
 };
@@ -181,20 +121,20 @@ const styles = StyleSheet.create({
     backButton: {
         height: scaleSize(40),
         width: scaleSize(40),
-        borderRadius: scaleSize(40/2),
+        borderRadius: scaleSize(40 / 2),
         backgroundColor: '#E9F0F7',
         marginLeft: scaleSize(16),
         justifyContent: 'center',
         alignItems: 'center',
 
-        ...STYLES.deepShadow
+        ...STYLES.deepShadow,
     },
     editText: {
         ...FONTS.subtitle2,
         fontSize: scaleSize(26),
         color: '#193566',
         alignSelf: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     doneButton: {
         alignItems: 'center',
@@ -206,7 +146,7 @@ const styles = StyleSheet.create({
         borderRadius: 60,
         marginRight: scaleSize(15),
 
-        ...STYLES.deepShadow
+        ...STYLES.deepShadow,
     },
     doneButtonText: {
         ...FONTS.h4,
@@ -214,7 +154,7 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: '#274170',
         justifyContent: 'center',
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     changeAvatarButton: {
         borderRadius: 60,
@@ -225,53 +165,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
 
-        ...STYLES.deepShadow
+        ...STYLES.deepShadow,
     },
     nameLabel: {
         ...FONTS.subtitle2,
         fontSize: scaleSize(20),
         color: '#8F9BB2',
-        marginTop: scaleSize(14),
-        marginLeft: scaleSize(15),
+        marginVertical: scaleSize(6),
+        marginLeft: scaleSize(4),
     },
-    textInputContainer: {
-        width: scaleSize(358),
-        height: scaleSize(45),
-        borderRadius: 60,
-        backgroundColor: '#F5F9FD',
-        borderWidth: scaleSize(1),
-        borderColor: '#8F9BB2',
-        justifyContent: 'center',
-        alignSelf: 'center',
-        marginTop: scaleSize(9),
-    },
-    modalView: {
-        ...STYLES.deepShadow, 
-        height: scaleSize(184), 
-        width: scaleSize(376), 
-        alignSelf: 'center', 
-        alignItems: 'center', 
-        justifyContent: 'space-between',
-        //backgroundColor: '#F5F9FD',
-        borderRadius: 10
-    },
-    takePhotoModalOption: {
-        ...STYLES.deepShadow, 
-        height: scaleSize(112), 
-        width: scaleSize(376), 
-        alignSelf: 'center', 
-        alignItems: 'center', 
-        justifyContent: 'space-between',
-        backgroundColor: '#F5F9FD',
-        borderRadius: 10
-    },
-    chooseLibraryModalOption: {
-        ...STYLES.deepShadow, 
-        height: scaleSize(56), 
-        width: scaleSize(376), 
-        alignSelf: 'center', 
-        alignItems: 'center',
-        backgroundColor: '#F5F9FD',
-        borderRadius: 10
-    }
 });

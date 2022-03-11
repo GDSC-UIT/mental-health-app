@@ -3,6 +3,7 @@ import React from 'react';
 import RootNavigator from './UserRootNavigator';
 import {UserStackParamList} from './type';
 import FeelingModal from '@src/screens/home/user/components/FeelingModal';
+import UserProfileStackNavigator from './ProfileStackNavigator';
 const UserStack = createNativeStackNavigator<UserStackParamList>();
 
 const UserStackNavigator = () => {
@@ -13,6 +14,7 @@ const UserStackNavigator = () => {
                 headerShown: false,
             }}>
             <UserStack.Screen name="UserRoot" component={RootNavigator} />
+            <UserStack.Screen name="UserProfile" component={UserProfileStackNavigator} />
         </UserStack.Navigator>
     );
 };
