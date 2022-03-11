@@ -2,6 +2,7 @@ import {scaleSize} from '@core/utils';
 import {useNavigation} from '@react-navigation/native';
 import {COLORS, FONTS} from '@src/assets/const';
 import {ExpertProfileCompositeProps} from '@src/navigation/expert/type';
+import Events from '@src/screens/explore/event/events';
 import {Event} from '@src/screens/explore/event/types';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
@@ -41,8 +42,7 @@ const ExpertProfileScreen: React.FC<ExpertProfileCompositeProps> = ({navigation}
 
                 <Text style={styles.activitiesText}>{t('Activities')}</Text>
 
-                {/* {Events.map(renderItem)} */}
-
+                <View style={{paddingHorizontal: scaleSize(14)}}>{Events.map(renderItem)}</View>
                 {/* <Text style={styles.noEventText}>No posts or events</Text> */}
             </ScrollView>
         </SafeAreaView>
