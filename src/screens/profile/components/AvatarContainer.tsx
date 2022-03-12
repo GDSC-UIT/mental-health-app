@@ -1,23 +1,26 @@
 import {FONTS, STYLES} from '@src/assets/const';
 import {scaleSize} from '@core/utils/DeviceUtils';
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
 
 interface avatarContainerProps {
     name: string;
     image: string;
+    style?: StyleProp<ViewStyle>;
 }
 
 const AvatarContainer = (props: avatarContainerProps) => {
-    const {name, image} = props;
+    const {name, image, style} = props;
     return (
-        <View style={styles.avatarContainer}>
-            <Image
-                source={{uri: 'https://picsum.photos/200'}}
-                //source={IMAGES.profile}
-                style={styles.profileImage}
-            />
+        <View style={[styles.avatarContainer, style]}>
+            <View style={styles.avatarShadow}>
+                <Image
+                    source={{uri: 'https://picsum.photos/200'}}
+                    style={styles.profileImage}
+                />
+            </View>
             <Text style={styles.name}>{name}</Text>
+            
         </View>
     );
 };
@@ -29,7 +32,6 @@ const styles = StyleSheet.create({
         width: scaleSize(89),
         height: scaleSize(89),
         borderRadius: scaleSize(89 / 2),
-        marginTop: scaleSize(13),
         alignSelf: 'center',
     },
     name: {
@@ -48,4 +50,12 @@ const styles = StyleSheet.create({
         marginTop: scaleSize(20),
         ...STYLES.deepShadow,
     },
+    avatarShadow: {
+        height: scaleSize(89),
+        width: scaleSize(89),
+        borderRadius: scaleSize(89 / 2),
+        marginTop: scaleSize(13),
+        alignSelf: 'center',
+        ...STYLES.deepShadow
+    }
 });

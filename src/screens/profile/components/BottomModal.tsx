@@ -1,7 +1,7 @@
-import {Modal, Pressable, StyleSheet, Text, View} from 'react-native';
+import {Modal, Pressable, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import {scaleSize} from '@core/utils';
-import {STYLES} from '@src/assets/const';
+import {FONTS, STYLES} from '@src/assets/const';
 
 interface Props {
     visible: boolean;
@@ -25,29 +25,30 @@ const BottomModal: React.FC<Props> = props => {
                 }}>
                 <View style={styles.modalView}>
                     <View style={styles.takePhotoModalOption}>
-                        <Pressable onPress={onOpenCameraPress} style={{marginTop: scaleSize(14)}}>
-                            <Text style={{fontSize: scaleSize(23), color: '#1D325E'}}>Take Photo</Text>
-                        </Pressable>
+                        <TouchableOpacity 
+                            onPress={onOpenCameraPress} 
+                            style={styles.modalButton}
+                        >
+                            <Text style={styles.takePhotoText}>Take Photo</Text>
+                        </TouchableOpacity>
+
                         <View style={{backgroundColor: '#BABCC1', height: scaleSize(1), width: scaleSize(376)}} />
-                        <Pressable onPress={onOpenLibraryPress} style={{marginTop: scaleSize(10)}}>
-                            <Text style={{fontSize: scaleSize(23), color: '#1D325E', marginBottom: scaleSize(19)}}>
-                                Choose From Library
-                            </Text>
-                        </Pressable>
+
+                        <TouchableOpacity 
+                            onPress={onOpenLibraryPress} 
+                            style={styles.modalButton}
+                        >
+                            <Text style={styles.chooseLibraryText}>Choose From Library</Text>
+                        </TouchableOpacity>
                     </View>
 
                     <View style={styles.chooseLibraryModalOption}>
-                        <Pressable onPress={() => onCancel()} style={{marginBottom: scaleSize(14)}}>
-                            <Text
-                                style={{
-                                    fontSize: scaleSize(23),
-                                    color: '#1D325E',
-                                    fontWeight: 'bold',
-                                    marginTop: scaleSize(14),
-                                }}>
-                                Cancel
-                            </Text>
-                        </Pressable>
+                        <TouchableOpacity 
+                            onPress={() => onCancel()} 
+                            style={styles.modalButton}
+                        >
+                            <Text style={styles.cancelText}>Cancel</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
@@ -65,7 +66,6 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         alignItems: 'center',
         justifyContent: 'space-between',
-        //backgroundColor: '#F5F9FD',
         borderRadius: 10,
     },
     takePhotoModalOption: {
@@ -87,4 +87,23 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5F9FD',
         borderRadius: 10,
     },
+    takePhotoText: {
+        fontSize: scaleSize(23),
+        color: '#1D325E'
+    }, 
+    chooseLibraryText: {
+        fontSize: scaleSize(23), 
+        color: '#1D325E', 
+        marginBottom: scaleSize(9)
+    },
+    cancelText: {
+        ...FONTS.h1,
+        fontSize: scaleSize(23),
+    },
+    modalButton: {
+        alignItems: 'center', 
+        justifyContent: 'center',
+        height: scaleSize(58), 
+        width: scaleSize(376),
+    }
 });

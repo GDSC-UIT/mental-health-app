@@ -12,9 +12,9 @@ import ExploreStackScreen from '../ExploreStackScreen';
 import {TabNavigatorParamsList} from '../TabNavigatorParams';
 
 //Profile
-import UserProfileScreen from '@src/screens/profile/user/index';
-import UserEditProfileScreen from '@src/screens/profile/user/UserEditProfile';
-import ExpertProfileScreen from '@src/screens/profile/expert';
+import UserProfileScreen from '@src/screens/profile/User/index';
+import UserEditProfileScreen from '@src/screens/profile/User/UserEditProfile';
+import ExpertProfileScreen from '@src/screens/profile/Expert';
 import UserProfileStackNavigator from './ProfileStackNavigator';
 
 const Tab = createBottomTabNavigator<TabNavigatorParamsList>();

@@ -4,7 +4,7 @@ import {SearchScreen} from '@src/screens/explore';
 import CreateEventScreen from '@src/screens/home/expert/create_event';
 import CreatePostScreen from '@src/screens/home/expert/create_post';
 import EditProfile from '@src/screens/profile/components/EditProfile';
-import ExpertEditProfileScreen from '@src/screens/profile/expert/ExpertEditProfile';
+import ExpertEditProfileScreen from '@src/screens/profile/Expert/ExpertEditProfile';
 import React from 'react';
 import RootNavigator from './ExpertRootNavigator';
 import {ExpertStackParamList} from './type';
