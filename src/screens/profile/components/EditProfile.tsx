@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
         fontSize: scaleSize(20),
         color: '#8F9BB2',
         marginVertical: scaleSize(6),
-        marginLeft: scaleSize(15),
+        marginLeft: scaleSize(15)
     },
     changeAvatarText: {
         ...FONTS.h1, 

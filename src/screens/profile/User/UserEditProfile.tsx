@@ -62,18 +62,6 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.gray_1,
         flex: 1,
     },
-    textInputContainer: {
-        // width: scaleSize(358),
-        // height: scaleSize(45),
-        // borderRadius: 60,
-        // backgroundColor: '#F5F9FD',
-        // borderWidth: scaleSize(1),
-        // borderColor: '#8F9BB2',
-        // justifyContent: 'center',
-        // alignSelf: 'center',
-        // marginTop: 15,
-        marginVertical: scaleSize(6)
-    },
     aboutLabel: {
         ...FONTS.subtitle2,
         fontSize: scaleSize(20),

@@ -32,7 +32,7 @@ const UserProfileScreen: React.FC<UserProfileScreenProps> = ({navigation}) => {
                     
                     <View 
                         style={{
-                            top: scaleSize(60),
+                            top: scaleSize(65),
                             right: scaleSize(12),
                             position: 'absolute',
                             zIndex: 10,
@@ -85,11 +85,11 @@ const UserProfileScreen: React.FC<UserProfileScreenProps> = ({navigation}) => {
 
                 
                 <View style={{paddingHorizontal: scaleSize(16), marginTop: scaleSize(20)}}>
-                    <Text style={styles.activitiesText}>{t('Activities')}</Text>
+                    <Text style={styles.activitiesText}>{t('Interested Posts and Events')}</Text>
                     {
                         Events.length?(
-                            <View style={{paddingHorizontal: scaleSize(14)}}>{Events.map(renderItem)}</View>
-                        ) : <Text style={styles.noEventText}>No posts or events</Text>
+                            <View>{Events.map(renderItem)}</View>
+                        ) : <Text style={styles.noEventText}>No interested posts or events</Text>
                     }
                 </View>
 
@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
         fontSize: scaleSize(20),
         fontFamily: 'Roboto-Medium',
         color: COLORS.dark_gray_2,
+        marginTop: scaleSize(29)
     },
     editButton: {
         height: scaleSize(40),
@@ -180,6 +181,6 @@ const styles = StyleSheet.create({
         fontSize: scaleSize(18),
         color: '#1D325E',
         alignSelf: 'center',
-        marginTop: scaleSize(33)
+        marginTop: scaleSize(25)
     }
 });

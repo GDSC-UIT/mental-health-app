@@ -25,6 +25,7 @@ const ExpertProfileScreen: React.FC<ExpertProfileCompositeProps> = ({navigation}
             <ScrollView /*contentContainerStyle={{paddingBottom: SIZES.bottomBarHeight + scaleSize(20)}}*/>
                 <TouchableOpacity
                     style={styles.editButton}
+                    onPress={() => setOptionsViewVisible(!optionsViewVisible)}
                 >
                     {<Ionicons name="ellipsis-horizontal" size={30} />}
                 </TouchableOpacity>
