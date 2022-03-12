@@ -16,7 +16,7 @@ const ExploreScreen: React.FC<ExploreScreenProps> = ({navigation}) => {
     const {t} = useTranslation();
     const [route, setRoute] = useState<'Post' | 'Event'>('Post');
     return (
-        <Box bgColor={COLORS.gray_1} container paddingHorizontal={scaleSize(10)}>
+        <Box bgColor={COLORS.gray_1} container paddingHorizontal={scaleSize(10)} safeArea={true}>
             <ExploreHeader route={route} navigate={tab => setRoute(tab)} />
 
             {route === 'Post' && <PostsScreen />}
