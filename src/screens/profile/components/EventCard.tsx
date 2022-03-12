@@ -1,7 +1,8 @@
 import React from 'react';
 import {StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
-import {scaleSize} from '../../../../core/utils';
+import {scaleSize} from '@core/utils';
 import {Event} from './types';
+import {COLORS, FONTS, STYLES} from '@src/assets/const';
 
 interface EventCardProps {
     event: Event;
@@ -28,22 +29,19 @@ const styles = StyleSheet.create({
         height: 'auto',
         width: scaleSize(358),
         alignSelf: 'center',
-        borderRadius: 10,
+        borderRadius: scaleSize(10),
         backgroundColor: '#F5F9FD',
-        paddingLeft: scaleSize(14),
-        paddingTop: 18,
-        paddingBottom: 24,
-        paddingRight: 16,
-        marginTop: 11,
+        paddingHorizontal: scaleSize(16),
+        paddingVertical: scaleSize(18),
+        marginTop: scaleSize(11),
+        ...STYLES.shadow,
     },
     time: {
-        fontSize: 16,
-        fontFamily: 'Roboto',
-        color: '#8F9BB2',
+        ...FONTS.body3,
+        color: COLORS.dark_gray_2,
     },
     content: {
-        fontSize: 20,
-        fontFamily: 'Roboto',
-        color: '#334C78',
+        ...FONTS.body3,
+        color: COLORS.dark_blue_2,
     },
 });

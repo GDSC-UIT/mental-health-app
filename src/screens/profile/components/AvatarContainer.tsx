@@ -1,26 +1,21 @@
-import { scaleSize } from '../../../../core/utils';
-import { COLORS } from '../../../assets/const';
-import {IMAGES} from '../../../assets'
+import {scaleSize} from '@core/utils';
+import {COLORS, FONTS, STYLES} from '@src/assets/const';
+import {IMAGES} from '@src/assets';
 import React from 'react';
-import {
-  TouchableOpacity,
-  View,
-  Image,
-  StyleSheet,
-  Text,
-} from 'react-native';
+import {TouchableOpacity, View, Image, StyleSheet, Text} from 'react-native';
 
-interface EditButtonProps {
-    name: string,
-};
+interface avatarContainerProps {
+    name: string;
+    image: string;
+}
 
-const AvatarContainer: React.FC<EditButtonProps> = props => {
-    const {name} = props;
+const AvatarContainer = (props: avatarContainerProps) => {
+    const {name, image} = props;
     return (
         <View style={styles.avatarContainer}>
-            <Image 
-                // source={{uri: image}}
-                source={IMAGES.profile}
+            <Image
+                source={{uri: image}}
+                //source={IMAGES.profile}
                 style={styles.profileImage}
             />
             <Text style={styles.name}>{name}</Text>
@@ -34,16 +29,16 @@ const styles = StyleSheet.create({
     profileImage: {
         width: scaleSize(89),
         height: scaleSize(89),
-        borderRadius: scaleSize(89)/2,
-        marginTop: 13,
-        alignSelf: 'center'
+        borderRadius: scaleSize(89 / 2),
+        marginTop: scaleSize(13),
+        alignSelf: 'center',
     },
     name: {
+        alignSelf: 'center',
+        ...FONTS.subtitle2,
         fontSize: scaleSize(26),
-        fontFamily: 'Roboto',
-        fontWeight: 'bold',
         color: '#334C78',
-        alignSelf: 'center'
+        marginTop: scaleSize(10),
     },
     avatarContainer: {
         width: scaleSize(232),
@@ -51,6 +46,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: '#F5F9FD',
         alignSelf: 'center',
-        marginTop: 20
+        marginTop: scaleSize(20),
+        ...STYLES.deepShadow,
     },
 });
