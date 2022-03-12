@@ -3,4 +3,5 @@ export type Contact = {
     username: string;
     lastmessage: string;
     image: string;
+    role: string;
 };

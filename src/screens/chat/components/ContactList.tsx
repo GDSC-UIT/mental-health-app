@@ -12,11 +12,11 @@ type Props = {};
 
 const ContactList: React.FC<Props> = props => {
     const navigation = useNavigation<ExpertChatScreenCompositeProps['navigation']>();
+    const {...otherProps} = props;
 
     const renderItem = ({item}: ListRenderItem<Contact>) => {
         return (
-            <TouchableOpacity
-                onPress={() => navigation.push('ChatStack', {screen: 'WithUserChat', username: item.username})}>
+            <TouchableOpacity {...otherProps}>
                 <View style={styles.userDataContainer}>
                     <Image source={{uri: item.image}} style={styles.userAvatar} />
                     <View style={styles.userDetailsContainer}>

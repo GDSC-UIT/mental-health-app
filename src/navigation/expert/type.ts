@@ -45,12 +45,41 @@ export type {
 };
 
 export type ChatStackParamList = {
+    // Expert
     WithUserChat: undefined;
-    UserProfile: undefined;
+    UserProfileChat: undefined;
     DashboardEmotionDiary: undefined;
-};
-type WithUserChatScreenProps = NativeStackScreenProps<ChatStackParamList, 'WithUserChat'>;
-type UserProfileScreenProps = NativeStackScreenProps<ChatStackParamList, 'UserProfile'>;
-type DashboardEmotionDiaryProps = NativeStackScreenProps<ChatStackParamList, 'DashboardEmotionDiary'>;
+    // User
+    ChatWithExpert: undefined;
+    WithExpertChat: undefined;
+    ExpertProfileChat: undefined;
+    WithStrangerChat: undefined;
 
-export type {WithUserChatScreenProps, UserProfileScreenProps, DashboardEmotionDiaryProps};
+    SearchScreen: undefined;
+};
+
+// Expert
+type WithUserChatScreenProps = NativeStackScreenProps<ChatStackParamList, 'WithUserChat'>;
+type UserProfileChatScreenProps = NativeStackScreenProps<ChatStackParamList, 'UserProfileChat'>;
+type DashboardEmotionDiaryProps = NativeStackScreenProps<ChatStackParamList, 'DashboardEmotionDiary'>;
+// User
+
+type MainChatScreenProps = NativeStackScreenProps<ChatStackParamList, 'MainChat'>;
+type WithExpertChatScreenProps = NativeStackScreenProps<ChatStackParamList, 'WithExpertChat'>;
+type ExpertProfileChatScreenProps = NativeStackScreenProps<ChatStackParamList, 'ExpertProfileChat'>;
+type WithStrangerChatScreenProps = NativeStackScreenProps<ChatStackParamList, 'WithStrangerChat'>;
+
+type SearchScreenScreenProps = NativeStackScreenProps<ChatStackParamList, 'SearchScreen'>;
+
+export type {
+    SearchScreenScreenProps,
+    // Expert
+    WithUserChatScreenProps,
+    UserProfileChatScreenProps,
+    DashboardEmotionDiaryProps,
+    // User
+    ChatWithExpertScreenProps,
+    WithExpertChatScreenProps,
+    ExpertProfileChatScreenProps,
+    WithStrangerChatScreenProps,
+};

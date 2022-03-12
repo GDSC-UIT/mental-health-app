@@ -66,12 +66,11 @@ const Messages: React.FC = () => {
                     right: {
                         backgroundColor: COLORS.light_blue_2,
                         ...STYLES.deepShadow,
-                        marginTop: scaleSize(10),
+                        marginBottom: scaleSize(10),
                     },
                     left: {
                         backgroundColor: COLORS.white_3,
                         ...STYLES.deepShadow,
-                        marginTop: scaleSize(10),
                     },
                 }}
                 textStyle={{
@@ -122,16 +121,5 @@ const styles = StyleSheet.create({
         borderColor: COLORS.dark_gray_2,
         bottom: scaleSize(10),
         marginLeft: scaleSize(60),
-    },
-    button: {
-        borderRadius: scaleSize(60),
-        backgroundColor: '#E9F0F7',
-        marginLeft: scaleSize(16),
-        justifyContent: 'center',
-        alignItems: 'center',
-        ...STYLES.deepShadow,
-        position: 'absolute',
-        bottom: scaleSize(3),
-        zIndex: 3,
     },
 });

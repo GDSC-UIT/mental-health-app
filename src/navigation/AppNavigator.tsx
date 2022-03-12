@@ -24,7 +24,10 @@ const AppNavigator: React.FC = () => {
     return (
         <AppStack.Navigator
             screenOptions={{
-                headerShown: false,
+                headerShown: true,
+                headerTransparent: true,
+                headerShadowVisible: false,
+                title: '',
             }}
             initialRouteName={'RoleChoose'}>
             {!auth.token ? (
@@ -35,7 +38,7 @@ const AppNavigator: React.FC = () => {
                     <AppStack.Screen name="RoleChoose" component={RoleScreen} />
                 </>
             ) : (
-                <>{renderRoot()}</>
+                <AppStack.Group screenOptions={{headerShown: false}}>{renderRoot()}</AppStack.Group>
             )}
             {/* <AppStack.Group
                 screenOptions={{

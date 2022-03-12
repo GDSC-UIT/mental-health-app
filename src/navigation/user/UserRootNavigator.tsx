@@ -2,7 +2,7 @@ import {scaleSize} from '@core/utils';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {COLORS, SIZES, STYLES} from '@src/assets/const';
 import TabBarButton from '@src/components/TabBarButton';
-import ChatScreen from '@src/screens/chat';
+import UserChatHomeScreen from '@src/screens/chat/user';
 import ExpertHomeScreen from '@src/screens/home/expert';
 import HomeScreen from '@src/screens/home/user';
 import UserProfileScreen from '@src/screens/profile/User';
@@ -49,7 +49,7 @@ const ExpertRootNavigator: React.FC = () => {
             />
             <Tab.Screen
                 name="Chat"
-                component={ChatScreen}
+                component={UserChatHomeScreen}
                 options={{
                     tabBarIcon: props => <Ionicons name="chatbubble-ellipses" {...props} />,
                 }}

@@ -13,7 +13,7 @@ const BackButton = () => {
 
     return (
         <IconButton
-            style={styles.back_button}
+            style={styles.backButton}
             onPress={() => navigation.goBack()}
             icon={<Ionicons name="chevron-back-outline" size={scaleSize(30)} color={COLORS.dark_gray_2} />}
         />
@@ -23,14 +23,13 @@ const BackButton = () => {
 export default BackButton;
 
 const styles = StyleSheet.create({
-    back_button: {
+    backButton: {
         height: scaleSize(40),
         width: scaleSize(40),
         borderRadius: scaleSize(60),
         backgroundColor: '#E9F0F7',
         marginLeft: scaleSize(16),
-        justifyContent: 'center',
-        alignItems: 'center',
+        ...STYLES.center,
         ...STYLES.deepShadow,
     },
 });
