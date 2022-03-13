@@ -1,9 +1,8 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Header from '@src/components/Header';
+import NavHeader from '@src/components/NavHeader';
 import {SearchScreen} from '@src/screens/explore';
 import CreateEventScreen from '@src/screens/home/expert/create_event';
 import CreatePostScreen from '@src/screens/home/expert/create_post';
-import EditProfile from '@src/screens/profile/components/EditProfile';
 import ExpertEditProfileScreen from '@src/screens/profile/Expert/ExpertEditProfile';
 import React from 'react';
 import RootNavigator from './ExpertRootNavigator';
@@ -20,16 +19,7 @@ const ExpertStackNavigator = () => {
             <ExpertStack.Screen name="ExpertRoot" component={RootNavigator} />
             <ExpertStack.Screen name="CreatePost" component={CreatePostScreen} />
             <ExpertStack.Screen name="CreateEvent" component={CreateEventScreen} />
-            <ExpertStack.Screen
-                name="EditProfile"
-                options={{
-                    headerShadowVisible: false,
-                    headerShown: true,
-                    title: 'Edit Profile',
-                    header: props => <Header {...props} />,
-                }}
-                component={ExpertEditProfileScreen}
-            />
+            <ExpertStack.Screen name="EditProfile" component={ExpertEditProfileScreen} />
             <ExpertStack.Group
                 screenOptions={{
                     presentation: 'modal',

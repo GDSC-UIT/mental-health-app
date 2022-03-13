@@ -2,6 +2,7 @@ import {scaleSize} from '@core/utils';
 import {PrivateValueStore} from '@react-navigation/native';
 import {IMAGES} from '@src/assets';
 import {COLORS, FONTS, STYLES} from '@src/assets/const';
+import {Header} from '@src/components';
 import Box from '@src/components/Box';
 import Button from '@src/components/Button';
 import {EditProfileProps} from '@src/navigation/user/type';
@@ -14,10 +15,8 @@ import {ProfileData} from '../types';
 
 const UserEditProfileScreen: React.FC<EditProfileProps> = ({navigation}) => {
     const {t} = useTranslation();
-    const [profile, setProfile] = useState<ProfileData>({
-        name: '',
-        avatar: '',
-    });
+    const [profile, setProfile] = useState({name: '', avatar: 'https://picsum.photos/id/237/200/300'});
+    const [isDirty, setIsDirty] = useState(false);
 
     function alertLogout() {
         Alert.alert('Notice', 'Are you sure want to log out', [
@@ -25,28 +24,30 @@ const UserEditProfileScreen: React.FC<EditProfileProps> = ({navigation}) => {
             {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
         ]);
     }
-    useEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <Button
-                    title="Done"
-                    onPress={() => {
-                        console.log(profile);
-                    }}
-                    disabled={!(profile.avatar || profile.name)}
-                    variant="secondary"
-                    style={{paddingHorizontal: scaleSize(12)}}
-                />
-            ),
-        });
-    }, [navigation, profile]);
 
     const onChangeData = (name: string, value: any) => {
         setProfile(prev => ({...prev, [name]: value}));
+        setIsDirty(true);
     };
 
     return (
-        <Box container bgColor={COLORS.gray_1}>
+        <Box container bgColor={COLORS.gray_1} safeArea>
+            <Header
+                title="Edit Profile"
+                canGoBack={navigation.canGoBack()}
+                goBack={() => navigation.goBack()}
+                headerRight={() => (
+                    <Button
+                        title="Done"
+                        onPress={() => {
+                            console.log(profile);
+                        }}
+                        disabled={!isDirty || !(profile?.avatar || profile?.name)}
+                        variant="secondary"
+                        style={{paddingHorizontal: scaleSize(12)}}
+                    />
+                )}
+            />
             <EditProfile name="Tan Mot Cu" image="" onChangeData={onChangeData} />
             <TouchableOpacity style={styles.logoutButton} onPress={alertLogout}>
                 <Text style={{...FONTS.h2, fontSize: scaleSize(20), color: '#193566'}}>Log Out</Text>

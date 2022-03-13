@@ -14,13 +14,9 @@ const AvatarContainer = (props: avatarContainerProps) => {
     return (
         <View style={[styles.avatarContainer, style]}>
             <View style={styles.avatarShadow}>
-                <Image
-                    source={{uri: 'https://picsum.photos/200'}}
-                    style={styles.profileImage}
-                />
+                <Image source={{uri: 'https://picsum.photos/200'}} style={styles.profileImage} />
             </View>
             <Text style={styles.name}>{name}</Text>
-            
         </View>
     );
 };
@@ -47,8 +43,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: '#F5F9FD',
         alignSelf: 'center',
-        marginTop: scaleSize(20),
-        ...STYLES.deepShadow,
+        marginTop: scaleSize(6),
+        ...STYLES.mediumShadow,
     },
     avatarShadow: {
         height: scaleSize(89),
@@ -56,6 +52,6 @@ const styles = StyleSheet.create({
         borderRadius: scaleSize(89 / 2),
         marginTop: scaleSize(13),
         alignSelf: 'center',
-        ...STYLES.deepShadow
-    }
+        ...STYLES.mediumShadow,
+    },
 });

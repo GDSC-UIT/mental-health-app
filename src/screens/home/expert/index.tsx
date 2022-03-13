@@ -19,7 +19,7 @@ const ExpertHomeScreen: React.FC<ExpertHomeCompositeProps> = ({navigation}) => {
                 <Button title="Create Event" onPress={() => navigation.navigate('CreateEvent')} />
                 <View style={{flexGrow: 1, justifyContent: 'center', alignItems: 'center'}}>
                     <Button
-                        title="Open modal"
+                        title="Logout"
                         onPress={() => {
                             firebaseLogout();
                             dispatch(authActions.logout());

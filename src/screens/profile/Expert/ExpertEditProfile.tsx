@@ -1,37 +1,20 @@
 import {scaleSize} from '@core/utils';
 import {COLORS, FONTS, STYLES} from '@src/assets/const';
+import {Box, Header} from '@src/components';
 import Button from '@src/components/Button';
 import Input from '@src/components/Input';
 import {EditProfileScreenProps} from '@src/navigation/expert/type';
+import {useAppSelector} from '@src/store';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Alert, StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import EditProfile from '../components/EditProfile';
 
 const ExpertEditProfileScreen: React.FC<EditProfileScreenProps> = ({navigation}) => {
     const {t} = useTranslation();
-
-    const [profile, setProfile] = useState({
-        name: '',
-        avatar: '',
-        about: '',
-    });
-    useEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <Button
-                    title="Done"
-                    onPress={() => {
-                        console.log(profile);
-                    }}
-                    disabled={!(profile.avatar || profile.name)}
-                    variant="secondary"
-                    style={{paddingHorizontal: scaleSize(12)}}
-                />
-            ),
-        });
-    }, [navigation, profile]);
+    const [profile, setProfile] = useState({name: '', avatar: 'https://picsum.photos/id/237/200/300', about: ''});
+    const [isDirty, setIsDirty] = useState(false);
 
     function alertLogout() {
         Alert.alert('Notice', 'Are you sure want to log out', [
@@ -42,21 +25,40 @@ const ExpertEditProfileScreen: React.FC<EditProfileScreenProps> = ({navigation})
 
     const onChangeData = (name: string, value: any) => {
         setProfile(prev => ({...prev, [name]: value}));
+        setIsDirty(true);
     };
     return (
-        <SafeAreaView style={styles.container}>
-            <EditProfile name="Tan Mot Cu" image="" onChangeData={onChangeData} />
-            <View style={styles.textInputContainer}>
-                <Text style={styles.aboutLabel}>About</Text>
-                <Input onChangeText={text => onChangeData('about', text)} />
+        <Box container safeArea bgColor={COLORS.gray_1}>
+            <Header
+                title="Edit Profile"
+                canGoBack={navigation.canGoBack()}
+                goBack={() => navigation.goBack()}
+                headerRight={() => (
+                    <Button
+                        title="Done"
+                        onPress={() => {
+                            console.log(profile);
+                        }}
+                        disabled={!isDirty || !(profile?.avatar || profile?.name)}
+                        variant="secondary"
+                        style={{paddingHorizontal: scaleSize(12)}}
+                    />
+                )}
+            />
+            <View
+                style={{
+                    paddingHorizontal: scaleSize(10),
+                }}>
+                <EditProfile name="Tan Mot Cu" image="" onChangeData={onChangeData} />
+                <View style={styles.textInputContainer}>
+                    <Text style={styles.aboutLabel}>About</Text>
+                    <Input onChangeText={text => onChangeData('about', text)} />
+                </View>
+                <TouchableOpacity style={styles.logoutButton} onPress={alertLogout}>
+                    <Text style={styles.logoutText}>Log Out</Text>
+                </TouchableOpacity>
             </View>
-            <TouchableOpacity 
-                style={styles.logoutButton} 
-                onPress={alertLogout}
-            >
-                <Text style={styles.logoutText}>Log Out</Text>
-            </TouchableOpacity>
-        </SafeAreaView>
+        </Box>
     );
 };
 
@@ -91,8 +93,8 @@ const styles = StyleSheet.create({
         ...STYLES.deepShadow,
     },
     logoutText: {
-        ...FONTS.h2, 
-        fontSize: scaleSize(20), 
-        color: '#193566'
-    }
+        ...FONTS.h2,
+        fontSize: scaleSize(20),
+        color: '#193566',
+    },
 });

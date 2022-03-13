@@ -3,25 +3,20 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {COLORS, STYLES} from '@src/assets/const';
 import TabBarButton from '@src/components/TabBarButton';
 import ChatScreen from '@src/screens/chat';
-import ExpertHomeScreen from '@src/screens/home/expert';
 import HomeScreen from '@src/screens/home/user';
+//Profile
+import UserProfileScreen from '@src/screens/profile/User/index';
 import React from 'react';
 import {View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ExploreStackScreen from '../ExploreStackScreen';
 import {TabNavigatorParamsList} from '../TabNavigatorParams';
 
-//Profile
-import UserProfileScreen from '@src/screens/profile/User/index';
-import UserEditProfileScreen from '@src/screens/profile/User/UserEditProfile';
-import ExpertProfileScreen from '@src/screens/profile/Expert';
-import UserProfileStackNavigator from './ProfileStackNavigator';
-
 const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
 const UserRootNavigator: React.FC = () => {
     return (
         <Tab.Navigator
-            initialRouteName="Explore"
+            initialRouteName="Home"
             screenOptions={{
                 headerShown: false,
                 tabBarShowLabel: false,

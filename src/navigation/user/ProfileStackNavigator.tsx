@@ -1,5 +1,5 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Header from '@src/components/Header';
+import NavHeader from '@src/components/NavHeader';
 import {DashboardEmotionDiaryScreen, EmotionDiaryScreen} from '@src/screens/emotion_diary';
 import UserEditProfileScreen from '@src/screens/profile/User/UserEditProfile';
 import React from 'react';
@@ -11,18 +11,13 @@ const UserProfileStackNavigator = () => {
     return (
         <UserProfileStack.Navigator
             screenOptions={{
-                headerShadowVisible: false,
-                headerShown: true,
-                header: props => <Header {...props} />,
+                headerShown: false,
             }}>
-            <UserProfileStack.Screen
-                name="EditProfile"
-                options={{title: 'Edit Profile'}}
-                component={UserEditProfileScreen}
-            />
-
+            <UserProfileStack.Screen name="EditProfile" component={UserEditProfileScreen} />
             <UserProfileStack.Group
                 screenOptions={{
+                    headerShown: true,
+                    header: props => <NavHeader {...props} />,
                     title: 'Emotion Diary',
                 }}>
                 <UserProfileStack.Screen name="EmotionDiary" component={EmotionDiaryScreen} />

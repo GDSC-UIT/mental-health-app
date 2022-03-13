@@ -29,7 +29,7 @@ type EditProfileProps = {
 };
 
 const EditProfile = (props: EditProfileProps) => {
-    const {name: defaultName, image = 'https://picsum.photos/200', onChangeData} = props;
+    const {name: defaultName, image, onChangeData} = props;
     const {t} = useTranslation();
     const [profileImage, setProfileImage] = useState<string | undefined>('https://picsum.photos/200');
     const [changeAvatarModalVisible, setChangeAvatarModalVisible] = useState(false);
@@ -104,18 +104,10 @@ const EditProfile = (props: EditProfileProps) => {
         <View>
             <View style={{marginTop: scaleSize(28), alignItems: 'center'}}>
                 <View style={styles.avatarShadow}>
-                    {!!profileImage && (
-                        <Image
-                            source={{uri: profileImage}}
-                            style={styles.profileImage}
-                        />
-                    )}
+                    {!!profileImage && <Image source={{uri: profileImage}} style={styles.profileImage} />}
                 </View>
-                
-                <TouchableOpacity 
-                    style={styles.changeAvatarButton} 
-                    onPress={() => setChangeAvatarModalVisible(true)}
-                >
+
+                <TouchableOpacity style={styles.changeAvatarButton} onPress={() => setChangeAvatarModalVisible(true)}>
                     <Text style={styles.changeAvatarText}>{t('CHANGE AVATAR')}</Text>
                 </TouchableOpacity>
             </View>
@@ -161,20 +153,20 @@ const styles = StyleSheet.create({
         fontSize: scaleSize(20),
         color: '#8F9BB2',
         marginVertical: scaleSize(6),
-        marginLeft: scaleSize(15)
+        marginLeft: scaleSize(15),
     },
     changeAvatarText: {
-        ...FONTS.h1, 
-        fontSize: scaleSize(18), 
-        color: '#193566'
+        ...FONTS.h1,
+        fontSize: scaleSize(18),
+        color: '#193566',
     },
     profileImage: {
-        height: scaleSize(89), 
-        width: scaleSize(89), 
-        borderRadius: scaleSize(89 / 2)
+        height: scaleSize(89),
+        width: scaleSize(89),
+        borderRadius: scaleSize(89 / 2),
     },
     input: {
-        width: scaleSize(358), 
+        width: scaleSize(358),
         alignSelf: 'center',
         marginTop: scaleSize(9),
     },
@@ -182,9 +174,9 @@ const styles = StyleSheet.create({
         height: scaleSize(89),
         width: scaleSize(89),
         borderRadius: scaleSize(89 / 2),
-        marginTop: scaleSize(13),   
+        marginTop: scaleSize(13),
         alignSelf: 'center',
         backgroundColor: '#E9F0F7',
-        ...STYLES.deepShadow
-    }
+        ...STYLES.deepShadow,
+    },
 });

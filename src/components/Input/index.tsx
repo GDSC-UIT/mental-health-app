@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         flex: 1,
         ...FONTS.body4,
         color: '#193566',
-        fontSize: scaleSize(20) 
+        fontSize: scaleSize(16),
     },
 
     icon: {

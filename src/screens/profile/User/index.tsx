@@ -1,17 +1,18 @@
 import {scaleSize} from '@core/utils';
-import { IMAGES } from '@src/assets';
+import {IMAGES} from '@src/assets';
 import {COLORS, FONTS, STYLES} from '@src/assets/const';
 import Button from '@src/components/Button';
 import {UserProfileScreenProps} from '@src/navigation/user/type';
 import Events from '@src/screens/explore/event/events';
 import {Event} from '@src/screens/explore/event/types';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AvatarContainer from '../components/AvatarContainer';
 import EventCard from '../components/EventCard';
+import PopupDropdown from '../components/PopupDropdown';
 
 const UserProfileScreen: React.FC<UserProfileScreenProps> = ({navigation}) => {
     const {t} = useTranslation();
@@ -22,44 +23,25 @@ const UserProfileScreen: React.FC<UserProfileScreenProps> = ({navigation}) => {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView /*contentContainerStyle={{paddingBottom: SIZES.bottomBarHeight + scaleSize(20)}}*/>
-                <View style={{position: 'relative'}}>
-                    <TouchableOpacity
-                        style={styles.editButton}
-                        onPress={() => setOptionsViewVisible(!optionsViewVisible)}
-                    >
-                        {<Ionicons name="ellipsis-horizontal" size={30} />}
-                    </TouchableOpacity>
-                    
-                    <View 
-                        style={{
-                            top: scaleSize(65),
-                            right: scaleSize(12),
-                            position: 'absolute',
-                            zIndex: 10,
-                    }}>
-                        {
-                            optionsViewVisible? (
-                                <View style={styles.optionsView}>
-                                    <TouchableOpacity onPress={() => {
-                                        navigation.navigate('UserProfile', {
-                                            screen: 'EditProfile',}
-                                        ), 
-                                        setOptionsViewVisible(false)
-                                    }}>
-                                        <Text style={styles.optionsText}>{t('Edit Profile')}</Text>
-                                    </TouchableOpacity>
-                                    <Image source={IMAGES.optionsLine} style={styles.lineOption}/>
-                                    <TouchableOpacity>
-                                        <Text style={styles.optionsText}>{t('Change to Vietnamese')}</Text>
-                                    </TouchableOpacity>
-                                </View>
-                            ) : null
-                        }
+                <PopupDropdown visible={optionsViewVisible} visibleToggle={() => setOptionsViewVisible(prev => !prev)}>
+                    <View style={styles.optionsView}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                setOptionsViewVisible(false);
+                                navigation.navigate('UserProfile', {
+                                    screen: 'EditProfile',
+                                });
+                            }}>
+                            <Text style={styles.optionsText}>{t('Edit Profile')}</Text>
+                        </TouchableOpacity>
+                        <Image source={IMAGES.optionsLine} style={styles.lineOption} />
+                        <TouchableOpacity>
+                            <Text style={styles.optionsText}>{t('Change to Vietnamese')}</Text>
+                        </TouchableOpacity>
                     </View>
-                </View>
-
+                </PopupDropdown>
                 <AvatarContainer name="Tan User" image="" style={{zIndex: -10}} />
-                
+
                 <Text style={styles.aboutText}>{t('About me')}</Text>
                 <View style={styles.emailDescriptionContainer}>
                     <Text style={styles.descriptionText}>
@@ -83,14 +65,13 @@ const UserProfileScreen: React.FC<UserProfileScreenProps> = ({navigation}) => {
                     }
                 />
 
-                
                 <View style={{paddingHorizontal: scaleSize(16), marginTop: scaleSize(20)}}>
                     <Text style={styles.activitiesText}>{t('Interested Posts and Events')}</Text>
-                    {
-                        Events.length?(
-                            <View>{Events.map(renderItem)}</View>
-                        ) : <Text style={styles.noEventText}>No interested posts or events</Text>
-                    }
+                    {Events.length ? (
+                        <View>{Events.map(renderItem)}</View>
+                    ) : (
+                        <Text style={styles.noEventText}>No interested posts or events</Text>
+                    )}
                 </View>
 
                 {/* <Text style={styles.noEventText}>No posts or events</Text> */}
@@ -127,7 +108,7 @@ const styles = StyleSheet.create({
         fontSize: scaleSize(20),
         fontFamily: 'Roboto-Medium',
         color: COLORS.dark_gray_2,
-        marginTop: scaleSize(29)
+        marginTop: scaleSize(29),
     },
     editButton: {
         height: scaleSize(40),
@@ -139,7 +120,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5F9FD',
         alignItems: 'center',
         justifyContent: 'center',
-        ...STYLES.deepShadow
+        ...STYLES.deepShadow,
     },
     aboutText: {
         fontSize: scaleSize(20),
@@ -181,6 +162,6 @@ const styles = StyleSheet.create({
         fontSize: scaleSize(18),
         color: '#1D325E',
         alignSelf: 'center',
-        marginTop: scaleSize(25)
-    }
+        marginTop: scaleSize(25),
+    },
 });
