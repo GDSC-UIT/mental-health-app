@@ -5,6 +5,7 @@ export default {
     facebook_logo: require('./facebook_logo.png'),
     google_logo: require('./google_logo.png'),
     modalLine: require('./modalLine.png'),
+    optionsLine: require('./optionsLine.png'),
     feelings: {
         happy: require('./feelings/happy.png'),
         sad: require('./feelings/sad.png'),

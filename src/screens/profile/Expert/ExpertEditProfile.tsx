@@ -25,7 +25,7 @@ const ExpertEditProfileScreen: React.FC<EditProfileScreenProps> = ({navigation})
                     onPress={() => {
                         console.log(profile);
                     }}
-                    disabled={!(profile.avatar && profile.name)}
+                    disabled={!(profile.avatar || profile.name)}
                     variant="secondary"
                     style={{paddingHorizontal: scaleSize(12)}}
                 />
@@ -50,8 +50,11 @@ const ExpertEditProfileScreen: React.FC<EditProfileScreenProps> = ({navigation})
                 <Text style={styles.aboutLabel}>About</Text>
                 <Input onChangeText={text => onChangeData('about', text)} />
             </View>
-            <TouchableOpacity style={styles.logoutButton} onPress={alertLogout}>
-                <Text style={{...FONTS.h2, fontSize: scaleSize(20), color: '#193566'}}>Log Out</Text>
+            <TouchableOpacity 
+                style={styles.logoutButton} 
+                onPress={alertLogout}
+            >
+                <Text style={styles.logoutText}>Log Out</Text>
             </TouchableOpacity>
         </SafeAreaView>
     );
@@ -87,4 +90,9 @@ const styles = StyleSheet.create({
 
         ...STYLES.deepShadow,
     },
+    logoutText: {
+        ...FONTS.h2, 
+        fontSize: scaleSize(20), 
+        color: '#193566'
+    }
 });

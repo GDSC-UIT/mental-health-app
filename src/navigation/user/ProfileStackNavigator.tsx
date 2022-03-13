@@ -1,7 +1,7 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Header from '@src/components/Header';
 import {DashboardEmotionDiaryScreen, EmotionDiaryScreen} from '@src/screens/emotion_diary';
-import UserEditProfileScreen from '@src/screens/profile/user/UserEditProfile';
+import UserEditProfileScreen from '@src/screens/profile/User/UserEditProfile';
 import React from 'react';
 import {UserProfileStackParamList} from './type';
 

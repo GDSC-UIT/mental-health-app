@@ -18,6 +18,7 @@ const UserEditProfileScreen: React.FC<EditProfileProps> = ({navigation}) => {
         name: '',
         avatar: '',
     });
+
     function alertLogout() {
         Alert.alert('Notice', 'Are you sure want to log out', [
             {text: 'OK', onPress: () => console.log('OK Pressed')},
@@ -32,7 +33,7 @@ const UserEditProfileScreen: React.FC<EditProfileProps> = ({navigation}) => {
                     onPress={() => {
                         console.log(profile);
                     }}
-                    disabled={!(profile.avatar && profile.name)}
+                    disabled={!(profile.avatar || profile.name)}
                     variant="secondary"
                     style={{paddingHorizontal: scaleSize(12)}}
                 />
@@ -60,17 +61,6 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: COLORS.gray_1,
         flex: 1,
-    },
-    textInputContainer: {
-        width: scaleSize(358),
-        height: scaleSize(45),
-        borderRadius: 60,
-        backgroundColor: '#F5F9FD',
-        borderWidth: scaleSize(1),
-        borderColor: '#8F9BB2',
-        justifyContent: 'center',
-        alignSelf: 'center',
-        marginTop: 15,
     },
     aboutLabel: {
         ...FONTS.subtitle2,

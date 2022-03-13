@@ -103,16 +103,20 @@ const EditProfile = (props: EditProfileProps) => {
     return (
         <View>
             <View style={{marginTop: scaleSize(28), alignItems: 'center'}}>
-                {!!profileImage && (
-                    <Image
-                        source={{uri: profileImage}}
-                        // source={IMAGES.profile}
-                        style={{height: scaleSize(89), width: scaleSize(89), borderRadius: scaleSize(89 / 2)}}
-                    />
-                )}
-
-                <TouchableOpacity style={styles.changeAvatarButton} onPress={() => setChangeAvatarModalVisible(true)}>
-                    <Text style={{...FONTS.h1, fontSize: scaleSize(18), color: '#193566'}}>{t('CHANGE AVATAR')}</Text>
+                <View style={styles.avatarShadow}>
+                    {!!profileImage && (
+                        <Image
+                            source={{uri: profileImage}}
+                            style={styles.profileImage}
+                        />
+                    )}
+                </View>
+                
+                <TouchableOpacity 
+                    style={styles.changeAvatarButton} 
+                    onPress={() => setChangeAvatarModalVisible(true)}
+                >
+                    <Text style={styles.changeAvatarText}>{t('CHANGE AVATAR')}</Text>
                 </TouchableOpacity>
             </View>
 
@@ -124,6 +128,7 @@ const EditProfile = (props: EditProfileProps) => {
                         onChangeData('name', text);
                         console.log(text);
                     }}
+                    style={styles.input}
                 />
             </View>
 
@@ -140,50 +145,6 @@ const EditProfile = (props: EditProfileProps) => {
 export default EditProfile;
 
 const styles = StyleSheet.create({
-    top: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        marginTop: scaleSize(16),
-    },
-    backButton: {
-        height: scaleSize(40),
-        width: scaleSize(40),
-        borderRadius: scaleSize(40 / 2),
-        backgroundColor: '#E9F0F7',
-        marginLeft: scaleSize(16),
-        justifyContent: 'center',
-        alignItems: 'center',
-
-        ...STYLES.deepShadow,
-    },
-    editText: {
-        ...FONTS.subtitle2,
-        fontSize: scaleSize(26),
-        color: '#193566',
-        alignSelf: 'center',
-        justifyContent: 'center',
-    },
-    doneButton: {
-        alignItems: 'center',
-        width: scaleSize(63),
-        height: scaleSize(40),
-        backgroundColor: '#E9F0F7',
-        justifyContent: 'center',
-        alignSelf: 'center',
-        borderRadius: 60,
-        marginRight: scaleSize(15),
-
-        ...STYLES.deepShadow,
-    },
-    doneButtonText: {
-        ...FONTS.h4,
-        fontSize: scaleSize(20),
-        fontWeight: '600',
-        color: '#274170',
-        justifyContent: 'center',
-        alignSelf: 'center',
-    },
     changeAvatarButton: {
         borderRadius: 60,
         backgroundColor: '#E9F0F7',
@@ -200,6 +161,30 @@ const styles = StyleSheet.create({
         fontSize: scaleSize(20),
         color: '#8F9BB2',
         marginVertical: scaleSize(6),
-        marginLeft: scaleSize(4),
+        marginLeft: scaleSize(15)
     },
+    changeAvatarText: {
+        ...FONTS.h1, 
+        fontSize: scaleSize(18), 
+        color: '#193566'
+    },
+    profileImage: {
+        height: scaleSize(89), 
+        width: scaleSize(89), 
+        borderRadius: scaleSize(89 / 2)
+    },
+    input: {
+        width: scaleSize(358), 
+        alignSelf: 'center',
+        marginTop: scaleSize(9),
+    },
+    avatarShadow: {
+        height: scaleSize(89),
+        width: scaleSize(89),
+        borderRadius: scaleSize(89 / 2),
+        marginTop: scaleSize(13),   
+        alignSelf: 'center',
+        backgroundColor: '#E9F0F7',
+        ...STYLES.deepShadow
+    }
 });
