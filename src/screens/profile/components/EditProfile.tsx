@@ -49,7 +49,7 @@ const EditProfile = (props: EditProfileProps) => {
                 const data = res && res.assets && res.assets[0];
                 setProfileImage(data?.uri);
                 console.log(data);
-                onChangeData('avatar', data?.uri);
+                onChangeData('uri', data?.uri);
                 setChangeAvatarModalVisible(false);
             }
         });

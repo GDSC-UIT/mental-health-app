@@ -11,11 +11,13 @@ import EditProfile from '../components/EditProfile';
 import {authActions} from '@src/store/authSlice';
 import {useAppDispatch} from '@src/store';
 import {firebaseLogout} from '@src/services/auth';
+import {uploadImage} from '@src/services/firebaseStorage';
 const UserEditProfileScreen: React.FC<EditProfileProps> = ({navigation}) => {
     const {t} = useTranslation();
     const dispatch = useAppDispatch();
-    const [profile, setProfile] = useState({name: '', avatar: 'https://picsum.photos/id/237/200/300'});
+    const [profile, setProfile] = useState({name: '', avatar: 'https://picsum.photos/id/237/200/300', uri: ''});
     const [isDirty, setIsDirty] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     function alertLogout() {
         Alert.alert('Notice', 'Are you sure want to log out', [
@@ -29,12 +31,26 @@ const UserEditProfileScreen: React.FC<EditProfileProps> = ({navigation}) => {
             {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
         ]);
     }
+    console.log('Profile: ', profile);
 
     const onChangeData = (name: string, value: any) => {
         setProfile(prev => ({...prev, [name]: value}));
         setIsDirty(true);
     };
 
+    const handleSubmit = async () => {
+        setLoading(true);
+        if (profile.uri) {
+            const {url, error} = await uploadImage(profile.uri);
+            if (!error && url) {
+                setProfile(prev => ({...prev, avatar: url}));
+                Alert.alert('', 'Update profile success');
+            } else {
+                Alert.alert('Error', error);
+            }
+        }
+        setLoading(false);
+    };
     return (
         <Box container bgColor={COLORS.gray_1} safeArea>
             <Header
@@ -44,12 +60,11 @@ const UserEditProfileScreen: React.FC<EditProfileProps> = ({navigation}) => {
                 headerRight={() => (
                     <Button
                         title="Done"
-                        onPress={() => {
-                            console.log(profile);
-                        }}
-                        disabled={!isDirty || !(profile?.avatar || profile?.name)}
+                        onPress={handleSubmit}
+                        disabled={!isDirty || !(profile?.uri || profile?.name)}
                         variant="secondary"
                         style={{paddingHorizontal: scaleSize(12)}}
+                        loading={loading}
                     />
                 )}
             />

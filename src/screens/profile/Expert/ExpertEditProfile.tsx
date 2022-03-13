@@ -5,6 +5,7 @@ import Button from '@src/components/Button';
 import Input from '@src/components/Input';
 import {EditProfileScreenProps} from '@src/navigation/expert/type';
 import {firebaseLogout} from '@src/services/auth';
+import {uploadImage} from '@src/services/firebaseStorage';
 import {useAppDispatch, useAppSelector} from '@src/store';
 import {authActions} from '@src/store/authSlice';
 import React, {useEffect, useState} from 'react';
@@ -16,8 +17,14 @@ import EditProfile from '../components/EditProfile';
 const ExpertEditProfileScreen: React.FC<EditProfileScreenProps> = ({navigation}) => {
     const {t} = useTranslation();
     const dispatch = useAppDispatch();
-    const [profile, setProfile] = useState({name: '', avatar: 'https://picsum.photos/id/237/200/300', about: ''});
+    const [profile, setProfile] = useState({
+        name: '',
+        avatar: 'https://picsum.photos/id/237/200/300',
+        about: '',
+        uri: '',
+    });
     const [isDirty, setIsDirty] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     function alertLogout() {
         Alert.alert('Notice', 'Are you sure want to log out', [
@@ -36,6 +43,19 @@ const ExpertEditProfileScreen: React.FC<EditProfileScreenProps> = ({navigation})
         setProfile(prev => ({...prev, [name]: value}));
         setIsDirty(true);
     };
+    const handleSubmit = async () => {
+        setLoading(true);
+        if (profile.uri) {
+            const {url, error} = await uploadImage(profile.uri);
+            if (!error && url) {
+                setProfile(prev => ({...prev, avatar: url}));
+                Alert.alert('', 'Update profile success');
+            } else {
+                Alert.alert('Error', error);
+            }
+        }
+        setLoading(false);
+    };
     return (
         <Box container safeArea bgColor={COLORS.gray_1}>
             <Header
@@ -45,9 +65,7 @@ const ExpertEditProfileScreen: React.FC<EditProfileScreenProps> = ({navigation})
                 headerRight={() => (
                     <Button
                         title="Done"
-                        onPress={() => {
-                            console.log(profile);
-                        }}
+                        onPress={handleSubmit}
                         disabled={!isDirty || !(profile?.avatar || profile?.name)}
                         variant="secondary"
                         style={{paddingHorizontal: scaleSize(12)}}
