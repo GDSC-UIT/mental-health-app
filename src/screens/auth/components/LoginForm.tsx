@@ -1,13 +1,14 @@
 import {scaleSize} from '@core/utils';
 import {yupResolver} from '@hookform/resolvers/yup';
+import {useNavigation} from '@react-navigation/native';
 import {COLORS, STYLES} from '@src/assets/const';
 import Button from '@src/components/Button';
 import Input from '@src/components/Input';
 import Text from '@src/components/Text';
+import {UserLoginScreenProps} from '@src/navigation/AppStackParams';
 import {emailPasswordLogin} from '@src/services/auth';
 import {useAppDispatch, useAppSelector} from '@src/store';
 import {authActions} from '@src/store/authSlice';
-import {FirebaseError} from 'firebase/app';
 import React from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
@@ -28,7 +29,8 @@ export type LoginData = {
 type LoginFormProps = {};
 const LoginForm: React.FC<LoginFormProps> = ({}) => {
     const {t} = useTranslation();
-    const {loading, error: authError, token} = useAppSelector(state => state.auth);
+    const {navigate} = useNavigation<UserLoginScreenProps['navigation']>();
+    const {loading, error: authError} = useAppSelector(state => state.auth);
     const dispatch = useAppDispatch();
     const {
         control,
@@ -42,18 +44,19 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
         resolver: yupResolver(schema),
     });
     const onSubmit = async ({email, password}: LoginData) => {
-        try {
-            dispatch(authActions.loading());
-            const user = await emailPasswordLogin({email, password});
-            await dispatch(authActions.login(user));
-        } catch (error: any) {
-            dispatch(authActions.stopLoading());
-            if (error instanceof FirebaseError) {
-                error.code === 'auth/wrong-password' && Alert.alert('Error', 'Wrong Email or password');
-            }
-            console.log('try catch: ', error.message);
+        dispatch(authActions.loading());
+        const {user, error} = await emailPasswordLogin({email, password});
+        console.log({user, error});
+        if (!error) {
+            dispatch(authActions.login(user));
+        } else {
+            Alert.alert(error);
         }
+        dispatch(authActions.stopLoading());
+
+        // await dispatch(authActions.login(user));
     };
+
     return (
         <>
             <Controller
@@ -90,7 +93,7 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
             />
 
             {!!authError && <Text style={STYLES.error}>{authError}</Text>}
-            <Text style={styles.link} onPress={() => Alert.alert('Forgot password')}>
+            <Text style={styles.link} onPress={() => navigate('SendEmail')}>
                 {t('Forgot password?')}
             </Text>
             <View style={{alignItems: 'center', paddingTop: scaleSize(40)}}>

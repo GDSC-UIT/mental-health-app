@@ -1,9 +1,8 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
-import RootNavigator from './UserRootNavigator';
-import {UserStackParamList} from './type';
-import FeelingModal from '@src/screens/home/user/components/FeelingModal';
 import UserProfileStackNavigator from './ProfileStackNavigator';
+import {UserStackParamList} from './type';
+import RootNavigator from './UserRootNavigator';
 const UserStack = createNativeStackNavigator<UserStackParamList>();
 
 const UserStackNavigator = () => {

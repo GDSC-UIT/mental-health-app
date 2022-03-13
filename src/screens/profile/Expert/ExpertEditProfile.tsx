@@ -4,7 +4,9 @@ import {Box, Header} from '@src/components';
 import Button from '@src/components/Button';
 import Input from '@src/components/Input';
 import {EditProfileScreenProps} from '@src/navigation/expert/type';
-import {useAppSelector} from '@src/store';
+import {firebaseLogout} from '@src/services/auth';
+import {useAppDispatch, useAppSelector} from '@src/store';
+import {authActions} from '@src/store/authSlice';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Alert, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
@@ -13,12 +15,19 @@ import EditProfile from '../components/EditProfile';
 
 const ExpertEditProfileScreen: React.FC<EditProfileScreenProps> = ({navigation}) => {
     const {t} = useTranslation();
+    const dispatch = useAppDispatch();
     const [profile, setProfile] = useState({name: '', avatar: 'https://picsum.photos/id/237/200/300', about: ''});
     const [isDirty, setIsDirty] = useState(false);
 
     function alertLogout() {
         Alert.alert('Notice', 'Are you sure want to log out', [
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
+            {
+                text: 'OK',
+                onPress: () => async () => {
+                    await firebaseLogout();
+                    dispatch(authActions.logout());
+                },
+            },
             {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
         ]);
     }

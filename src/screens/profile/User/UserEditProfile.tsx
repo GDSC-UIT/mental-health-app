@@ -1,26 +1,31 @@
 import {scaleSize} from '@core/utils';
-import {PrivateValueStore} from '@react-navigation/native';
-import {IMAGES} from '@src/assets';
 import {COLORS, FONTS, STYLES} from '@src/assets/const';
 import {Header} from '@src/components';
-import Box from '@src/components/Box';
-import Button from '@src/components/Button';
-import {EditProfileProps} from '@src/navigation/user/type';
-import React, {useCallback, useEffect, useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {Alert, Image, StyleProp, StyleSheet, Text, TextInput, TouchableOpacity, View, ViewStyle} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import EditProfile from '../components/EditProfile';
-import {ProfileData} from '../types';
 
+import {Button, Box} from '@src/components';
+import {EditProfileProps} from '@src/navigation/user/type';
+import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {Alert, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import EditProfile from '../components/EditProfile';
+import {authActions} from '@src/store/authSlice';
+import {useAppDispatch} from '@src/store';
+import {firebaseLogout} from '@src/services/auth';
 const UserEditProfileScreen: React.FC<EditProfileProps> = ({navigation}) => {
     const {t} = useTranslation();
+    const dispatch = useAppDispatch();
     const [profile, setProfile] = useState({name: '', avatar: 'https://picsum.photos/id/237/200/300'});
     const [isDirty, setIsDirty] = useState(false);
 
     function alertLogout() {
         Alert.alert('Notice', 'Are you sure want to log out', [
-            {text: 'OK', onPress: () => console.log('OK Pressed')},
+            {
+                text: 'OK',
+                onPress: async () => {
+                    await firebaseLogout();
+                    dispatch(authActions.logout());
+                },
+            },
             {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
         ]);
     }

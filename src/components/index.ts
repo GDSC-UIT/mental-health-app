@@ -7,4 +7,5 @@ import Text from '@src/components/Text';
 import Input from '@src/components/Input';
 import NavHeader from '@src/components/NavHeader';
 import Header from '@src/components/Header';
-export {Text, Box, Card, Input, NavHeader, Header, Stack, TabBarButton, DismissKeyboardView};
+import Button from '@src/components/Button';
+export {Text, Button, Box, Card, Input, NavHeader, Header, Stack, TabBarButton, DismissKeyboardView};
