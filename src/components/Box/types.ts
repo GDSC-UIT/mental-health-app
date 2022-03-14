@@ -6,6 +6,7 @@ interface IBoxProps extends ViewStyle, Omit<ViewProps, 'style'> {
     container?: boolean;
     sx?: ViewProps['style'];
     safeArea?: boolean;
+    loading?: boolean;
 }
 
 export type {IBoxProps};

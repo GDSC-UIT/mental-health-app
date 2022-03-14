@@ -1,31 +1,44 @@
 import {scaleSize} from '@core/utils';
 import {useNavigation} from '@react-navigation/native';
-import {COLORS, RANDOM_IMAGE, SIZES} from '@src/assets/const';
-import {ExpertMainTabProps} from '@src/navigation/expert/type';
+import {COLORS, FONTS, STYLES} from '@src/assets/const';
+import IMAGES from '@src/assets/images';
+import Events from '@src/screens/explore/event/events';
+import {Event} from '@src/screens/explore/event/types';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
+import {useState} from 'react';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import AvatarContainer from '../components/AvatarContainer';
 import EventCard from '../components/EventCard';
-import Events from '../components/events';
-import {Event} from '../components/types';
+import PopupDropdown from '../components/PopupDropdown';
+import {ExpertMainTabProps} from '@src/navigation/expert/type';
 
-const ExpertProfileScreen: React.FC = () => {
-    const navigation = useNavigation<ExpertMainTabProps<'Profile'>['navigation']>();
+const ExpertProfileScreen: React.FC<ExpertMainTabProps<'Profile'>> = ({navigation}) => {
     const renderItem = (item: Event) => {
         return <EventCard event={item} key={item.id} />;
     };
+    const [optionsViewVisible, setOptionsViewVisible] = useState(false);
     const {t} = useTranslation();
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView contentContainerStyle={{paddingBottom: SIZES.bottomBarHeight + scaleSize(20)}}>
-                <TouchableOpacity style={styles.editButton} onPress={() => navigation.navigate('EditProfile')}>
-                    {<Ionicons name="pencil-outline" size={20} />}
-                </TouchableOpacity>
-
-                <AvatarContainer name="Tan Expert" image={RANDOM_IMAGE} />
+            <ScrollView /*contentContainerStyle={{paddingBottom: SIZES.bottomBarHeight + scaleSize(20)}}*/>
+                <PopupDropdown visible={optionsViewVisible} visibleToggle={() => setOptionsViewVisible(prev => !prev)}>
+                    <View style={styles.optionsView}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                setOptionsViewVisible(false);
+                                navigation.navigate('EditProfile');
+                            }}>
+                            <Text style={styles.optionsText}>{t('Edit Profile')}</Text>
+                        </TouchableOpacity>
+                        <Image source={IMAGES.optionsLine} style={styles.lineOption} />
+                        <TouchableOpacity>
+                            <Text style={styles.optionsText}>{t('Change to Vietnamese')}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </PopupDropdown>
+                <AvatarContainer name="Tan Expert" image="" />
 
                 <Text style={styles.aboutText}>{t('About me')}</Text>
 
@@ -43,9 +56,11 @@ const ExpertProfileScreen: React.FC = () => {
 
                 <Text style={styles.activitiesText}>{t('Activities')}</Text>
 
-                {Events.map(renderItem)}
-
-                {/* <Text style={styles.noEventText}>No posts or events</Text> */}
+                {Events.length ? (
+                    <View style={{paddingHorizontal: scaleSize(14)}}>{Events.map(renderItem)}</View>
+                ) : (
+                    <Text style={styles.noEventText}>No posts or events</Text>
+                )}
             </ScrollView>
         </SafeAreaView>
     );
@@ -58,28 +73,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.gray_1,
     },
-    avatarContainer: {
-        width: scaleSize(232),
-        height: scaleSize(160),
-        borderRadius: 10,
-        backgroundColor: '#F5F9FD',
-        alignSelf: 'center',
-        marginTop: 20,
-    },
-    profileImage: {
-        width: scaleSize(89),
-        height: scaleSize(89),
-        borderRadius: scaleSize(89) / 2,
-        marginTop: 13,
-        alignSelf: 'center',
-    },
-    name: {
-        fontSize: scaleSize(26),
-        fontFamily: 'Roboto',
-        fontWeight: 'bold',
-        color: '#334C78',
-        alignSelf: 'center',
-    },
     aboutText: {
         fontSize: scaleSize(20),
         fontFamily: 'Roboto',
@@ -90,23 +83,26 @@ const styles = StyleSheet.create({
     },
     emailDescriptionContainer: {
         width: scaleSize(358),
-        height: scaleSize(48),
-        borderRadius: 60,
+        height: 'auto',
+        borderRadius: 30,
         alignSelf: 'center',
         marginTop: scaleSize(11),
         backgroundColor: '#F5F9FD',
         justifyContent: 'center',
         paddingLeft: scaleSize(15),
+        minHeight: scaleSize(48),
+        padding: scaleSize(15),
     },
     aboutDescriptionContainer: {
         width: scaleSize(358),
         height: 'auto',
-        borderRadius: 60,
+        borderRadius: 30,
         alignSelf: 'center',
         marginTop: scaleSize(11),
         backgroundColor: '#F5F9FD',
         justifyContent: 'center',
-        paddingLeft: scaleSize(15),
+        padding: scaleSize(15),
+        minHeight: scaleSize(48),
     },
     descriptionText: {
         fontSize: scaleSize(20),
@@ -115,22 +111,37 @@ const styles = StyleSheet.create({
         color: '#334C78',
     },
     activitiesText: {
+        ...FONTS.body3,
         fontSize: scaleSize(20),
-        fontFamily: 'Roboto',
-        fontWeight: '500',
-        color: '#8F9BB2',
+        color: COLORS.dark_gray_2,
         marginLeft: scaleSize(16),
         marginTop: scaleSize(28),
     },
-    editButton: {
-        height: scaleSize(40),
-        width: scaleSize(40),
-        marginTop: 16,
-        marginRight: 16,
-        alignSelf: 'flex-end',
-        borderRadius: 60,
-        backgroundColor: '#F5F9FD',
-        alignItems: 'center',
-        justifyContent: 'center',
+    optionsView: {
+        justifyContent: 'space-between',
+        width: scaleSize(200),
+        height: 'auto',
+        borderRadius: scaleSize(10),
+        backgroundColor: COLORS.white_3,
+        paddingVertical: scaleSize(10),
+        ...STYLES.deepShadow,
+    },
+    optionsText: {
+        ...FONTS.subtitle4,
+        fontSize: scaleSize(17),
+        color: COLORS.dark_gray_2,
+        marginLeft: scaleSize(10),
+    },
+    lineOption: {
+        width: scaleSize(180),
+        marginVertical: scaleSize(5),
+        marginLeft: scaleSize(9),
+    },
+    noEventText: {
+        ...FONTS.body1,
+        fontSize: scaleSize(18),
+        color: '#1D325E',
+        alignSelf: 'center',
+        marginTop: scaleSize(33),
     },
 });

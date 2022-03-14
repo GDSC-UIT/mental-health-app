@@ -1,5 +1,5 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import Header from '@src/components/Header';
+import NavHeader from '@src/components/NavHeader';
 import UserProfileChatScreen from '@src/screens/chat/expert/UserProfile';
 import WithUserChatScreen from '@src/screens/chat/expert/WithUserChat';
 import ChatSearchScreen from '@src/screens/chat/search';
@@ -24,7 +24,7 @@ const ExpertChatStackNavigator: React.FC = () => {
                 options={{
                     headerShown: true,
                     title: 'Emotion Diary',
-                    header: props => <Header {...props} />,
+                    header: props => <NavHeader {...props} />,
                 }}
                 component={DashboardEmotionScreen}
             />

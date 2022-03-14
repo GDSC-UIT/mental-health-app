@@ -13,7 +13,6 @@ export type ExpertStackParamList = {
     ExpertRoot: NavigatorScreenParams<MainTabParamsList>;
     CreatePost: undefined;
     CreateEvent: undefined;
-    Search: undefined;
     EditProfile: undefined;
 
     ExpertChatStack: NavigatorScreenParams<ExpertChatStackParamList>;
@@ -21,7 +20,6 @@ export type ExpertStackParamList = {
 type ExpertRootScreenProps = NativeStackScreenProps<ExpertStackParamList, 'ExpertRoot'>;
 type CreatePostScreenProps = NativeStackScreenProps<ExpertStackParamList, 'CreatePost'>;
 type CreateEventScreenProps = NativeStackScreenProps<ExpertStackParamList, 'CreateEvent'>;
-type SearchScreenProps = NativeStackScreenProps<ExpertStackParamList, 'Search'>;
 type EditProfileScreenProps = NativeStackScreenProps<ExpertStackParamList, 'EditProfile'>;
 
 export type ExpertStackProps<T extends keyof ExpertStackParamList> = NativeStackScreenProps<ExpertStackParamList, T>;
