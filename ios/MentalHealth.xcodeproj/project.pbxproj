@@ -14,7 +14,7 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1AD11F58795DC48AA70CBA74 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		1AD11F58795DC48AA70CBA74 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 		1CFC6142E2A94AD08D2165D8 /* Roboto-BlackItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E0611903948D4F75A5AAF24A /* Roboto-BlackItalic.ttf */; };
 		246BE758E52A45178A107891 /* Roboto-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D64EB73B3B364069B032E7E5 /* Roboto-MediumItalic.ttf */; };
 		3FAF077F571A42B7BDEF2F37 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E247DAA78E9C42B8A6B14223 /* Octicons.ttf */; };
@@ -43,7 +43,7 @@
 		E52EDD3973A18C104AC7C49B /* libPods-MentalHealth.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DC667898E636E0A4DEF0998 /* libPods-MentalHealth.a */; };
 		E5CB11F14B2748FC9203D151 /* Roboto-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 528FBDA1855F4E03AE8F2B31 /* Roboto-Italic.ttf */; };
 		F74CF168E3874292BDC5AD01 /* Roboto-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CFFF074189C7408CA4982322 /* Roboto-BoldItalic.ttf */; };
-		F9F26A2F0B5C0087E159F98A /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		F9F26A2F0B5C0087E159F98A /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -110,7 +110,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F9F26A2F0B5C0087E159F98A /* (null) in Frameworks */,
+				F9F26A2F0B5C0087E159F98A /* BuildFile in Frameworks */,
 				0885B29751FF42671FA83C3F /* libPods-MentalHealth-MentalHealthTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -119,7 +119,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1AD11F58795DC48AA70CBA74 /* (null) in Frameworks */,
+				1AD11F58795DC48AA70CBA74 /* BuildFile in Frameworks */,
 				E52EDD3973A18C104AC7C49B /* libPods-MentalHealth.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -421,9 +421,11 @@
 			files = (
 			);
 			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MentalHealth/Pods-MentalHealth-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MentalHealth/Pods-MentalHealth-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
