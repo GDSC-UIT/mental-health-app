@@ -1,19 +1,15 @@
 import {scaleSize} from '@core/utils';
-import {useNavigation} from '@react-navigation/native';
-import {IMAGES} from '@src/assets';
-import {COLORS, STYLES, FONTS} from '@src/assets/const';
+import {COLORS, FONTS} from '@src/assets/const';
 import Box from '@src/components/Box';
 import Button from '@src/components/Button';
-import {UserProfileScreenProps} from '@src/navigation/expert/type';
+import {ExpertChatStackProps} from '@src/navigation/expert/type';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
-import AvatarContainer from '@src/screens/profile/components/AvatarContainer';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import BackButton from '../components/BackButton';
 import Profile from '../components/Profile';
 
-const UserProfileChatScreen: React.FC = props => {
-    const navigation = useNavigation<UserProfileScreenProps['navigation']>();
+const UserProfileChatScreen: React.FC<ExpertChatStackProps<'UserProfileChat'>> = ({navigation}) => {
     const {t} = useTranslation();
 
     return (
@@ -22,7 +18,7 @@ const UserProfileChatScreen: React.FC = props => {
                 <BackButton />
             </View>
 
-            <ScrollView>
+            <ScrollView contentContainerStyle={{flexGrow: 1}}>
                 <Profile />
                 <Button
                     title={t('Emotion Diary')}
@@ -33,7 +29,7 @@ const UserProfileChatScreen: React.FC = props => {
                         alignSelf: 'center',
                     }}
                     textStyle={{color: COLORS.dark_blue_2}}
-                    onPress={() => navigation.push('DashboardEmotionDiary')}
+                    onPress={() => navigation.navigate('DashboardEmotionDiary')}
                 />
             </ScrollView>
         </Box>

@@ -1,41 +1,40 @@
-import {scaleSize} from '@core/utils';
-import {COLORS, STYLES, FONTS} from '@src/assets/const';
+import {isIOS, scaleSize} from '@core/utils';
+import {useNavigation} from '@react-navigation/native';
 import {IMAGES} from '@src/assets';
+import {COLORS, FONTS, RANDOM_IMAGE, STYLES} from '@src/assets/const';
+import Box from '@src/components/Box';
+import Button from '@src/components/Button';
+import IconButton from '@src/components/IconButton';
+import {ExpertChatStackProps} from '@src/navigation/expert/type';
+import {UserChatStackProps} from '@src/navigation/user/type';
+import BackButton from '@src/screens/chat/components/BackButton';
+import ChatTitle from '@src/screens/chat/components/HeaderChat/ChatTitle';
 import React, {useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {
-    View,
+    Alert,
+    Image,
+    KeyboardAvoidingView,
     Modal,
     StyleSheet,
     Text,
-    TouchableOpacity,
-    Image,
-    KeyboardAvoidingView,
     TextInput,
-    Alert,
-    Pressable,
+    TouchableOpacity,
+    View,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {useTranslation} from 'react-i18next';
-import Box from '@src/components/Box';
-import Button from '@src/components/Button';
-import BackButton from '@src/screens/chat/components/BackButton';
-import ChatTitle from '@src/screens/chat/components/HeaderChat/ChatTitle';
-import IconButton from '@src/components/IconButton';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {WithUserChatScreenProps} from '@src/navigation/AuthStackParams';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {Contact} from './types';
-import ContactData from './contact';
 
 interface IHeaderChat {
     profile?: boolean;
+    goToProfile?: () => void;
     emotion?: boolean;
+    role?: 'user' | 'expert';
+    user: any;
 }
 
 const HeaderChat: React.FC<IHeaderChat> = props => {
-    const {profile, emotion, ...otherProps} = props;
+    const {profile, emotion, role, user, goToProfile} = props;
 
-    const navigation = useNavigation<WithUserChatScreenProps['navigation']>();
     const {t} = useTranslation();
 
     const [optionsViewVisible, setOptionsViewVisible] = useState(false);
@@ -65,30 +64,30 @@ const HeaderChat: React.FC<IHeaderChat> = props => {
         ]);
     }
 
-    const openLibrary = () => {
-        const option = {
-            mediaType: 'photo',
-            quality: 1,
-        };
+    // const openLibrary = () => {
+    //     const option = {
+    //         mediaType: 'photo',
+    //         quality: 1,
+    //     };
 
-        launchImageLibrary(option, res => {
-            if (res.didCancel) {
-                console.log('User Cancelled image picker');
-            } else if (res.errorCode) {
-                console.log(res.errorMessage);
-            } else {
-                const data = res.assets[0];
-                setReportImage(data);
-                console.log(data);
-            }
-        });
-    };
+    //     launchImageLibrary(option, res => {
+    //         if (res.didCancel) {
+    //             console.log('User Cancelled image picker');
+    //         } else if (res.errorCode) {
+    //             console.log(res.errorMessage);
+    //         } else {
+    //             const data = res.assets[0];
+    //             setReportImage(data);
+    //             console.log(data);
+    //         }
+    //     });
+    // };
 
     return (
-        <Box bgC={COLORS.gray_1} safeArea={false}>
+        <Box bgColor={COLORS.gray_1}>
             <Modal animationType="fade" transparent={true} visible={typeProblemModalVisible}>
                 <View style={styles.centeredView}>
-                    <KeyboardAvoidingView enabled behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                    <KeyboardAvoidingView enabled behavior={isIOS ? 'padding' : 'height'}>
                         <View style={styles.modalView}>
                             <TouchableOpacity
                                 style={styles.cancelButton}
@@ -119,10 +118,13 @@ const HeaderChat: React.FC<IHeaderChat> = props => {
                     <View style={[styles.modalView, {...STYLES.center}]}>
                         <Text style={styles.noticeText}>{t('Notice')}</Text>
                         <Text style={styles.uploadText}>{t('Upload the picture that describe your problem.')}</Text>
-                        <TouchableOpacity style={styles.addButton} onPress={openLibrary}>
+                        <TouchableOpacity
+                            style={styles.addButton}
+                            // onPress={openLibrary}
+                        >
                             {reportImage !== null ? (
                                 <Image
-                                    source={{uri: profileImage.uri}}
+                                    source={{uri: RANDOM_IMAGE}}
                                     // source={IMAGES.profile}
                                     style={{
                                         height: scaleSize(89),
@@ -161,7 +163,6 @@ const HeaderChat: React.FC<IHeaderChat> = props => {
                         <TouchableOpacity
                             style={{marginTop: scaleSize(26)}}
                             onPress={() => {
-                                navigation.popToTop();
                                 setSorryModalVisible(false);
                             }}>
                             <Text style={styles.okText}>OK</Text>
@@ -180,7 +181,7 @@ const HeaderChat: React.FC<IHeaderChat> = props => {
                 }}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <BackButton />
-                    <ChatTitle username={'Kary'} />
+                    <ChatTitle name={user?.name} avatar={user?.avatar ?? RANDOM_IMAGE} />
                 </View>
                 <IconButton
                     style={styles.optionsButton}
@@ -196,23 +197,26 @@ const HeaderChat: React.FC<IHeaderChat> = props => {
                     }}>
                     {optionsViewVisible ? (
                         <View style={styles.optionsView}>
-                            {profile ? (
+                            {profile && (
                                 <View>
-                                    <TouchableOpacity {...otherProps}>
+                                    <TouchableOpacity
+                                        onPress={() => {
+                                            goToProfile && goToProfile();
+                                        }}>
                                         <Text style={styles.optionsText}>{t('Go to profile')}</Text>
                                     </TouchableOpacity>
                                     <Image source={IMAGES.line} style={styles.lineOption} />
                                 </View>
-                            ) : null}
+                            )}
 
-                            {emotion ? (
+                            {emotion && (
                                 <View>
                                     <TouchableOpacity onPress={shareEmotionDiaryAlert}>
                                         <Text style={styles.optionsText}>{t('Show Emotion Diary')}</Text>
                                     </TouchableOpacity>
                                     <Image source={IMAGES.line} style={styles.lineOption} />
                                 </View>
-                            ) : null}
+                            )}
 
                             <TouchableOpacity onPress={deleteConversationAlert}>
                                 <Text style={styles.optionsText}>{t('Delete conversation')}</Text>

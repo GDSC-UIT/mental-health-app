@@ -1,25 +1,22 @@
 import {scaleSize} from '@core/utils';
 import {useNavigation} from '@react-navigation/native';
-import {IMAGES} from '@src/assets';
-import {COLORS, STYLES, FONTS} from '@src/assets/const';
-import Box from '@src/components/Box';
-import {UserProfileScreenProps} from '@src/navigation/expert/type';
+import {COLORS, FONTS, RANDOM_IMAGE} from '@src/assets/const';
+import {UserChatStackProps} from '@src/navigation/user/type';
+import AvatarContainer from '@src/screens/profile/components/AvatarContainer';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {Image, ScrollView, StyleSheet, Text, View} from 'react-native';
-import AvatarContainer from '@src/screens/profile/components/AvatarContainer';
+import {StyleSheet, Text, View} from 'react-native';
 
 const Profile: React.FC = props => {
-    const {image, name, email} = {image: 'image', name: 'Dat Dt', email: 'datdt12@gmail.com'};
-    const navigation = useNavigation<UserProfileScreenProps['navigation']>();
+    const {image, name, email} = {image: RANDOM_IMAGE, name: 'Dat DT', email: 'datdt12@gmail.com'};
     const {t} = useTranslation();
 
     return (
         <>
-            <AvatarContainer name="Tan Expert" image="" />
+            <AvatarContainer name={name} image={image} />
             <Text style={styles.label}>{t('About')}</Text>
             <View style={styles.descriptionContainer}>
-                <Text style={styles.descriptionText}>Email: {'@gmail.com'}</Text>
+                <Text style={styles.descriptionText}>Email: {email}</Text>
             </View>
         </>
     );

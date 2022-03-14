@@ -1,7 +1,7 @@
 export type Contact = {
     id: string;
-    username: string;
+    name: string;
     lastmessage: string;
-    image: string;
+    avatar: string;
     role: string;
 };

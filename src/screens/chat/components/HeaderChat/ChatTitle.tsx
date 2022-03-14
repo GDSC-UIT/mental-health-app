@@ -5,20 +5,24 @@ import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 
 interface ChatTitleProps {
-    username: string;
-    image: string;
+    name: string;
+    avatar?: string;
 }
 
 const ChatTitle: React.FC<ChatTitleProps> = props => {
-    const {username} = props;
-    const image = 'https://placeimg.com/640/480/animals';
+    const {name, avatar} = props;
     return (
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image
-                source={{uri: image}}
-                style={{marginLeft: 23, width: scaleSize(60), height: scaleSize(60), borderRadius: scaleSize(60)}}
+                source={{uri: avatar}}
+                style={{
+                    marginLeft: scaleSize(23),
+                    width: scaleSize(60),
+                    height: scaleSize(60),
+                    borderRadius: scaleSize(60),
+                }}
             />
-            <Text style={styles.name}>{username}</Text>
+            <Text style={styles.name}>{name}</Text>
         </View>
     );
 };

@@ -1,19 +1,18 @@
-import {scaleSize} from '@core/utils';
-import React, {useState} from 'react';
 import {COLORS} from '@src/assets/const';
 import Box from '@src/components/Box';
-import {useNavigation} from '@react-navigation/native';
-import HeaderChat from '@src/screens/chat/components/HeaderChat/HeaderChat';
+import {ExpertChatStackProps} from '@src/navigation/expert/type';
 import BottomChat from '@src/screens/chat/components/BottomChat';
+import HeaderChat from '@src/screens/chat/components/HeaderChat/HeaderChat';
+import React from 'react';
 
-type Props = {};
-
-const WithUserChatScreen = () => {
-    const navigation = useNavigation<UserProfileScreenProps['navigation']>();
-
+const WithUserChatScreen: React.FC<ExpertChatStackProps<'WithUserChat'>> = ({navigation, route}) => {
     return (
         <Box bgColor={COLORS.gray_1} container safeArea={true}>
-            <HeaderChat profile={true} onPress={() => navigation.push('ChatStack', {screen: 'UserProfileChat'})} />
+            <HeaderChat
+                profile={true}
+                user={route?.params?.user}
+                goToProfile={() => navigation.navigate('UserProfileChat')}
+            />
             <BottomChat />
         </Box>
     );

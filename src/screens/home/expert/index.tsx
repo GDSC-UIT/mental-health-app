@@ -1,5 +1,5 @@
 import Button from '@src/components/Button';
-import {ExpertHomeScreenNavigationProps} from '@src/navigation/expert/type';
+import {ExpertMainTabProps} from '@src/navigation/expert/type';
 import {firebaseLogout} from '@src/services/auth';
 import {useAppDispatch} from '@src/store';
 import {authActions} from '@src/store/authSlice';
@@ -8,7 +8,7 @@ import {useTranslation} from 'react-i18next';
 import {Text, View} from 'react-native';
 import BackgroundImage from '../user/components/BackgroundImage';
 
-const ExpertHomeScreen: React.FC<ExpertHomeScreenNavigationProps> = ({navigation}) => {
+const ExpertHomeScreen: React.FC<ExpertMainTabProps<'Home'>> = ({navigation}) => {
     const {t} = useTranslation();
     const dispatch = useAppDispatch();
     return (

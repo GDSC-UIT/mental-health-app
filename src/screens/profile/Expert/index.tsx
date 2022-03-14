@@ -1,8 +1,7 @@
 import {scaleSize} from '@core/utils';
 import {useNavigation} from '@react-navigation/native';
-import {COLORS, SIZES} from '@src/assets/const';
-import {ExpertProfileCompositeProps} from '@src/navigation/expert/type';
-import {ProfileTabProps} from '@src/navigation/TabNavigatorParams';
+import {COLORS, RANDOM_IMAGE, SIZES} from '@src/assets/const';
+import {ExpertMainTabProps} from '@src/navigation/expert/type';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
@@ -14,7 +13,7 @@ import Events from '../components/events';
 import {Event} from '../components/types';
 
 const ExpertProfileScreen: React.FC = () => {
-    const navigation = useNavigation<ExpertProfileCompositeProps['navigation']>();
+    const navigation = useNavigation<ExpertMainTabProps<'Profile'>['navigation']>();
     const renderItem = (item: Event) => {
         return <EventCard event={item} key={item.id} />;
     };
@@ -26,7 +25,7 @@ const ExpertProfileScreen: React.FC = () => {
                     {<Ionicons name="pencil-outline" size={20} />}
                 </TouchableOpacity>
 
-                <AvatarContainer name="Tan Expert" />
+                <AvatarContainer name="Tan Expert" image={RANDOM_IMAGE} />
 
                 <Text style={styles.aboutText}>{t('About me')}</Text>
 

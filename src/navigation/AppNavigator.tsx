@@ -3,6 +3,8 @@ import ExpertLoginScreen from '@src/screens/auth/login/expert';
 import UserLoginScreen from '@src/screens/auth/login/user';
 import RegisterScreen from '@src/screens/auth/register';
 import RoleScreen from '@src/screens/auth/role';
+import MainChatScreen from '@src/screens/chat/main_chat';
+import ChatSearchScreen from '@src/screens/chat/search';
 import {useAppSelector} from '@src/store';
 import React from 'react';
 import {AppStackParamList} from './AppStackParams';
@@ -38,18 +40,14 @@ const AppNavigator: React.FC = () => {
                     <AppStack.Screen name="RoleChoose" component={RoleScreen} />
                 </>
             ) : (
-                <AppStack.Group screenOptions={{headerShown: false}}>{renderRoot()}</AppStack.Group>
+                <AppStack.Group screenOptions={{headerShown: false}}>
+                    {renderRoot()}
+                    {/* <AppStack.Group>
+                        <AppStack.Screen name="MainChat" component={MainChatScreen} />
+                        <AppStack.Screen name="ChatSearch" component={ChatSearchScreen} />
+                    </AppStack.Group> */}
+                </AppStack.Group>
             )}
-            {/* <AppStack.Group
-                screenOptions={{
-                    title: 'Emotion Diary',
-                    headerShadowVisible: false,
-                    headerShown: true,
-                    header: props => <Header {...props} />,
-                }}>
-                <AppStack.Screen name="EmotionDiary" component={EmotionDiaryScreen} />
-                <AppStack.Screen name="DashboardEmotionDiary" component={DashboardEmotionDiaryScreen} />
-            </AppStack.Group> */}
         </AppStack.Navigator>
     );
 };

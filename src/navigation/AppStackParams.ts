@@ -1,7 +1,6 @@
-import {ExpertStackParamList} from './expert/type';
-import {User} from 'firebase/auth';
+import {NavigatorScreenParams} from '@react-navigation/native';
 import type {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {CompositeScreenProps, NavigatorScreenParams} from '@react-navigation/native';
+import {ExpertStackParamList} from './expert/type';
 import {UserStackParamList} from './user/type';
 
 export type AppStackParamList = {
@@ -14,6 +13,9 @@ export type AppStackParamList = {
     //Expert
     Expert: NavigatorScreenParams<ExpertStackParamList>;
     User: NavigatorScreenParams<UserStackParamList>;
+
+    MainChat: {user: any; currentRole: 'expert' | 'user'};
+    ChatSearch: undefined;
 };
 
 //Authentication
@@ -21,10 +23,6 @@ type ExpertLoginScreenProps = NativeStackScreenProps<AppStackParamList, 'ExpertL
 type UserLoginScreenProps = NativeStackScreenProps<AppStackParamList, 'UserLogin'>;
 type RegisterScreenProps = NativeStackScreenProps<AppStackParamList, 'Register'>;
 type RoleChooseScreenProps = NativeStackScreenProps<AppStackParamList, 'RoleChoose'>;
-type ExpertProps = NativeStackScreenProps<AppStackParamList, 'Expert'>;
-type UserProps = NativeStackScreenProps<AppStackParamList, 'User'>;
 
-type ExpertNavigationProp = CompositeScreenProps<ExpertProps, NativeStackScreenProps<ExpertStackParamList>>;
-type UserNavigationProp = CompositeScreenProps<UserProps, NativeStackScreenProps<UserStackParamList>>;
-
-export type {ExpertLoginScreenProps, UserLoginScreenProps, RegisterScreenProps, RoleChooseScreenProps};
+export type AppStackProps<T extends keyof AppStackParamList> = NativeStackScreenProps<AppStackParamList, T>;
+export type {ExpertLoginScreenProps, UserLoginScreenProps, RegisterScreenProps, RoleChooseScreenProps, MainChatProps};

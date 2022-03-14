@@ -3,16 +3,15 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {COLORS, SIZES, STYLES} from '@src/assets/const';
 import TabBarButton from '@src/components/TabBarButton';
 import ExpertChatHomeScreen from '@src/screens/chat/expert';
-import UserChatHomeScreen from '@src/screens/chat/user';
 import ExploreScreen from '@src/screens/explore';
 import ExpertHomeScreen from '@src/screens/home/expert';
-import ExpertProfileScreen from '@src/screens/profile/Expert';
+import ExpertProfileScreen from '@src/screens/profile/expert';
 import React from 'react';
 import {View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {TabNavigatorParamsList} from '../TabNavigatorParams';
+import {MainTabParamsList} from '../TabNavigatorParams';
 
-const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
+const Tab = createBottomTabNavigator<MainTabParamsList>();
 const ExpertRootNavigator: React.FC = () => {
     return (
         <Tab.Navigator
@@ -26,13 +25,10 @@ const ExpertRootNavigator: React.FC = () => {
                 tabBarStyle: {
                     position: 'absolute',
                     backgroundColor: COLORS.white_3,
-                    bottom: scaleSize(20),
+                    bottom: SIZES.tabBarBottom,
                     borderRadius: scaleSize(24),
                     marginHorizontal: scaleSize(6),
                     height: SIZES.bottomBarHeight,
-                    // backgroundColor: 'blue',
-                    // alignItems: 'center',
-                    // justifyContent: 'center',
                     ...STYLES.shadow,
                 },
             }}>
@@ -52,7 +48,7 @@ const ExpertRootNavigator: React.FC = () => {
             />
             <Tab.Screen
                 name="Chat"
-                component={UserChatHomeScreen}
+                component={ExpertChatHomeScreen}
                 options={{
                     tabBarIcon: props => <Ionicons name="chatbubble-ellipses" {...props} />,
                 }}

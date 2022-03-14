@@ -1,6 +1,5 @@
 import {scaleSize} from '@core/utils';
 import {COLORS} from '@src/assets/const';
-import Stack from '@src/components/Stack';
 import React from 'react';
 import {
     FlatList,
@@ -17,34 +16,33 @@ import SeparateLine from './SeparateLine';
 import {Contact} from './types';
 
 type Props = {
-    onContactPress: (user: Contact) => void;
-    contacts: Contact[];
+    onItemPress: (user: Contact) => void;
+    items: Contact[];
     contentContainerStyle?: StyleProp<ViewStyle>;
 };
 
-const ContactList: React.FC<Props> = props => {
-    const {contacts, onContactPress, contentContainerStyle} = props;
-
+const ConversationList: React.FC<Props> = props => {
+    const {items, onItemPress, contentContainerStyle} = props;
+    console.log('conver');
     const renderItem: ListRenderItem<Contact> = ({item}) => {
         return (
-            <TouchableOpacity onPress={() => onContactPress(item)}>
-                <Stack
-                    direction="row"
-                    space={scaleSize(18)}
-                    style={{
-                        alignItems: 'center',
-                        height: scaleSize(95),
-                    }}>
+            <TouchableOpacity onPress={() => onItemPress(item)}>
+                <View style={styles.userDataContainer}>
                     <Image source={{uri: item.avatar}} style={styles.userAvatar} />
-                    <Text style={styles.userName}>{item.name}</Text>
-                </Stack>
+                    <View style={styles.userDetailsContainer}>
+                        <Text style={styles.userName}>{item.name}</Text>
+                        <Text numberOfLines={2} ellipsizeMode="tail" style={styles.lastMessage}>
+                            {item.lastmessage}
+                        </Text>
+                    </View>
+                </View>
             </TouchableOpacity>
         );
     };
 
     return (
         <FlatList
-            data={contacts}
+            data={items}
             renderItem={renderItem}
             keyExtractor={item => item.id}
             ItemSeparatorComponent={SeparateLine}
@@ -52,7 +50,7 @@ const ContactList: React.FC<Props> = props => {
         />
     );
 };
-export default ContactList;
+export default ConversationList;
 
 const styles = StyleSheet.create({
     userDataContainer: {

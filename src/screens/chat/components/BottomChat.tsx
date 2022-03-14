@@ -6,8 +6,6 @@ import IconButton from '@src/components/IconButton';
 import Messages from '@src/screens/chat/components/Message';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-type Props = {};
-
 const BottomChat = () => {
     return (
         <View style={{flex: 1, zIndex: -10}}>

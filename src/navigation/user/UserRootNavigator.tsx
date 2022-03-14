@@ -3,16 +3,15 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {COLORS, SIZES, STYLES} from '@src/assets/const';
 import TabBarButton from '@src/components/TabBarButton';
 import UserChatHomeScreen from '@src/screens/chat/user';
-import ExpertHomeScreen from '@src/screens/home/expert';
 import HomeScreen from '@src/screens/home/user';
-import UserProfileScreen from '@src/screens/profile/User';
+import UserProfileScreen from '@src/screens/profile/user';
 import React from 'react';
 import {View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ExploreStackScreen from '../ExploreStackScreen';
-import {TabNavigatorParamsList} from '../TabNavigatorParams';
+import {MainTabParamsList} from '../TabNavigatorParams';
 
-const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
+const Tab = createBottomTabNavigator<MainTabParamsList>();
 const ExpertRootNavigator: React.FC = () => {
     return (
         <Tab.Navigator
@@ -26,7 +25,7 @@ const ExpertRootNavigator: React.FC = () => {
                 tabBarStyle: {
                     position: 'absolute',
                     backgroundColor: COLORS.white_3,
-                    bottom: scaleSize(12),
+                    bottom: SIZES.tabBarBottom,
                     borderRadius: scaleSize(24),
                     marginHorizontal: scaleSize(6),
                     height: SIZES.bottomBarHeight,
