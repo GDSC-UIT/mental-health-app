@@ -1,24 +1,24 @@
+import {COLORS, STYLES} from '@src/assets/const';
+import {Event} from '@src/screens/explore/event/types';
 import React from 'react';
-import {StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
-import {scaleSize} from '@core/utils';
-import {Event} from './types';
-import {COLORS, FONTS, STYLES} from '@src/assets/const';
+import {StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle} from 'react-native';
+import {scaleSize} from '../../../../core/utils';
 
 interface EventCardProps {
     event: Event;
     style?: StyleProp<ViewStyle>;
 }
 
-const EventCard: React.FC<EventCardProps> = props => {
+const EventCard = (props: EventCardProps) => {
     const {
-        event: {title, time},
+        event: {title, createdAt},
     } = props;
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.time}>{time}</Text>
+        <TouchableOpacity style={styles.container}>
+            <Text style={styles.time}>{createdAt?.toUTCString()}</Text>
             <Text style={styles.content}>{title}</Text>
-        </View>
+        </TouchableOpacity>
     );
 };
 
@@ -26,22 +26,21 @@ export default EventCard;
 
 const styles = StyleSheet.create({
     container: {
-        height: 'auto',
-        width: scaleSize(358),
-        alignSelf: 'center',
         borderRadius: scaleSize(10),
-        backgroundColor: '#F5F9FD',
-        paddingHorizontal: scaleSize(16),
-        paddingVertical: scaleSize(18),
-        marginTop: scaleSize(11),
-        ...STYLES.shadow,
+        backgroundColor: COLORS.white_1,
+        padding: scaleSize(16),
+        marginVertical: scaleSize(10),
+        minHeight: scaleSize(96),
+        ...STYLES.mediumShadow,
     },
     time: {
-        ...FONTS.body3,
-        color: COLORS.dark_gray_2,
+        fontSize: scaleSize(16),
+        fontFamily: 'Roboto',
+        color: '#8F9BB2',
     },
     content: {
-        ...FONTS.body3,
-        color: COLORS.dark_blue_2,
+        fontSize: scaleSize(20),
+        fontFamily: 'Roboto',
+        color: '#334C78',
     },
 });

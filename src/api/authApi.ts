@@ -1,7 +1,6 @@
 const authApi = {
     login: (data: any) => {
         return new Promise((resolve, reject) => {
-            // reject('Error cho zui');
             setTimeout(() => {
                 resolve({
                     token: 'token',
@@ -11,6 +10,7 @@ const authApi = {
                         name: 'name',
                         email: 'email',
                         role: 'expert',
+                        avatar: 'https://picsum.photos/200',
                     },
                 });
             }, 1000);

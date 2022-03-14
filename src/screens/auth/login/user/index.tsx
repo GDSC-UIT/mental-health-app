@@ -3,29 +3,34 @@ import {IMAGES} from '@src/assets';
 import {COLORS, FONTS} from '@src/assets/const';
 import Text from '@src/components/Text';
 import {UserLoginScreenProps} from '@src/navigation/AppStackParams';
-import {googleSignIn} from '@src/services/auth';
+import {facebookLogin, googleSignIn} from '@src/services/auth';
 import {useAppDispatch} from '@src/store';
 import {authActions} from '@src/store/authSlice';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {Alert, GestureResponderEvent, ScrollView, StyleSheet, View} from 'react-native';
+import {Alert, ScrollView, StyleSheet, View} from 'react-native';
 import ImageBackground from '../../components/ImageBackground';
 import LoginForm from '../../components/LoginForm';
 import LogoButton from '../../components/LogoButton';
 const UserLoginScreen: React.FC<UserLoginScreenProps> = ({navigation}) => {
     const {t} = useTranslation();
     const dispatch = useAppDispatch();
-    const handleFacebookLogin = () => {
-        // TODO: handle Facebook login
+
+    const handleFacebookLogin = async () => {
+        const {user, error} = await facebookLogin();
+        if (user) {
+            await dispatch(authActions.login(user));
+        } else if (error) {
+            Alert.alert('Error', error);
+        }
     };
-    const handleGoogleLogin = async (event: GestureResponderEvent) => {
+    const handleGoogleLogin = async () => {
         //Just work only Android
         const {user, error} = await googleSignIn();
         if (user) {
             await dispatch(authActions.login(user));
-            Alert.alert('Notice', 'Success: ' + user.email);
-        } else {
-            Alert.alert('Error', error ?? 'Something went wrong!');
+        } else if (error) {
+            Alert.alert('Error', error);
         }
     };
     return (
@@ -82,7 +87,7 @@ const styles = StyleSheet.create({
     },
     contentWrapper: {
         flex: 1,
-        paddingHorizontal: scaleSize(36),
+        paddingHorizontal: scaleSize(30),
         marginTop: '30%',
     },
     textWrapper: {

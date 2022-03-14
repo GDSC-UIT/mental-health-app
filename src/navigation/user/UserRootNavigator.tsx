@@ -3,19 +3,19 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {COLORS, SIZES, STYLES} from '@src/assets/const';
 import TabBarButton from '@src/components/TabBarButton';
 import UserChatHomeScreen from '@src/screens/chat/user';
+import ExploreScreen from '@src/screens/explore';
 import HomeScreen from '@src/screens/home/user';
 import UserProfileScreen from '@src/screens/profile/user';
 import React from 'react';
 import {View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import ExploreStackScreen from '../ExploreStackScreen';
 import {MainTabParamsList} from '../TabNavigatorParams';
 
 const Tab = createBottomTabNavigator<MainTabParamsList>();
-const ExpertRootNavigator: React.FC = () => {
+const UserRootNavigator: React.FC = () => {
     return (
         <Tab.Navigator
-            initialRouteName="Explore"
+            initialRouteName="Home"
             screenOptions={{
                 headerShown: false,
                 tabBarShowLabel: false,
@@ -41,7 +41,7 @@ const ExpertRootNavigator: React.FC = () => {
             />
             <Tab.Screen
                 name="Explore"
-                component={ExploreStackScreen}
+                component={ExploreScreen}
                 options={{
                     tabBarIcon: props => <Ionicons name="search" {...props} />,
                 }}
@@ -64,4 +64,4 @@ const ExpertRootNavigator: React.FC = () => {
     );
 };
 
-export default ExpertRootNavigator;
+export default UserRootNavigator;

@@ -37,6 +37,7 @@ const DetailsModal: React.FC<Props> = props => {
                         height: '100%',
                         borderTopEndRadius: 0,
                         borderTopStartRadius: 0,
+                        paddingTop: scaleSize(30),
                     },
                 ]}
                 onTouchStart={e => setTouchY(e.nativeEvent.pageY)}

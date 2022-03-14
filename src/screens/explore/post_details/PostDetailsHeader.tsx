@@ -19,8 +19,8 @@ const PostDetailsHeader: React.FC<IProps> = props => {
         <View style={styles.header}>
             <Neumorph circle>
                 <IconButton
-                    size={scaleSize(36)}
-                    icon={<Ionicons name="close" size={24} color={COLORS.dark_gray_2} />}
+                    size={scaleSize(40)}
+                    icon={<Ionicons name="close" size={25} color={COLORS.dark_gray_2} />}
                     onPress={() => {
                         closeModal();
                     }}
@@ -29,8 +29,8 @@ const PostDetailsHeader: React.FC<IProps> = props => {
 
             <Neumorph circle>
                 <IconButton
-                    size={scaleSize(36)}
-                    icon={<Ionicons name="search" size={24} color={COLORS.dark_gray_2} />}
+                    size={scaleSize(40)}
+                    icon={<Ionicons name="search" size={25} color={COLORS.dark_gray_2} />}
                 />
             </Neumorph>
         </View>

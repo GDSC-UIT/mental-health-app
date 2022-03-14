@@ -2,7 +2,6 @@ import {scaleSize} from '@core/utils';
 import {useNavigation} from '@react-navigation/native';
 import {COLORS, FONTS, SIZES} from '@src/assets/const';
 import Box from '@src/components/Box';
-import DismissKeyboardView from '@src/components/DismissKeyboardView';
 import Input from '@src/components/Input';
 import Stack from '@src/components/Stack';
 import {ExpertChatStackProps} from '@src/navigation/expert/type';
@@ -10,11 +9,10 @@ import {UserStackProps} from '@src/navigation/user/type';
 import {useAppSelector} from '@src/store';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {FlatList, Image, ListRenderItem, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, ListRenderItem, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ContactData from '../components/contact';
 import ContactList from '../components/ContactList';
-import SeparateLine from '../components/SeparateLine';
 import {Contact} from '../components/types';
 
 const ChatSearchScreen: React.FC = () => {
@@ -49,52 +47,46 @@ const ChatSearchScreen: React.FC = () => {
         );
     };
     return (
-        <DismissKeyboardView>
-            <Box container bgColor={COLORS.gray_1}>
-                <Stack
-                    direction="row"
-                    space={scaleSize(10)}
-                    style={{
-                        marginVertical: scaleSize(15),
-                        paddingHorizontal: scaleSize(15),
+        <Box container bgColor={COLORS.gray_1} safeArea>
+            <Stack
+                direction="row"
+                space={scaleSize(10)}
+                style={{
+                    marginVertical: scaleSize(15),
+                    paddingHorizontal: scaleSize(15),
+                }}>
+                <View style={{flex: 1}}>
+                    <Input
+                        inputStyle={{height: scaleSize(48)}}
+                        icon={<Ionicons name="search" size={scaleSize(20)} color={COLORS.dark_gray_2} />}
+                        iconPosition="start"
+                        placeholder={t('Search')}
+                        textInputStyle={FONTS.body3}
+                    />
+                </View>
+                <Text
+                    style={[styles.text, styles.bold]}
+                    onPress={() => {
+                        expertNavigation.goBack();
                     }}>
-                    <View style={{flex: 1}}>
-                        <Input
-                            inputStyle={{height: scaleSize(48)}}
-                            icon={<Ionicons name="search" size={scaleSize(20)} color={COLORS.dark_gray_2} />}
-                            iconPosition="start"
-                            placeholder={t('Search')}
-                            textInputStyle={FONTS.body3}
-                        />
-                    </View>
-                    <Text
-                        style={[styles.text, styles.bold]}
-                        onPress={() => {
-                            if (role === 'expert') {
-                                expertNavigation.goBack();
-                            } else {
-                                userNavigation.goBack();
-                            }
-                        }}>
-                        {t('Cancel')}
-                    </Text>
-                </Stack>
-                <ContactList
-                    contacts={ContactData.filter(c => c.role !== 'expert')}
-                    onContactPress={user => {
-                        if (role === 'expert') {
-                            expertNavigation.navigate('WithUserChat', {user});
-                        } else {
-                            userNavigation.navigate('ChatStack', {
-                                screen: 'MainChat',
-                                params: {user},
-                            });
-                        }
-                    }}
-                    contentContainerStyle={{paddingHorizontal: scaleSize(15), paddingBottom: SIZES.bottomPadding}}
-                />
-            </Box>
-        </DismissKeyboardView>
+                    {t('Cancel')}
+                </Text>
+            </Stack>
+            <ContactList
+                contacts={ContactData.filter(c => c.role !== 'expert')}
+                onContactPress={user => {
+                    if (role === 'expert') {
+                        expertNavigation.navigate('WithUserChat', {user});
+                    } else {
+                        userNavigation.navigate('ChatStack', {
+                            screen: 'MainChat',
+                            params: {user},
+                        });
+                    }
+                }}
+                contentContainerStyle={{paddingHorizontal: scaleSize(15), paddingBottom: SIZES.bottomPadding}}
+            />
+        </Box>
     );
 };
 

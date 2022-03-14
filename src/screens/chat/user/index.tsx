@@ -2,7 +2,7 @@ import {scaleSize} from '@core/utils';
 import {COLORS, FONTS, SIZES, STYLES} from '@src/assets/const';
 import Box from '@src/components/Box';
 import Button from '@src/components/Button';
-import {MainTabProps} from '@src/navigation/user/type';
+import {UserMainTabProps} from '@src/navigation/user/type';
 import ConversationList from '@src/screens/chat/components/ConversationList';
 import SearchBar from '@src/screens/chat/components/SearchBar';
 import React from 'react';
@@ -10,7 +10,7 @@ import {useTranslation} from 'react-i18next';
 import {StyleSheet, Text, View} from 'react-native';
 import ContactData from '../components/contact';
 
-const UserChatHomeScreen: React.FC<MainTabProps<'Chat'>> = ({navigation}) => {
+const UserChatHomeScreen: React.FC<UserMainTabProps<'Chat'>> = ({navigation}) => {
     const {t} = useTranslation();
     return (
         <Box
@@ -27,7 +27,7 @@ const UserChatHomeScreen: React.FC<MainTabProps<'Chat'>> = ({navigation}) => {
                     onPress={() =>
                         navigation.push('ChatStack', {
                             screen: 'MainChat',
-                            params: {user: ContactData[1]},
+                            params: {user: ContactData[Math.floor(Math.random() * 5)], withStranger: true},
                         })
                     }
                     textStyle={{fontWeight: '600'}}

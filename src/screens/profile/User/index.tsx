@@ -1,79 +1,81 @@
 import {scaleSize} from '@core/utils';
 import {IMAGES} from '@src/assets';
-import {COLORS, SIZES} from '@src/assets/const';
+import {COLORS, FONTS, STYLES} from '@src/assets/const';
 import Button from '@src/components/Button';
-import React from 'react';
-import {
-    Alert,
-    Image,
-    ListRenderItem,
-    StyleSheet,
-    Text,
-    View,
-    TouchableOpacity,
-    ScrollView,
-    FlatList,
-} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import BackButton from '../../chat/components/BackButton';
-import AvatarContainer from '../components/AvatarContainer';
-import Events from '../components/events';
-import {Event} from '../components/types';
-import EventCard from '../components/EventCard';
+import {UserMainTabProps, UserProfileStackProps} from '@src/navigation/user/type';
+import Events from '@src/screens/explore/event/events';
+import {Event} from '@src/screens/explore/event/types';
+import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
+import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AvatarContainer from '../components/AvatarContainer';
+import EventCard from '../components/EventCard';
+import PopupDropdown from '../components/PopupDropdown';
 
-interface ExpertCardProps {
-    image: string;
-    name: string;
-    email: string;
-    about: string;
-}
-
-const UserProfileScreen: React.FC<ExpertCardProps> = props => {
-    const {image, name, email, about} = props;
-
+const UserProfileScreen: React.FC<UserMainTabProps<'Profile'>> = ({navigation}) => {
+    const {t} = useTranslation();
+    const [optionsViewVisible, setOptionsViewVisible] = useState(false);
     const renderItem = (item: Event) => {
         return <EventCard event={item} key={item.id} />;
     };
-
-    const {t} = useTranslation();
     return (
         <SafeAreaView style={styles.container}>
-            <TouchableOpacity style={styles.editButton}>
-                <Image source={IMAGES.edit} />
-            </TouchableOpacity>
+            <ScrollView /*contentContainerStyle={{paddingBottom: SIZES.bottomBarHeight + scaleSize(20)}}*/>
+                <PopupDropdown visible={optionsViewVisible} visibleToggle={() => setOptionsViewVisible(prev => !prev)}>
+                    <View style={styles.optionsView}>
+                        <TouchableOpacity
+                            onPress={() => {
+                                setOptionsViewVisible(false);
+                                navigation.navigate('UserProfile', {
+                                    screen: 'EditProfile',
+                                });
+                            }}>
+                            <Text style={styles.optionsText}>{t('Edit Profile')}</Text>
+                        </TouchableOpacity>
+                        <Image source={IMAGES.optionsLine} style={styles.lineOption} />
+                        <TouchableOpacity>
+                            <Text style={styles.optionsText}>{t('Change to Vietnamese')}</Text>
+                        </TouchableOpacity>
+                    </View>
+                </PopupDropdown>
+                <AvatarContainer name="Tan User" image="" style={{zIndex: -10}} />
 
-            <ScrollView contentContainerStyle={{paddingBottom: SIZES.bottomBarHeight + scaleSize(20)}}>
-                <AvatarContainer name="Tan Cu" />
-
-                <Text style={styles.aboutText}>{t('About')}</Text>
-
+                <Text style={styles.aboutText}>{t('About me')}</Text>
                 <View style={styles.emailDescriptionContainer}>
                     <Text style={styles.descriptionText}>
-                        {t('Email')}: {email}
+                        {t('Email')}: {'@gmail.com'}
                     </Text>
                 </View>
 
                 <Button
-                    title={t('Emotion Diary')}
-                    style={{marginTop: 25, width: scaleSize(180), alignSelf: 'center'}}
+                    title="Emotion Diary"
+                    style={{
+                        width: scaleSize(155),
+                        height: scaleSize(40),
+                        alignSelf: 'center',
+                        marginTop: scaleSize(25),
+                    }}
+                    textStyle={{color: COLORS.dark_blue_2, fontSize: scaleSize(16)}}
+                    onPress={() =>
+                        navigation.navigate('UserProfile', {
+                            screen: 'EmotionDiary',
+                        })
+                    }
                 />
 
-                <Text style={styles.aboutText}>{t('Interested Posts and Events')}</Text>
+                <View style={{paddingHorizontal: scaleSize(16), marginTop: scaleSize(20)}}>
+                    <Text style={styles.activitiesText}>{t('Interested Posts and Events')}</Text>
+                    {Events.length ? (
+                        <View>{Events.map(renderItem)}</View>
+                    ) : (
+                        <Text style={styles.noEventText}>No interested posts or events</Text>
+                    )}
+                </View>
 
-                {/* <FlatList
-                    data={Events}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.id}
-                    style={{marginTop: 28}}
-                    contentContainerStyle={{
-                        paddingBottom: SIZES.bottomBarHeight,
-                    }}
-                /> */}
-                {Events.map(renderItem)}
+                {/* <Text style={styles.noEventText}>No posts or events</Text> */}
             </ScrollView>
-
-            {/* <Text style={styles.noEventText}>No interested posts or events</Text> */}
         </SafeAreaView>
     );
 };
@@ -85,6 +87,41 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: COLORS.gray_1,
     },
+    emailDescriptionContainer: {
+        width: scaleSize(358),
+        height: 'auto',
+        borderRadius: 30,
+        alignSelf: 'center',
+        marginTop: scaleSize(11),
+        backgroundColor: '#F5F9FD',
+        justifyContent: 'center',
+        padding: scaleSize(15),
+        minHeight: scaleSize(48),
+    },
+    descriptionText: {
+        ...FONTS.body3,
+        fontSize: scaleSize(20),
+        color: COLORS.dark_blue_2,
+    },
+    activitiesText: {
+        ...FONTS.body3,
+        fontSize: scaleSize(20),
+        fontFamily: 'Roboto-Medium',
+        color: COLORS.dark_gray_2,
+        marginTop: scaleSize(29),
+    },
+    editButton: {
+        height: scaleSize(40),
+        width: scaleSize(40),
+        marginTop: scaleSize(16),
+        marginRight: scaleSize(16),
+        alignSelf: 'flex-end',
+        borderRadius: 60,
+        backgroundColor: '#F5F9FD',
+        alignItems: 'center',
+        justifyContent: 'center',
+        ...STYLES.deepShadow,
+    },
     aboutText: {
         fontSize: scaleSize(20),
         fontFamily: 'Roboto',
@@ -93,39 +130,38 @@ const styles = StyleSheet.create({
         marginLeft: scaleSize(16),
         marginTop: scaleSize(30),
     },
-    emailDescriptionContainer: {
-        width: scaleSize(358),
-        height: scaleSize(48),
-        borderRadius: 60,
-        alignSelf: 'center',
-        marginTop: scaleSize(11),
-        backgroundColor: '#F5F9FD',
-        justifyContent: 'center',
-        paddingLeft: scaleSize(15),
-    },
-    descriptionText: {
-        fontSize: 20,
-        fontFamily: 'Roboto',
-        fontWeight: '500',
-        color: '#334C78',
-    },
-    editButton: {
+    optionsButton: {
         height: scaleSize(40),
         width: scaleSize(40),
-        marginTop: 16,
-        marginRight: 16,
-        alignSelf: 'flex-end',
-        borderRadius: 60,
-        backgroundColor: '#F5F9FD',
-        alignItems: 'center',
-        justifyContent: 'center',
+        borderRadius: scaleSize(40),
+        marginHorizontal: scaleSize(17),
+        ...STYLES.deepShadow,
+    },
+    optionsView: {
+        justifyContent: 'space-between',
+        width: scaleSize(200),
+        height: 'auto',
+        borderRadius: scaleSize(10),
+        backgroundColor: COLORS.white_3,
+        paddingVertical: scaleSize(10),
+        ...STYLES.deepShadow,
+    },
+    optionsText: {
+        ...FONTS.subtitle4,
+        fontSize: scaleSize(17),
+        color: COLORS.dark_gray_2,
+        marginLeft: scaleSize(10),
+    },
+    lineOption: {
+        width: scaleSize(180),
+        marginVertical: scaleSize(5),
+        marginLeft: scaleSize(9),
     },
     noEventText: {
-        fontSize: 18,
-        fontFamily: 'Roboto',
+        ...FONTS.body1,
+        fontSize: scaleSize(18),
         color: '#1D325E',
         alignSelf: 'center',
-        justifyContent: 'center',
-        marginTop: 25,
+        marginTop: scaleSize(25),
     },
 });
