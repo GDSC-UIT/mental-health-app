@@ -1,14 +1,10 @@
 import {scaleSize} from '@core/utils';
 import {COLORS, FONTS} from '@src/assets/const';
-import Stack from '@src/components/Stack';
-import Button from '@src/components/Button';
+import IconButton from '@src/components/IconButton';
+import Neumorph from '@src/components/Neumorph';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import IconButton from '@src/components/IconButton';
-import Neumorph from '@src/components/Neumorph';
-import {useNavigation} from '@react-navigation/native';
-import {PostDetailsScreenProps} from '@src/navigation/ExploreStackScreen';
 
 interface IProps {
     closeModal: () => void;
@@ -39,7 +35,6 @@ const PostDetailsHeader: React.FC<IProps> = props => {
 
 const styles = StyleSheet.create({
     header: {
-        backgroundColor: COLORS.gray_1,
         alignItems: 'center',
         justifyContent: 'space-between',
         flexDirection: 'row',
