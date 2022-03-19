@@ -1,20 +1,26 @@
 import {GoogleSignin, statusCodes} from '@react-native-google-signin/google-signin';
-import {auth} from '@src/config/firebase';
-import {getAuth, GoogleAuthProvider, signInWithCredential, signInWithEmailAndPassword, signOut} from 'firebase/auth';
-
-const googleSignIn = async () => {
+import auth, {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {AccessToken, LoginManager} from 'react-native-fbsdk-next';
+export type AuthResponse = Partial<{
+    user: FirebaseAuthTypes.User;
+    error: string;
+}>;
+export type LoginData = {
+    email: string;
+    password: string;
+};
+const googleSignIn = async (): Promise<AuthResponse> => {
     try {
         await GoogleSignin.hasPlayServices();
         await GoogleSignin.signIn();
-        const {idToken, accessToken} = await GoogleSignin.getTokens();
-        const credential = GoogleAuthProvider.credential(idToken, accessToken);
-        const userCredential = await signInWithCredential(auth, credential);
-        return {user: userCredential.user, error: null};
+        const {idToken} = await GoogleSignin.getTokens();
+        const credential = auth.GoogleAuthProvider.credential(idToken);
+        const userCredential = await auth().signInWithCredential(credential);
+        return {user: userCredential.user, error: undefined};
     } catch (error: any) {
-        let errorMessage: string | null = null;
+        let errorMessage = 'Something went wrong!';
         if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-            // user cancelled the login fRlow
-            errorMessage = 'User just cancel google sign in';
+            return {};
         } else if (error.code === statusCodes.IN_PROGRESS) {
             errorMessage = 'Signin in progress';
             // operation (f.e. sign in) is in progress already
@@ -24,21 +30,95 @@ const googleSignIn = async () => {
         } else {
             errorMessage = error.message;
         }
-        return {user: null, error: errorMessage};
+        return {user: undefined, error: errorMessage};
     }
 };
 
-const emailPasswordLogin = async ({email, password}: any) => {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    return userCredential.user;
-};
+const emailPasswordLogin = async ({email, password}: LoginData): Promise<AuthResponse> => {
+    try {
+        const userCredential = await auth().signInWithEmailAndPassword(email, password);
+        console.log('User account created & signed in!');
 
+        return {
+            user: userCredential.user,
+            error: undefined,
+        };
+    } catch (error: any) {
+        let errorMessage = 'Something went wrong!';
+
+        if (error.code === 'auth/email-already-in-use') {
+            errorMessage = 'That email address is already in use!';
+        } else if (error.code === 'auth/wrong-password') {
+            errorMessage = 'Wrong email or password!';
+        } else if (error.code === 'auth/invalid-email') {
+            errorMessage = 'That email address is invalid!';
+        }
+
+        return {
+            user: undefined,
+            error: errorMessage,
+        };
+    }
+};
+const emailPasswordRegister = async ({email, password}: LoginData): Promise<AuthResponse> => {
+    try {
+        const userCredential = await auth().createUserWithEmailAndPassword(email, password);
+        console.log('User account created & signed in!');
+
+        return {
+            user: userCredential.user,
+            error: undefined,
+        };
+    } catch (error: any) {
+        let errorMessage = 'Something went wrong!';
+
+        if (error.code === 'auth/email-already-in-use') {
+            errorMessage = 'That email address is already in use!';
+        } else if (error.code === 'auth/wrong-password') {
+            errorMessage = 'Wrong email or password!';
+        } else if (error.code === 'auth/invalid-email') {
+            errorMessage = 'That email address is invalid!';
+        }
+
+        return {
+            user: undefined,
+            error: errorMessage,
+        };
+    }
+};
+const facebookLogin = async (): Promise<AuthResponse> => {
+    try {
+        const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+
+        if (result.isCancelled) {
+            return {};
+        }
+        // Once signed in, get the users AccesToken
+        const data = await AccessToken.getCurrentAccessToken();
+
+        if (!data) {
+            throw new Error('Something went wrong obtaining access token');
+        }
+
+        // Create a Firebase credential with the AccessToken
+        const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+        console.log(facebookCredential);
+        const userCredential = await auth().signInWithCredential(facebookCredential);
+        return {user: userCredential.user, error: undefined};
+    } catch (error: any) {
+        let errorMessage = error.message ?? 'Something went wrong';
+
+        return {user: undefined, error: errorMessage};
+    }
+
+    // Sign-in the user with the credential
+};
 const firebaseLogout = async () => {
     try {
-        await signOut(auth);
+        await auth().signOut();
         console.log('Success logout');
     } catch (error) {
         console.log('Error', error);
     }
 };
-export {googleSignIn, emailPasswordLogin, firebaseLogout};
+export {googleSignIn, facebookLogin, emailPasswordLogin, emailPasswordRegister, firebaseLogout};

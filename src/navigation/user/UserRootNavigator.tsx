@@ -1,22 +1,21 @@
 import {scaleSize} from '@core/utils';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {COLORS, STYLES} from '@src/assets/const';
+import {COLORS, SIZES, STYLES} from '@src/assets/const';
 import TabBarButton from '@src/components/TabBarButton';
-import ChatScreen from '@src/screens/chat';
-import ExpertHomeScreen from '@src/screens/home/expert';
+import UserChatHomeScreen from '@src/screens/chat/user';
+import ExploreScreen from '@src/screens/explore';
 import HomeScreen from '@src/screens/home/user';
-import ProfileScreen from '@src/screens/profile';
+import UserProfileScreen from '@src/screens/profile/User';
 import React from 'react';
 import {View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import ExploreStackScreen from '../ExploreStackScreen';
-import {TabNavigatorParamsList} from '../TabNavigatorParams';
+import {MainTabParamsList} from '../TabNavigatorParams';
 
-const Tab = createBottomTabNavigator<TabNavigatorParamsList>();
-const ExpertRootNavigator: React.FC = () => {
+const Tab = createBottomTabNavigator<MainTabParamsList>();
+const UserRootNavigator: React.FC = () => {
     return (
         <Tab.Navigator
-            initialRouteName="Explore"
+            initialRouteName="Home"
             screenOptions={{
                 headerShown: false,
                 tabBarShowLabel: false,
@@ -26,10 +25,10 @@ const ExpertRootNavigator: React.FC = () => {
                 tabBarStyle: {
                     position: 'absolute',
                     backgroundColor: COLORS.white_3,
-                    bottom: scaleSize(12),
+                    bottom: SIZES.tabBarBottom,
                     borderRadius: scaleSize(24),
                     marginHorizontal: scaleSize(6),
-                    height: scaleSize(64),
+                    height: SIZES.bottomBarHeight,
                     ...STYLES.shadow,
                 },
             }}>
@@ -42,21 +41,21 @@ const ExpertRootNavigator: React.FC = () => {
             />
             <Tab.Screen
                 name="Explore"
-                component={ExploreStackScreen}
+                component={ExploreScreen}
                 options={{
                     tabBarIcon: props => <Ionicons name="search" {...props} />,
                 }}
             />
             <Tab.Screen
                 name="Chat"
-                component={ChatScreen}
+                component={UserChatHomeScreen}
                 options={{
                     tabBarIcon: props => <Ionicons name="chatbubble-ellipses" {...props} />,
                 }}
             />
             <Tab.Screen
                 name="Profile"
-                component={ProfileScreen}
+                component={UserProfileScreen}
                 options={{
                     tabBarIcon: props => <Ionicons name="person" {...props} />,
                 }}
@@ -65,4 +64,4 @@ const ExpertRootNavigator: React.FC = () => {
     );
 };
 
-export default ExpertRootNavigator;
+export default UserRootNavigator;
