@@ -1,4 +1,5 @@
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {setToken} from '@src/api/instance';
 import NavHeader from '@src/components/NavHeader';
 import ExpertLoginScreen from '@src/screens/auth/login/expert';
 import UserLoginScreen from '@src/screens/auth/login/user';
@@ -18,9 +19,14 @@ const AppStack = createNativeStackNavigator<AppStackParamList>();
 
 const AppNavigator: React.FC = () => {
     const auth = useAppSelector(state => state.auth);
+    console.log('auth', auth);
+
+    if (auth.uid) {
+        setToken(auth.uid);
+    }
 
     const renderRoot = () => {
-        if (auth.user?.role === 'expert') {
+        if (auth.uid === 'expert') {
             return <AppStack.Screen name="Expert" component={ExpertStackNavigator} />;
         }
 
@@ -32,7 +38,7 @@ const AppNavigator: React.FC = () => {
                 headerShown: false,
             }}
             initialRouteName={'Intro'}>
-            {!auth.token ? (
+            {!auth.uid ? (
                 <>
                     <AppStack.Group
                         screenOptions={{

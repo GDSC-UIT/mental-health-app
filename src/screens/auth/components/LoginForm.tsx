@@ -9,7 +9,7 @@ import Text from '@src/components/Text';
 import {UserLoginScreenProps} from '@src/navigation/AppStackParams';
 import {emailPasswordLogin} from '@src/services/auth';
 import {useAppDispatch, useAppSelector} from '@src/store';
-import {authActions} from '@src/store/authSlice';
+import {authActions, AuthState} from '@src/store/authSlice';
 import React from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
@@ -45,9 +45,16 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
     });
     const onSubmit = async ({email, password}: LoginData) => {
         const {user, error} = await emailPasswordLogin({email, password});
-        console.log({user, error});
+        console.log(user?.uid);
         if (!error && user) {
-            dispatch(authActions.login(user));
+            const _user: AuthState = {
+                avatar: user.photoURL || undefined,
+                email: user.email || undefined,
+                displayName: user.displayName || undefined,
+                uid: user.uid,
+            };
+
+            dispatch(authActions.login(_user));
             setToken(user.uid);
         } else {
             Alert.alert(error || "Can't login");
