@@ -27,12 +27,11 @@ export type RegisterData = {
 
 const RegisterForm: React.FC = props => {
     const {t} = useTranslation();
-    const {loading} = useAppSelector(state => state.auth);
     const dispatch = useAppDispatch();
     const {
         control,
         handleSubmit,
-        formState: {errors},
+        formState: {errors, isSubmitting},
         setError,
     } = useForm<RegisterData>({
         defaultValues: {
@@ -54,18 +53,16 @@ const RegisterForm: React.FC = props => {
 
         const {email, password} = data;
 
-        dispatch(authActions.loading());
         const {user, error} = await emailPasswordRegister({
             email,
             password,
         });
 
-        if (!error) {
+        if (!error && user) {
             dispatch(authActions.login(user));
         } else {
-            Alert.alert(error);
+            Alert.alert(error || "Can't register");
         }
-        dispatch(authActions.stopLoading());
         console.log({user, error});
     };
     return (
@@ -125,7 +122,12 @@ const RegisterForm: React.FC = props => {
             />
 
             <View style={styles.buttonWrapper}>
-                <Button title={t('Sign up')} loading={loading} style={styles.button} onPress={handleSubmit(onSubmit)} />
+                <Button
+                    title={t('Sign up')}
+                    loading={isSubmitting}
+                    style={styles.button}
+                    onPress={handleSubmit(onSubmit)}
+                />
             </View>
         </>
     );

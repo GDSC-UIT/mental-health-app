@@ -2,11 +2,12 @@ import {scaleSize} from '@core/utils';
 import {COLORS, FONTS} from '@src/assets/const';
 import Button from '@src/components/Button';
 import {UserHomeScreenProps} from '@src/navigation/user/type';
-import {useAppDispatch} from '@src/store';
+import {RootState, useAppDispatch} from '@src/store';
 import {authActions} from '@src/store/authSlice';
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {StyleSheet, Text, View} from 'react-native';
+import {useSelector} from 'react-redux';
 import BackgroundImage from './components/BackgroundImage';
 import FeelingModal from './components/FeelingModal';
 
@@ -14,6 +15,8 @@ const HomeScreen: React.FC<UserHomeScreenProps> = ({navigation}) => {
     const {t} = useTranslation();
     const [modalVisible, setModalVisible] = useState(false);
     const dispatch = useAppDispatch();
+    const token = useSelector<RootState>(state => state.auth);
+
     return (
         <BackgroundImage>
             <View style={{flex: 1}}>

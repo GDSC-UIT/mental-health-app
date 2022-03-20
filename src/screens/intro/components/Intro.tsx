@@ -6,6 +6,7 @@ import Neumorph from '@src/components/Neumorph';
 import {IntroScreenProps} from '@src/navigation/AppStackParams';
 import React from 'react';
 import {StyleSheet, View, Text, Image, ImageSourcePropType} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 interface IIntroProps {
     text: string;
@@ -17,7 +18,7 @@ interface IIntroProps {
 const Intro: React.FC<IIntroProps> = ({text, bgImage, image, last}) => {
     const navigation = useNavigation<IntroScreenProps['navigation']>();
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Image
                 source={bgImage}
                 style={{
@@ -45,7 +46,7 @@ const Intro: React.FC<IIntroProps> = ({text, bgImage, image, last}) => {
                 <Neumorph
                     shadowContainerStyle={{
                         position: 'absolute',
-                        bottom: scaleSize(24),
+                        bottom: scaleSize(100),
                         borderRadius: scaleSize(60),
                     }}>
                     <Button
@@ -57,7 +58,7 @@ const Intro: React.FC<IIntroProps> = ({text, bgImage, image, last}) => {
                     />
                 </Neumorph>
             )}
-        </View>
+        </SafeAreaView>
     );
 };
 export default Intro;

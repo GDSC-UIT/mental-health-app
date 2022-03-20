@@ -1,6 +1,7 @@
 import {scaleSize} from '@core/utils';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useNavigation} from '@react-navigation/native';
+import {setToken} from '@src/api/instance';
 import {COLORS, STYLES} from '@src/assets/const';
 import Button from '@src/components/Button';
 import Input from '@src/components/Input';
@@ -30,12 +31,11 @@ type LoginFormProps = {};
 const LoginForm: React.FC<LoginFormProps> = ({}) => {
     const {t} = useTranslation();
     const {navigate} = useNavigation<UserLoginScreenProps['navigation']>();
-    const {loading, error: authError} = useAppSelector(state => state.auth);
     const dispatch = useAppDispatch();
     const {
         control,
         handleSubmit,
-        formState: {errors},
+        formState: {errors, isSubmitting},
     } = useForm<LoginData>({
         defaultValues: {
             email: '',
@@ -44,17 +44,14 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
         resolver: yupResolver(schema),
     });
     const onSubmit = async ({email, password}: LoginData) => {
-        dispatch(authActions.loading());
         const {user, error} = await emailPasswordLogin({email, password});
         console.log({user, error});
-        if (!error) {
+        if (!error && user) {
             dispatch(authActions.login(user));
+            setToken(user.uid);
         } else {
-            Alert.alert(error);
+            Alert.alert(error || "Can't login");
         }
-        dispatch(authActions.stopLoading());
-
-        // await dispatch(authActions.login(user));
     };
 
     return (
@@ -92,7 +89,7 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
                 name="password"
             />
 
-            {!!authError && <Text style={STYLES.error}>{authError}</Text>}
+            {/* {!!authError && <Text style={STYLES.error}>{authError}</Text>} */}
             <Text style={styles.link} onPress={() => navigate('SendEmail')}>
                 {t('Forgot password?')}
             </Text>
@@ -102,7 +99,7 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
                     color={COLORS.white_1}
                     style={styles.button}
                     onPress={handleSubmit(onSubmit)}
-                    loading={loading}
+                    loading={isSubmitting}
                 />
             </View>
         </>
