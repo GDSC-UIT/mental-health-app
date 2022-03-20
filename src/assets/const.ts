@@ -2,7 +2,7 @@ import {scaleSize} from '@core/utils';
 import {Dimensions, StyleSheet} from 'react-native';
 const {width: WindowWidth, height: WindowHeight} = Dimensions.get('window');
 
-export const BASE_URL = 'https://api.github.com';
+export const BASE_URL = 'http://127.0.0.1:8080';
 export const STORE_KEY = {
     TOKEN: 'token',
     REFRESH_TOKEN: 'refreshToken',

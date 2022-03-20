@@ -19,14 +19,13 @@ const AppStack = createNativeStackNavigator<AppStackParamList>();
 
 const AppNavigator: React.FC = () => {
     const auth = useAppSelector(state => state.auth);
-    console.log('auth', auth);
 
-    if (auth.uid) {
-        setToken(auth.uid);
+    if (auth.firebase_user_id) {
+        setToken(auth.firebase_user_id);
     }
 
     const renderRoot = () => {
-        if (auth.uid === 'expert') {
+        if (auth.is_expert) {
             return <AppStack.Screen name="Expert" component={ExpertStackNavigator} />;
         }
 
@@ -38,7 +37,7 @@ const AppNavigator: React.FC = () => {
                 headerShown: false,
             }}
             initialRouteName={'Intro'}>
-            {!auth.uid ? (
+            {!auth.firebase_user_id ? (
                 <>
                     <AppStack.Group
                         screenOptions={{

@@ -1,14 +1,15 @@
 import {scaleSize} from '@core/utils';
 import {yupResolver} from '@hookform/resolvers/yup';
 import {useNavigation} from '@react-navigation/native';
+import {userApi} from '@src/api';
 import {setToken} from '@src/api/instance';
-import {COLORS, STYLES} from '@src/assets/const';
+import {COLORS} from '@src/assets/const';
 import Button from '@src/components/Button';
 import Input from '@src/components/Input';
 import Text from '@src/components/Text';
 import {UserLoginScreenProps} from '@src/navigation/AppStackParams';
 import {emailPasswordLogin} from '@src/services/auth';
-import {useAppDispatch, useAppSelector} from '@src/store';
+import {useAppDispatch} from '@src/store';
 import {authActions, AuthState} from '@src/store/authSlice';
 import React from 'react';
 import {Controller, useForm} from 'react-hook-form';
@@ -47,15 +48,20 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
         const {user, error} = await emailPasswordLogin({email, password});
         console.log(user?.uid);
         if (!error && user) {
-            const _user: AuthState = {
-                avatar: user.photoURL || undefined,
-                email: user.email || undefined,
-                displayName: user.displayName || undefined,
-                uid: user.uid,
-            };
-
-            dispatch(authActions.login(_user));
             setToken(user.uid);
+            try {
+                const {data} = await userApi.getProfile();
+                const _user: AuthState = {
+                    avatar: user.photoURL || 'https://i.pinimg.com/564x/dd/68/da/dd68da98a640b64b2881a3af6258df7b.jpg',
+                    email: user.email || undefined,
+                    name: user.displayName || undefined,
+                    ...data,
+                };
+
+                dispatch(authActions.login(_user));
+            } catch {
+                Alert.alert("Can't get user profile");
+            }
         } else {
             Alert.alert(error || "Can't login");
         }

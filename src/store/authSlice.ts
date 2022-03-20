@@ -1,13 +1,12 @@
-import {FirebaseAuthTypes} from '@react-native-firebase/auth';
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 export type AuthState = Partial<{
-    uid: string;
     avatar: string;
-    displayName: string;
+    name: string;
     email: string;
     bio: string;
-    isExpert: boolean;
+    firebase_user_id: string;
+    is_expert: boolean;
 }>;
 
 // @ts-ignore
