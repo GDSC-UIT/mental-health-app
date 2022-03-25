@@ -1,9 +1,10 @@
 import {scaleSize} from '@core/utils';
 import {COLORS, STYLES} from '@src/assets/const';
-import React, {useCallback, useEffect, useState} from 'react';
+import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {Bubble, GiftedChat, InputToolbar, Send} from 'react-native-gifted-chat';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import chatApi from '@src/api/chatApi';
 
 type IMessage = {
     _id: string | number;
@@ -12,47 +13,66 @@ type IMessage = {
     user?: User;
 };
 type User = {
-    _id: string;
+    _id: string | number;
     name: string;
     avatar: string;
 };
-const Messages: React.FC = () => {
-    const [messages, setMessages] = useState<IMessage[]>([]);
 
-    useEffect(() => {
-        setMessages([
-            {
-                _id: 'd9vnw4n3-02xo-471f-tjlk-30823xnaowm4',
-                text: 'Đi mình đi má ai gảnk',
-                createdAt: new Date(),
-                user: {
-                    _id: '58694a0f-3da1-471f-bd96-145571e29d72',
-                    name: 'Kary',
-                    avatar: 'https://placeimg.com/640/480/animals',
-                },
-            },
-            {
-                _id: '58694a0f-3da1-471f-bd96-145571e29d72',
-                text: 'Chao em, \nNgay mai di cafe nhe!',
-                createdAt: new Date(),
-                user: {
-                    _id: 'd9vnw4n3-02xo-471f-tjlk-30823xnaowm4',
-                    name: 'Roy',
-                    avatar: 'https://placeimg.com/640/480/animals',
-                },
-            },
-        ]);
+type Props = {
+    ws: any;
+};
+
+const user = 'bd7acbea-c1b1-46c2-aed5-3ad53abb28b';
+const receiver = '3ac68afc-c605-48d3-a4f8-fbd91aa97f63';
+
+const Messages: React.FC<Props> = ({ws}) => {
+    const [messages, setMessages] = React.useState<IMessage[]>([]);
+    const [serverState, setServerState] = React.useState('Loading...');
+
+    React.useEffect(() => {
+        ws.onopen = () => {
+            setServerState('Connected to the server');
+        };
+        ws.onclose = e => {
+            setServerState('Disconnected. Check internet or server.');
+        };
+        ws.onerror = e => {
+            setServerState(e.message);
+        };
+        ws.onmessage = e => {
+            const data = JSON.parse(e.data);
+            console.log(data);
+        };
+
+        let mounted = true;
+        chatApi
+            .getMessages(user, receiver)
+            .then(({data}) => {
+                if (mounted) {
+                    console.log(data);
+                }
+            })
+            .catch(e => {
+                console.log('error message:', e);
+            });
+        return () => (mounted = false);
     }, []);
 
-    const onSend = useCallback((message = []) => {
+    const submitMessage = message => {
         setMessages(previousMessages => GiftedChat.append(previousMessages, message));
-    }, []);
+        const lengthMessage = message.length;
+        messageRecent = message[lengthMessage - 1];
+        const {text} = messageRecent;
+        const messageObjString = JSON.stringify({Content: text, ReceiverID: receiver});
+        console.log(typeof messageObjString);
+        ws.send(messageObjString);
+    };
 
     const renderSend = (props: any) => {
         return (
-            <Send {...props} containerStyle={{width: 40, height: 40}}>
+            <Send {...props} containerStyle={{width: scaleSize(40), height: scaleSize(40)}}>
                 <View>
-                    <Ionicons name="play" style={{marginBottom: 8}} size={25} color="#8F9BB2" />
+                    <Ionicons name="play" style={{marginBottom: scaleSize(8)}} size={scaleSize(25)} color="#8F9BB2" />
                 </View>
             </Send>
         );
@@ -81,6 +101,10 @@ const Messages: React.FC = () => {
                         color: COLORS.black_1,
                     },
                 }}
+                timeTextStyle={{
+                    right: {color: COLORS.gray_4},
+                    left: {color: COLORS.gray_4},
+                }}
             />
         );
     };
@@ -95,11 +119,9 @@ const Messages: React.FC = () => {
 
     return (
         <GiftedChat
+            user={{_id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28b'}}
             messages={messages}
-            onSend={message => onSend(message)}
-            user={{
-                _id: '58694a0f-3da1-471f-bd96-145571e29d72',
-            }}
+            onSend={message => submitMessage(message)}
             renderBubble={renderBubble}
             alwaysShowSend
             renderSend={renderSend}

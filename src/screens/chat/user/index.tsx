@@ -10,7 +10,10 @@ import {useTranslation} from 'react-i18next';
 import {StyleSheet, Text, View} from 'react-native';
 import ContactData from '../components/contact';
 
+const user = 'bd7acbea-c1b1-46c2-aed5-3ad53abb28b';
+
 const UserChatHomeScreen: React.FC<UserMainTabProps<'Chat'>> = ({navigation}) => {
+    const ws = React.useRef(new WebSocket(`ws://mental-health-gdsc-app.herokuapp.com/ws/chat/${user}`)).current;
     const {t} = useTranslation();
     return (
         <Box
@@ -56,7 +59,7 @@ const UserChatHomeScreen: React.FC<UserMainTabProps<'Chat'>> = ({navigation}) =>
                     console.log(user);
                     navigation.navigate('ChatStack', {
                         screen: 'MainChat',
-                        params: {user},
+                        params: {user, ws},
                     });
                 }}
                 contentContainerStyle={{paddingBottom: SIZES.bottomPadding}}
