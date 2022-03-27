@@ -16,14 +16,16 @@ const DiaryCard = (props: Props) => {
     const {t} = useTranslation();
     const {time, feel, reason} = props;
     const feelColors = feelingColors.find(f => f.label === feel)?.color;
-    var tmp = new Date(time).toLocaleDateString("kr-KR");
-    console.log(tmp);
+    var tmpString = time.toString()
+    var tmpNumber: number = +tmpString;
+    var getTime = new Date(tmpNumber * 1000);
+    //console.log(getTime);
 
     return (
         <View style={[styles.card]}>
             <View>
                 <Text style={styles.titleLabel}>
-                    Time: <Text style={{color: COLORS.gray_4}}>{tmp}</Text>
+                    Time: <Text style={{color: COLORS.gray_4}}>{`${getTime.getHours()}:${getTime.getMinutes()} - ${getTime.getDate()}/${getTime.getMonth()}/${getTime.getFullYear()}`}</Text>
                 </Text>
             </View>
             <View style={styles.lineWrapper}>

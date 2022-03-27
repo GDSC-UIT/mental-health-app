@@ -124,7 +124,7 @@ const DashboardEmotionScreen: React.FC<Props> = props => {
     return (
         <Box bgColor={COLORS.gray_1} safeArea={false} container>
             <ScrollView style={{paddingHorizontal: scaleSize(20)}}>
-                <TimeRangeDropdown onChanged={handleChange} />
+                {/*<TimeRangeDropdown onChanged={handleChange} />*/}
                 {loading ? (
                     <Loading />
                 ) : (
