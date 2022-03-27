@@ -1,14 +1,21 @@
 import {scaleSize} from '@core/utils';
+import { useFocusEffect } from '@react-navigation/native';
+import feelApi from '@src/api/feelApi';
 import {COLORS, FONTS, SIZES, STYLES} from '@src/assets/const';
 import Box from '@src/components/Box';
+import Loading from '@src/components/Loading';
+import { useAppSelector } from '@src/store';
+import { Feel } from '@src/types';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {VictoryPie} from 'victory-native';
+import { Feelings } from '../home/user/feeling';
 import DiaryCard from './components/DiaryCard';
 import MarkerList from './components/MarkerList';
 import TimeRangeDropdown from './components/TimeRangeDropdown';
-import {Diary, diaryList as listDiary, Feeling, feelingStatistics as data} from './data';
+import {Feeling, feelingStatistics as data} from './data'
+//import {Diary, diaryList as listDiary, Feeling, feelingStatistics as data} from './data';
 type Props = {};
 
 const size = scaleSize(SIZES.WindowWidth) - 100;
@@ -17,15 +24,16 @@ const DashboardEmotionScreen: React.FC<Props> = props => {
     const [feelingStatistic, setFeelingStatistic] = useState<Feeling[]>([]);
     // const [selectedTimeRange, setSelectedTimeRange] = useState<string | null>(null);
     const [selectedFeel, setSelectedFeel] = useState<Feeling | null>(null);
-    const [diaryList, setDiaryList] = useState<Diary[]>([]);
+    const [diaryList, setDiaryList] = useState<Feel[]>([]);
 
     useEffect(() => {
-        setFeelingStatistic(calculatePercent(data));
-        setDiaryList(listDiary);
+        //setFeelingStatistic(calculatePercent(data));
+        //setDiaryList(listDiary);
     }, []);
 
     useEffect(() => {
         setSelectedFeel(prev => feelingStatistic.find(f => f.name === prev?.name) || null);
+        console.log(selectedFeel)
     }, [feelingStatistic]);
 
     const calculatePercent = (statistics: Feeling[]): Feeling[] => {
@@ -44,99 +52,176 @@ const DashboardEmotionScreen: React.FC<Props> = props => {
             ),
         );
     };
+
+    const user = useAppSelector(state => state.auth.user);
+    const [reLoad, setReLoad] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            let mounted = true;
+            setLoading(true);
+            (async () => {
+                try {
+                    var i = 1;
+                    const res = await feelApi.getUserFeel(user.firebase_user_id)
+                    data.map(item => {
+                        var feel: Feel[];
+                        feel = res.filter(detail => detail.feel_id == i);
+                        item.value = feel.length;
+                        //console.log(i, ": ", item.value);
+                        i++;
+                    })
+                    setDiaryList(res);
+                    setFeelingStatistic(calculatePercent(data));
+                    
+                }catch (error) {
+                    console.log(error);
+                }
+                if (mounted) {
+                    setLoading(false);
+                }
+            })();
+
+            return () => {
+                mounted = false;
+            };
+        }, []),
+    );
+        
+    useEffect(() => {
+        if (reLoad) {
+            let mounted = true;
+            setLoading(true);
+            (async () => {
+                try {
+                    var i = 1;
+                    const res = await feelApi.getUserFeel(user.firebase_user_id)
+                    setDiaryList(res);
+                    data.map(item => {
+                        var feel: Feel[];
+                        feel = res.filter(detail => detail.feel_id == i);
+                        item.value = feel.length;
+                        //console.log(i, ": ", item.value);
+                        i++;
+                    })
+                    setFeelingStatistic(calculatePercent(data));
+                }catch (error) {
+                    console.log(error)
+                }
+                if (mounted) {
+                    setLoading(false);
+                    setReLoad(false);
+                }
+            })();
+
+            return () => {
+                mounted = false;
+            };
+        }
+    }, [reLoad]);
+
     return (
         <Box bgColor={COLORS.gray_1} safeArea={false} container>
             <ScrollView style={{paddingHorizontal: scaleSize(20)}}>
                 <TimeRangeDropdown onChanged={handleChange} />
-                <View style={styles.bigCircle}>
-                    <VictoryPie
-                        cornerRadius={scaleSize(8)}
-                        innerRadius={size / 4.5}
-                        colorScale={feelingStatistic.map(feel => feel.color)}
-                        padAngle={({datum}) => (selectedFeel && datum.name === selectedFeel?.name ? 0 : scaleSize(2))}
-                        data={feelingStatistic}
-                        labels={({datum}) =>
-                            false && datum.y > 0.04 && selectedFeel && datum.name === selectedFeel?.name
-                                ? datum.percentage
-                                : null
-                        }
-                        radius={({datum}) =>
-                            selectedFeel && datum.name === selectedFeel.name ? size * 0.5 : size * 0.44
-                        }
-                        width={size + scaleSize(60)}
-                        height={size + scaleSize(60)}
-                        origin={{
-                            x: size / 2 + scaleSize(30),
-                            y: size / 2 + scaleSize(30),
-                        }}
-                        style={{
-                            labels: {
-                                fill: 'white',
-                                ...FONTS.h4,
-                            },
-                            parent: {
-                                border: '3px solid blue',
-                                backgroundColor: 'transparent',
-                                width: size + scaleSize(100),
-                                height: size + scaleSize(100),
-                            },
-                        }}
-                        labelRadius={size * 0.35}
-                        labelPosition={'centroid'}
-                        labelPlacement="perpendicular"
-                        // labelComponent={
-                        //     <VictoryLabel verticalAnchor="middle" style={{zIndex: 1000, ...FONTS.h4, color: 'white'}} />
-                        // }
-                        // dataComponent={<Slice />}
-                        animate={{
-                            easing: 'exp',
-                            // animationWhitelist: ['data'],
-                            onLoad: undefined,
-                            onEnter: undefined,
-                            onExit: {
-                                duration: 100,
-                                before: () => ({
-                                    _y: 0,
-                                    fill: 'orange',
-                                    label: 'BYE',
-                                }),
-                            },
-                        }}
-                        events={[
-                            {
-                                target: 'data',
-                                eventHandlers: {
-                                    onPress: () => {
-                                        return [
-                                            {
-                                                target: 'labels',
-                                                mutation: mutationProps => {
-                                                    const feel = feelingStatistic[mutationProps.index];
-                                                    setSelectedFeel(prev => (prev?.name === feel.name ? null : feel));
-                                                },
-                                            },
-                                        ];
+                {loading ? (
+                    <Loading />
+                ) : (
+                    <>
+                        <View style={styles.bigCircle}>
+                            <VictoryPie
+                                cornerRadius={scaleSize(8)}
+                                innerRadius={size / 4.5}
+                                colorScale={feelingStatistic.map(feel => feel.color)}
+                                padAngle={({datum}) => (selectedFeel && datum.name === selectedFeel?.name ? 0 : scaleSize(2))}
+                                data={feelingStatistic}
+                                labels={({datum}) =>
+                                    false && datum.y > 0.04 && selectedFeel && datum.name === selectedFeel?.name
+                                        ? datum.percentage
+                                        : null
+                                }
+                                radius={({datum}) =>
+                                    selectedFeel && datum.name === selectedFeel.name ? size * 0.5 : size * 0.44
+                                }
+                                width={size + scaleSize(60)}
+                                height={size + scaleSize(60)}
+                                origin={{
+                                    x: size / 2 + scaleSize(30),
+                                    y: size / 2 + scaleSize(30),
+                                }}
+                                style={{
+                                    labels: {
+                                        fill: 'white',
+                                        ...FONTS.h4,
                                     },
-                                },
-                            },
-                        ]}
-                    />
-                    <View style={styles.centerCircle}>
-                        {!selectedFeel ? (
-                            <Text style={[styles.text]}>Dashboard</Text>
-                        ) : (
-                            <>
-                                <Text style={[styles.text, {color: selectedFeel?.color}]}>{selectedFeel?.name}</Text>
-                                <Text style={{...FONTS.h3}}>{selectedFeel?.percentage}</Text>
-                            </>
-                        )}
-                    </View>
-                </View>
+                                    parent: {
+                                        border: '3px solid blue',
+                                        backgroundColor: 'transparent',
+                                        width: size + scaleSize(100),
+                                        height: size + scaleSize(100),
+                                    },
+                                }}
+                                labelRadius={size * 0.35}
+                                labelPosition={'centroid'}
+                                labelPlacement="perpendicular"
+                                // labelComponent={
+                                //     <VictoryLabel verticalAnchor="middle" style={{zIndex: 1000, ...FONTS.h4, color: 'white'}} />
+                                // }
+                                // dataComponent={<Slice />}
+                                animate={{
+                                    easing: 'exp',
+                                    // animationWhitelist: ['data'],
+                                    onLoad: undefined,
+                                    onEnter: undefined,
+                                    onExit: {
+                                        duration: 100,
+                                        before: () => ({
+                                            _y: 0,
+                                            fill: 'orange',
+                                            label: 'BYE',
+                                        }),
+                                    },
+                                }}
+                                events={[
+                                    {
+                                        target: 'data',
+                                        eventHandlers: {
+                                            onPress: () => {
+                                                return [
+                                                    {
+                                                        target: 'labels',
+                                                        mutation: mutationProps => {
+                                                            const feel = feelingStatistic[mutationProps.index];
+                                                            setSelectedFeel(prev => (prev?.name == feel.name ? null : feel));
+                                                        },
+                                                    },
+                                                ];
+                                            },
+                                        },
+                                    },
+                                ]}
+                            />
+                            <View style={styles.centerCircle}>
+                                {!selectedFeel ? (
+                                    <Text style={[styles.text]}>Dashboard</Text>
+                                ) : (
+                                    <>
+                                        <Text style={[styles.text, {color: selectedFeel?.color}]}>{selectedFeel?.name}</Text>
+                                        <Text style={{...FONTS.h3}}>{selectedFeel?.percentage}</Text>
+                                    </>
+                                )}
+                            </View>
+                        </View>
+                    </>
+                )}
                 {!selectedFeel && <MarkerList />}
                 {selectedFeel &&
-                    listDiary
-                        .filter(diary => diary.feel === selectedFeel.name)
-                        .map(diary => <DiaryCard key={diary.id} {...diary} />)}
+                    diaryList
+                        .filter(diary => Feelings[diary.feel_id - 1].name == selectedFeel.name)
+                        .map(diary =>
+                        <DiaryCard key={diary.id} time={diary.created_at!} feel={Feelings[diary.feel_id-1].name} reason={diary.reason} />
+                        )}
             </ScrollView>
         </Box>
     );

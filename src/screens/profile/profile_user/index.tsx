@@ -1,12 +1,16 @@
 import {scaleSize} from '@core/utils';
+import { useFocusEffect } from '@react-navigation/native';
+import userApi from '@src/api/userApi';
 import {IMAGES} from '@src/assets';
 import {COLORS, FONTS, STYLES} from '@src/assets/const';
 import Button from '@src/components/Button';
+import Loading from '@src/components/Loading';
 import {UserMainTabProps} from '@src/navigation/user/type';
 import Events from '@src/screens/explore/event/events';
 import {Event} from '@src/screens/explore/event/types';
 import {useAppSelector} from '@src/store';
-import React, {useState} from 'react';
+import { User } from '@src/types';
+import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -21,6 +25,56 @@ const UserProfileScreen: React.FC<UserMainTabProps<'Profile'>> = ({navigation}) 
     const renderItem = (item: Event) => {
         return <EventCard event={item} key={item.id} />;
     };
+
+    const [profile, setProfile] = useState<User>();
+    const [reLoad, setReLoad] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            let mounted = true;
+            setLoading(true);
+            (async () => {
+                try {
+                    const getUser = await userApi.getProfile(user!.firebase_user_id);
+                    setProfile(getUser);
+                }catch (error) {
+                    console.log(error);
+                }
+                if (mounted) {
+                    setLoading(false);
+                }
+            })();
+
+            return () => {
+                mounted = false;
+            };
+        }, []),
+    );
+        
+    useEffect(() => {
+        if (reLoad) {
+            let mounted = true;
+            setLoading(true);
+            (async () => {
+                try {
+                    const getUser = await userApi.getProfile(user!.firebase_user_id);
+                    setProfile(getUser);
+                }catch (error) {
+                    console.log(error)
+                }
+                if (mounted) {
+                    setLoading(false);
+                    setReLoad(false);
+                }
+            })();
+
+            return () => {
+                mounted = false;
+            };
+        }
+    }, [reLoad]);
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView /*contentContainerStyle={{paddingBottom: SIZES.bottomBarHeight + scaleSize(20)}}*/>
@@ -41,39 +95,44 @@ const UserProfileScreen: React.FC<UserMainTabProps<'Profile'>> = ({navigation}) 
                         </TouchableOpacity>
                     </View>
                 </PopupDropdown>
-                <AvatarContainer name={user?.name} picture={user?.picture} style={{zIndex: -10}} />
+                {loading ? (
+                    <Loading />
+                ) : (
+                    <>
+                        <AvatarContainer name={profile?.name} picture={profile?.picture} style={{zIndex: -10}} />
+                        <Text style={styles.aboutText}>{t('About me')}</Text>
+                        <View style={styles.emailDescriptionContainer}>
+                            <Text style={styles.descriptionText}>
+                                {t('Email')}: {profile?.email}
+                            </Text>
+                        </View>
 
-                <Text style={styles.aboutText}>{t('About me')}</Text>
-                <View style={styles.emailDescriptionContainer}>
-                    <Text style={styles.descriptionText}>
-                        {t('Email')}: {'@gmail.com'}
-                    </Text>
-                </View>
+                        <Button
+                            title="Emotion Diary"
+                            style={{
+                                width: scaleSize(155),
+                                height: scaleSize(40),
+                                alignSelf: 'center',
+                                marginTop: scaleSize(25),
+                            }}
+                            textStyle={{color: COLORS.dark_blue_2, fontSize: scaleSize(16)}}
+                            onPress={() =>
+                                navigation.navigate('UserProfile', {
+                                    screen: 'EmotionDiary',
+                                })
+                            }
+                        />
 
-                <Button
-                    title="Emotion Diary"
-                    style={{
-                        width: scaleSize(155),
-                        height: scaleSize(40),
-                        alignSelf: 'center',
-                        marginTop: scaleSize(25),
-                    }}
-                    textStyle={{color: COLORS.dark_blue_2, fontSize: scaleSize(16)}}
-                    onPress={() =>
-                        navigation.navigate('UserProfile', {
-                            screen: 'EmotionDiary',
-                        })
-                    }
-                />
-
-                <View style={{paddingHorizontal: scaleSize(16), marginTop: scaleSize(20)}}>
-                    <Text style={styles.activitiesText}>{t('Interested Posts and Events')}</Text>
-                    {Events.length ? (
-                        <View>{Events.map(renderItem)}</View>
-                    ) : (
-                        <Text style={styles.noEventText}>No interested posts or events</Text>
-                    )}
-                </View>
+                        <View style={{paddingHorizontal: scaleSize(16), marginTop: scaleSize(20)}}>
+                            <Text style={styles.activitiesText}>{t('Interested Posts and Events')}</Text>
+                            {Events.length ? (
+                                <View>{Events.map(renderItem)}</View>
+                            ) : (
+                                <Text style={styles.noEventText}>No interested posts or events</Text>
+                            )}
+                        </View>
+                    </>
+                )}
 
                 {/* <Text style={styles.noEventText}>No posts or events</Text> */}
             </ScrollView>

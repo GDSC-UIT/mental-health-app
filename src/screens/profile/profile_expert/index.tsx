@@ -1,10 +1,15 @@
 import {scaleSize} from '@core/utils';
+import { useFocusEffect } from '@react-navigation/native';
+import userApi from '@src/api/userApi';
 import {COLORS, FONTS, STYLES} from '@src/assets/const';
 import IMAGES from '@src/assets/images';
+import Loading from '@src/components/Loading';
 import {ExpertMainTabProps} from '@src/navigation/expert/type';
 import Events from '@src/screens/explore/event/events';
 import {Event} from '@src/screens/explore/event/types';
-import React, {useState} from 'react';
+import { useAppSelector } from '@src/store';
+import { User } from '@src/types';
+import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
@@ -18,6 +23,57 @@ const ExpertProfileScreen: React.FC<ExpertMainTabProps<'Profile'>> = ({navigatio
     };
     const [optionsViewVisible, setOptionsViewVisible] = useState(false);
     const {t} = useTranslation();
+    const user = useAppSelector(state => state.auth.user);
+
+    const [profile, setProfile] = useState<User>();
+    const [reLoad, setReLoad] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            let mounted = true;
+            setLoading(true);
+            (async () => {
+                try {
+                    const getUser = await userApi.getProfile(user!.firebase_user_id);
+                    setProfile(getUser);
+                }catch (error) {
+                    console.log(error);
+                }
+                if (mounted) {
+                    setLoading(false);
+                }
+            })();
+
+            return () => {
+                mounted = false;
+            };
+        }, []),
+    );
+        
+    useEffect(() => {
+        if (reLoad) {
+            let mounted = true;
+            setLoading(true);
+            (async () => {
+                try {
+                    const getUser = await userApi.getProfile(user!.firebase_user_id);
+                    setProfile(getUser);
+                }catch (error) {
+                    console.log(error)
+                }
+                if (mounted) {
+                    setLoading(false);
+                    setReLoad(false);
+                }
+            })();
+
+            return () => {
+                mounted = false;
+            };
+        }
+    }, [reLoad]);
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView /*contentContainerStyle={{paddingBottom: SIZES.bottomBarHeight + scaleSize(20)}}*/>
@@ -36,25 +92,30 @@ const ExpertProfileScreen: React.FC<ExpertMainTabProps<'Profile'>> = ({navigatio
                         </TouchableOpacity>
                     </View>
                 </PopupDropdown>
-                <AvatarContainer name="Tan Expert" image="" />
+                {loading ? (
+                    <Loading />
+                ) : (
+                    <>
+                        <AvatarContainer name={profile?.name} picture={profile?.picture} />
+                        <Text style={styles.aboutText}>{t('About me')}</Text>
 
-                <Text style={styles.aboutText}>{t('About me')}</Text>
+                        <View style={styles.emailDescriptionContainer}>
+                            <Text style={styles.descriptionText}>
+                                {t('Email')}: {profile?.email}
+                            </Text>
+                        </View>
 
-                <View style={styles.emailDescriptionContainer}>
-                    <Text style={styles.descriptionText}>
-                        {t('Email')}: {'@gmail.com'}
-                    </Text>
-                </View>
-
-                <View style={styles.aboutDescriptionContainer}>
-                    <Text style={styles.descriptionText}>
-                        {t('About')}: {'Dat DT'}
-                    </Text>
-                </View>
+                        <View style={styles.aboutDescriptionContainer}>
+                            <Text style={styles.descriptionText}>
+                                {t('About')}: {profile?.bio}
+                            </Text>
+                        </View>
+                    </>
+                )}
 
                 <Text style={styles.activitiesText}>{t('Activities')}</Text>
 
-                {Events.length ? (
+                {/*Events.length*/0 ? (
                     <View style={{paddingHorizontal: scaleSize(14)}}>{Events.map(renderItem)}</View>
                 ) : (
                     <Text style={styles.noEventText}>No posts or events</Text>

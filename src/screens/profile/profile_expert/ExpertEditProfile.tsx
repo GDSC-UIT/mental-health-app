@@ -1,15 +1,19 @@
 import {scaleSize} from '@core/utils';
+import { useFocusEffect } from '@react-navigation/native';
+import userApi from '@src/api/userApi';
 import {COLORS, FONTS, STYLES} from '@src/assets/const';
 import {Box, Header} from '@src/components';
 import Button from '@src/components/Button';
 import Input from '@src/components/Input';
+import Loading from '@src/components/Loading';
 import Neumorph from '@src/components/Neumorph';
 import {ExpertStackProps} from '@src/navigation/expert/type';
 import {firebaseLogout} from '@src/services/auth';
 import {uploadImage} from '@src/services/firebaseStorage';
-import {useAppDispatch} from '@src/store';
+import {useAppDispatch, useAppSelector} from '@src/store';
 import {authActions} from '@src/store/authSlice';
-import React, {useState} from 'react';
+import { User } from '@src/types';
+import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Alert, StyleSheet, Text, View} from 'react-native';
 import EditProfile from '../components/EditProfile';
@@ -18,14 +22,68 @@ const ExpertEditProfileScreen: React.FC<ExpertStackProps<'EditProfile'>> = ({nav
     const {t} = useTranslation();
     const dispatch = useAppDispatch();
     const [profile, setProfile] = useState({
-        name: 'Đạt ĐT',
-        avatar: 'https://picsum.photos/id/237/200/300',
-        about: 'Mic check 1234',
-        uri: 'https://picsum.photos/200',
+        name: "",
+        avatar: "",
+        about: "",
+        uri: "",
     });
     const [isImageChange, setIsImageChange] = useState(false);
     const [loading, setLoading] = useState(false);
     const [isDirty, setIsDirty] = useState(false);
+
+    const user = useAppSelector(state => state.auth.user);
+    const [reLoad, setReLoad] = useState(false);
+    const [loaDing, setLoaDing] = useState(false);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            let mounted = true;
+            setLoaDing(true);
+            (async () => {
+                try {
+                    const getUser = await userApi.getProfile(user!.firebase_user_id);
+                    //setProFile(getUser);
+                    setProfile({name: getUser.name, avatar: getUser.picture!, uri: getUser.picture!, about: getUser.bio})
+                    console.log(profile);
+                }catch (error) {
+                    console.log(error)
+                }
+                if (mounted) {
+                    setLoaDing(false);
+                }
+            })();
+
+            return () => {
+                mounted = false;
+            };
+        }, []),
+    );
+        
+    useEffect(() => {
+        if (reLoad) {
+            let mounted = true;
+            setLoaDing(true);
+            (async () => {
+                try {
+                    const getUser = await userApi.getProfile(user!.firebase_user_id);
+                    //setProFile(getUser);
+                    setProfile({name: getUser.name, avatar: getUser.picture!, uri: getUser.picture!, about: getUser.bio})
+                
+                    console.log(profile);
+                }catch (error) {
+                    console.log(error);
+                }
+                if (mounted) {
+                    setLoaDing(false);
+                    setReLoad(false);
+                }
+            })();
+
+            return () => {
+                mounted = false;
+            };
+        }
+    }, []);
 
     function alertLogout() {
         Alert.alert('Notice', 'Are you sure want to log out', [
@@ -38,6 +96,18 @@ const ExpertEditProfileScreen: React.FC<ExpertStackProps<'EditProfile'>> = ({nav
                 },
             },
             {text: 'Cancel', onPress: () => console.log('Cancel Pressed')},
+        ]);
+    }
+
+    function alertUpdateSuccess() {
+        Alert.alert('Notice', 'Update profile successfully', [
+            {
+                text: 'OK',
+                onPress: async () => {
+                    navigation.goBack()
+                },
+            },
+            {text: 'Exit', onPress: () => navigation.goBack()},
         ]);
     }
     console.log(profile);
@@ -64,7 +134,43 @@ const ExpertEditProfileScreen: React.FC<ExpertStackProps<'EditProfile'>> = ({nav
                 Alert.alert('Error', error);
             }
         }
+
+        let url = profile.uri;
+        if (profile.uri !== profile.avatar) {
+            const res = await uploadImage(profile.avatar);
+            if (res.error || !res.url) {
+                Alert.alert('Notice', res.error);
+                setLoading(false);
+                return;
+            }
+
+            url = res.url;
+        }
+        
+        const newProfile: User = {
+            id: user!.id,
+            name: profile.name,
+            email: user!.email,
+            firebase_user_id: user!.firebase_user_id,
+            picture: url,
+            bio: profile.about,
+            is_expert: user!.is_expert,
+            created_at: user!.created_at,
+            updated_at: user!.updated_at,
+            deleted: user!.deleted,
+            deleted_at: user!.deleted_at
+        }
+        
+        try {
+            console.log("profileeeeeee", newProfile);
+            const res = await userApi.updateProfile(newProfile!);
+            console.log("after", res);
+            setProfile({name: res.name, avatar: res.picture!, uri: res.picture!, about: res.bio})
+        } catch (errorApi: any) {
+            Alert.alert('Notice', errorApi?.message ?? 'Server Error');
+        }
         setLoading(false);
+        alertUpdateSuccess();
     };
     return (
         <Box container safeArea bgColor={COLORS.gray_1} loading={loading}>
@@ -86,21 +192,27 @@ const ExpertEditProfileScreen: React.FC<ExpertStackProps<'EditProfile'>> = ({nav
                 style={{
                     paddingHorizontal: scaleSize(10),
                 }}>
-                <EditProfile name={profile.name} image={profile.uri} onChangeData={onChangeData} />
-                <View style={styles.textInputContainer}>
-                    <Text style={styles.aboutLabel}>About</Text>
-                    <Input defaultValue={profile.about} onChangeText={text => onChangeData('about', text)} />
-                </View>
-                <View style={styles.buttonWrapper}>
-                    <Neumorph borderRadius={scaleSize(60)}>
-                        <Button
-                            title="Log out"
-                            style={{paddingHorizontal: scaleSize(40)}}
-                            textStyle={{color: COLORS.black_1}}
-                            onPress={() => alertLogout()}
-                        />
-                    </Neumorph>
-                </View>
+                {loaDing ? (
+                    <Loading />
+                ) : (
+                    <>
+                        <EditProfile name={profile.name} image={profile.avatar} onChangeData={onChangeData} />
+                        <View style={styles.textInputContainer}>
+                            <Text style={styles.aboutLabel}>About</Text>
+                            <Input defaultValue={profile.about} onChangeText={text => onChangeData('about', text)} />
+                        </View>
+                        <View style={styles.buttonWrapper}>
+                            <Neumorph borderRadius={scaleSize(60)}>
+                                <Button
+                                    title="Log out"
+                                    style={{paddingHorizontal: scaleSize(40)}}
+                                    textStyle={{color: COLORS.black_1}}
+                                    onPress={() => alertLogout()}
+                                />
+                            </Neumorph>
+                        </View>
+                    </>
+                )}
             </View>
         </Box>
     );

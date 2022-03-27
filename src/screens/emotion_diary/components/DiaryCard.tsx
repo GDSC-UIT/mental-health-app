@@ -16,11 +16,14 @@ const DiaryCard = (props: Props) => {
     const {t} = useTranslation();
     const {time, feel, reason} = props;
     const feelColors = feelingColors.find(f => f.label === feel)?.color;
+    var tmp = new Date(time).toLocaleDateString("kr-KR");
+    console.log(tmp);
+
     return (
         <View style={[styles.card]}>
             <View>
                 <Text style={styles.titleLabel}>
-                    Time: <Text style={{color: COLORS.gray_4}}>6 PM - 18/01/2022</Text>
+                    Time: <Text style={{color: COLORS.gray_4}}>{tmp}</Text>
                 </Text>
             </View>
             <View style={styles.lineWrapper}>

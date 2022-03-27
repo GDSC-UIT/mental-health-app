@@ -1,16 +1,21 @@
 import {scaleSize} from '@core/utils';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {COLORS, SIZES, STYLES} from '@src/assets/const';
 import Box from '@src/components/Box';
 import Button from '@src/components/Button';
 import {UserProfileStackProps} from '@src/navigation/user/type';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Calendar, DateData} from 'react-native-calendars';
 import Arrow from './components/Arrow';
 import DiaryCard from './components/DiaryCard';
 import {diaryList} from './data';
+import {useAppSelector} from '@src/store';
+import { User, Feel } from '@src/types';
+import feelApi from '@src/api/feelApi';
+import { Feelings } from '../home/user/feeling';
+import Loading from '@src/components/Loading';
 
 type Props = {};
 
@@ -20,7 +25,56 @@ const EmotionDiaryScreen: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState<DateData | null>(null);
 
     const renderArrow = (direction: 'left' | 'right') => <Arrow variant={direction} />;
+    const user = useAppSelector(state => state.auth.user);
+    const [reLoad, setReLoad] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [feel, setFeel] = useState<Feel[]>([]);
 
+    useFocusEffect(
+        React.useCallback(() => {
+            let mounted = true;
+            setLoading(true);
+            (async () => {
+                try {
+                    const res = await feelApi.getUserFeel(user.firebase_user_id)
+                    setFeel(res)
+                }catch (error) {
+                    console.log(error);
+                }
+                if (mounted) {
+                    setLoading(false);
+                }
+            })();
+
+            return () => {
+                mounted = false;
+            };
+        }, []),
+    );
+        
+    useEffect(() => {
+        if (reLoad) {
+            let mounted = true;
+            setLoading(true);
+            (async () => {
+                try {
+                    const res = await feelApi.getUserFeel(user.firebase_user_id)
+                    setFeel(res)
+                }catch (error) {
+                    console.log(error)
+                }
+                if (mounted) {
+                    setLoading(false);
+                    setReLoad(false);
+                }
+            })();
+
+            return () => {
+                mounted = false;
+            };
+        }
+    }, [reLoad]);
+    
     return (
         <Box bgColor={COLORS.gray_1} container safeArea={false}>
             <ScrollView style={{paddingHorizontal: scaleSize(10)}} contentContainerStyle={{justifyContent: 'center'}}>
@@ -70,9 +124,16 @@ const EmotionDiaryScreen: React.FC = () => {
                     style={styles.calendar}
                 />
                 {/* <ListDiary data={diaryList} /> */}
-                {diaryList.map(diary => (
-                    <DiaryCard key={diary.id} {...diary} />
+                
+                {loading ? (
+                    <Loading />
+                ) : (
+                    <>
+                        {feel.map(diary => (
+                            <DiaryCard key={diary.id} time={diary.created_at!} feel={Feelings[diary.feel_id - 1].name} reason={diary.reason}/>
                 ))}
+                    </>
+                )}
             </ScrollView>
         </Box>
     );
