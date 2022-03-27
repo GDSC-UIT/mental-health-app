@@ -6,7 +6,7 @@ import Input from '@src/components/Input';
 import {emailPasswordRegister} from '@src/services/auth';
 import {useAppDispatch, useAppSelector} from '@src/store';
 import {authActions} from '@src/store/authSlice';
-import React from 'react';
+import React, {useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
 import {Alert, StyleSheet, View} from 'react-native';
@@ -29,7 +29,7 @@ export type RegisterData = {
 
 const RegisterForm: React.FC = props => {
     const {t} = useTranslation();
-    const {loading} = useAppSelector(state => state.auth);
+    const [loading, setLoading] = useState(false);
     const dispatch = useAppDispatch();
     const {
         control,
@@ -57,7 +57,7 @@ const RegisterForm: React.FC = props => {
 
         const {name, email, password} = data;
 
-        dispatch(authActions.loading());
+        setLoading(true);
         const {user, error} = await emailPasswordRegister({
             email,
             password,
@@ -76,7 +76,8 @@ const RegisterForm: React.FC = props => {
         } else {
             Alert.alert(error ?? 'Server Error');
         }
-        dispatch(authActions.stopLoading());
+        setLoading(false);
+
         console.log({user, error});
     };
     return (

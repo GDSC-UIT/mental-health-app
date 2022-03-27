@@ -1,14 +1,13 @@
 import {scaleSize} from '@core/utils';
 import {COLORS, STYLES} from '@src/assets/const';
 import Box from '@src/components/Box';
-import {UserChatStackProps} from '@src/navigation/user/type';
 import IconButton from '@src/components/IconButton';
+import {UserChatStackProps} from '@src/navigation/user/type';
 import HeaderChat from '@src/screens/chat/components/HeaderChat/HeaderChat';
 import Messages from '@src/screens/chat/components/Message';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
-import {useRoute} from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const MainChatScreen: React.FC<UserChatStackProps<'MainChat'>> = ({navigation, route}) => {
     const {withStranger, user: partner} = route.params;

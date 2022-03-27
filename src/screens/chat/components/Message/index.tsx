@@ -9,7 +9,6 @@ import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {Bubble, GiftedChat, IMessage, InputToolbar, Send} from 'react-native-gifted-chat';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const receiver = 'vzBSiKmD0IW9BWpdsQMA1exT3NW2';
 type MessagesProps = {
     friend: User;
 };
@@ -86,15 +85,19 @@ const Messages: React.FC<MessagesProps> = ({friend}) => {
             };
 
             if (isMounted) {
-                setMessageList(previousMessages => {
-                    const prevCopy = [...previousMessages];
-                    const index = previousMessages.findIndex(m => !m.sent);
-                    prevCopy[index] = formatMessage;
-                    if (index === -1) {
-                        return previousMessages;
-                    }
-                    return prevCopy;
-                });
+                if (formatMessage.user._id !== user?.firebase_user_id) {
+                    setMessageList(previousMessages => GiftedChat.append(previousMessages, [formatMessage]));
+                } else {
+                    setMessageList(previousMessages => {
+                        const prevCopy = [...previousMessages];
+                        const index = previousMessages.findIndex(m => !m.sent);
+                        prevCopy[index] = formatMessage;
+                        if (index === -1) {
+                            return previousMessages;
+                        }
+                        return prevCopy;
+                    });
+                }
             }
         };
 
