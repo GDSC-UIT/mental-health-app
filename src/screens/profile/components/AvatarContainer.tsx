@@ -4,17 +4,17 @@ import React from 'react';
 import {Image, StyleProp, StyleSheet, Text, View, ViewStyle} from 'react-native';
 
 interface avatarContainerProps {
-    name: string;
-    image: string;
+    name?: string;
+    picture?: string;
     style?: StyleProp<ViewStyle>;
 }
 
 const AvatarContainer = (props: avatarContainerProps) => {
-    const {name, image, style} = props;
+    const {name, picture, style} = props;
     return (
         <View style={[styles.avatarContainer, style]}>
             <View style={styles.avatarShadow}>
-                <Image source={{uri: image}} style={styles.profileImage} />
+                <Image source={{uri: picture}} style={styles.profileImage} />
             </View>
             <Text style={styles.name}>{name}</Text>
         </View>

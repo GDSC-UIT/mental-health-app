@@ -23,7 +23,6 @@ const AppNavigator: React.FC = () => {
         setToken(auth.token);
     }, [auth.token]);
 
-    console.log('Auth: ', auth);
     const renderRoot = () => {
         if (auth.user?.is_expert) {
             return <AppStack.Screen name="Expert" component={ExpertStackNavigator} />;

@@ -24,4 +24,5 @@ type User = {
     updated_at?: Date;
     deleted?: boolean;
     deleted_at?: Date;
+    picture?: string;
 };

@@ -22,7 +22,6 @@ const UserChatHomeScreen: React.FC<UserMainTabProps<'Chat'>> = ({navigation}) =>
         userApi
             .getAllUsers()
             .then(data => {
-                console.log('All Users:', data);
                 if (mounted) {
                     setUsers(data);
                 }

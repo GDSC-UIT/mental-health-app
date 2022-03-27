@@ -12,7 +12,6 @@ import Profile from '../components/Profile';
 const UserProfileChatScreen: React.FC<ExpertChatStackProps<'UserProfileChat'>> = ({navigation, route}) => {
     const {t} = useTranslation();
     const user = route.params.user;
-    console.log('UserProfileChatScreen: ', user);
     return (
         <Box bgColor={COLORS.gray_1} container safeArea={true}>
             <View style={{marginTop: scaleSize(15)}}>

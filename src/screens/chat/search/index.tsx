@@ -23,7 +23,6 @@ const ChatSearchScreen: React.FC = () => {
     const expertNavigation = useNavigation<ExpertChatStackProps<'ExpertSearchChat'>['navigation']>();
     const [contacts, setContacs] = useState<User[]>([]);
 
-    console.log('ChooseExpertScreen');
     useEffect(() => {
         let mounted = true;
         userApi

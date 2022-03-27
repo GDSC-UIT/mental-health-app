@@ -8,16 +8,16 @@ import {useTranslation} from 'react-i18next';
 import {StyleSheet, Text, View} from 'react-native';
 
 type ProfileProps = {
-    image: string;
+    picture: string;
     name: string;
     email: string;
 };
-const Profile: React.FC<ProfileProps> = ({email, image, name}) => {
+const Profile: React.FC<ProfileProps> = ({email, picture, name}) => {
     const {t} = useTranslation();
 
     return (
         <>
-            <AvatarContainer name={name} image={image} />
+            <AvatarContainer name={name} picture={picture} />
             <Text style={styles.label}>{t('About')}</Text>
             <View style={styles.descriptionContainer}>
                 <Text style={styles.descriptionText}>Email: {email}</Text>
