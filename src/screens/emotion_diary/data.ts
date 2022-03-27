@@ -3,7 +3,7 @@ export type Feeling = {
     color: string;
     value: number;
     y?: number;
-    x?: 13;
+    x?: number;
     percentage?: string;
 };
 export type FeelingColor = {

@@ -7,6 +7,7 @@ import Button from '@src/components/Button';
 import Loading from '@src/components/Loading';
 import Neumorph from '@src/components/Neumorph';
 import Stack from '@src/components/Stack';
+import {Post} from '@src/types';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, ListRenderItem, StyleSheet, Text, View} from 'react-native';

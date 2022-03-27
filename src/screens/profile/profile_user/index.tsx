@@ -1,5 +1,5 @@
 import {scaleSize} from '@core/utils';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import userApi from '@src/api/userApi';
 import {IMAGES} from '@src/assets';
 import {COLORS, FONTS, STYLES} from '@src/assets/const';
@@ -9,7 +9,7 @@ import {UserMainTabProps} from '@src/navigation/user/type';
 import Events from '@src/screens/explore/event/events';
 import {Event} from '@src/screens/explore/event/types';
 import {useAppSelector} from '@src/store';
-import { User } from '@src/types';
+import {User} from '@src/types';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
@@ -38,7 +38,7 @@ const UserProfileScreen: React.FC<UserMainTabProps<'Profile'>> = ({navigation}) 
                 try {
                     const getUser = await userApi.getProfile(user!.firebase_user_id);
                     setProfile(getUser);
-                }catch (error) {
+                } catch (error) {
                     console.log(error);
                 }
                 if (mounted) {
@@ -51,7 +51,7 @@ const UserProfileScreen: React.FC<UserMainTabProps<'Profile'>> = ({navigation}) 
             };
         }, []),
     );
-        
+
     useEffect(() => {
         if (reLoad) {
             let mounted = true;
@@ -60,8 +60,8 @@ const UserProfileScreen: React.FC<UserMainTabProps<'Profile'>> = ({navigation}) 
                 try {
                     const getUser = await userApi.getProfile(user!.firebase_user_id);
                     setProfile(getUser);
-                }catch (error) {
-                    console.log(error)
+                } catch (error) {
+                    console.log(error);
                 }
                 if (mounted) {
                     setLoading(false);

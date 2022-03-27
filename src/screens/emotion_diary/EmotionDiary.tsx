@@ -1,21 +1,20 @@
 import {scaleSize} from '@core/utils';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
+import feelApi from '@src/api/feelApi';
 import {COLORS, SIZES, STYLES} from '@src/assets/const';
 import Box from '@src/components/Box';
 import Button from '@src/components/Button';
+import Loading from '@src/components/Loading';
 import {UserProfileStackProps} from '@src/navigation/user/type';
+import {useAppSelector} from '@src/store';
+import {Feel} from '@src/types';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ScrollView, StyleSheet, View} from 'react-native';
 import {Calendar, DateData} from 'react-native-calendars';
+import {Feelings} from '../home/user/feeling';
 import Arrow from './components/Arrow';
 import DiaryCard from './components/DiaryCard';
-import {diaryList} from './data';
-import {useAppSelector} from '@src/store';
-import { User, Feel } from '@src/types';
-import feelApi from '@src/api/feelApi';
-import { Feelings } from '../home/user/feeling';
-import Loading from '@src/components/Loading';
 
 type Props = {};
 
@@ -23,22 +22,23 @@ const EmotionDiaryScreen: React.FC = () => {
     const {t} = useTranslation();
     const navigation = useNavigation<UserProfileStackProps<'EmotionDiary'>['navigation']>();
     const [selectedDate, setSelectedDate] = useState<DateData | null>(null);
-
-    const renderArrow = (direction: 'left' | 'right') => <Arrow variant={direction} />;
     const user = useAppSelector(state => state.auth.user);
-    const [reLoad, setReLoad] = useState(false);
     const [loading, setLoading] = useState(false);
     const [feel, setFeel] = useState<Feel[]>([]);
 
+    const renderArrow = (direction: 'left' | 'right') => <Arrow variant={direction} />;
     useFocusEffect(
         React.useCallback(() => {
             let mounted = true;
             setLoading(true);
             (async () => {
                 try {
-                    const res = await feelApi.getUserFeel(user.firebase_user_id)
-                    setFeel(res)
-                }catch (error) {
+                    const feels = await feelApi.getUserFeel(user.firebase_user_id);
+                    console.log(feels);
+                    if (mounted && feels) {
+                        setFeel(feels);
+                    }
+                } catch (error) {
                     console.log(error);
                 }
                 if (mounted) {
@@ -49,32 +49,9 @@ const EmotionDiaryScreen: React.FC = () => {
             return () => {
                 mounted = false;
             };
-        }, []),
+        }, [user.firebase_user_id]),
     );
-        
-    useEffect(() => {
-        if (reLoad) {
-            let mounted = true;
-            setLoading(true);
-            (async () => {
-                try {
-                    const res = await feelApi.getUserFeel(user.firebase_user_id)
-                    setFeel(res)
-                }catch (error) {
-                    console.log(error)
-                }
-                if (mounted) {
-                    setLoading(false);
-                    setReLoad(false);
-                }
-            })();
 
-            return () => {
-                mounted = false;
-            };
-        }
-    }, [reLoad]);
-    
     return (
         <Box bgColor={COLORS.gray_1} container safeArea={false}>
             <ScrollView style={{paddingHorizontal: scaleSize(10)}} contentContainerStyle={{justifyContent: 'center'}}>
@@ -124,14 +101,19 @@ const EmotionDiaryScreen: React.FC = () => {
                     style={styles.calendar}
                 />
                 {/* <ListDiary data={diaryList} /> */}
-                
+
                 {loading ? (
                     <Loading />
                 ) : (
                     <>
                         {feel.map(diary => (
-                            <DiaryCard key={diary.id} time={diary.created_at!} feel={Feelings[diary.feel_id - 1].name} reason={diary.reason}/>
-                ))}
+                            <DiaryCard
+                                key={diary.id}
+                                time={diary.created_at!}
+                                feel={Feelings[diary.feel_id - 1].name}
+                                reason={diary.reason}
+                            />
+                        ))}
                     </>
                 )}
             </ScrollView>
