@@ -7,8 +7,12 @@ import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {StyleSheet, Text, View} from 'react-native';
 
-const Profile: React.FC = props => {
-    const {image, name, email} = {image: RANDOM_IMAGE, name: 'Dat DT', email: 'datdt12@gmail.com'};
+type ProfileProps = {
+    image: string;
+    name: string;
+    email: string;
+};
+const Profile: React.FC<ProfileProps> = ({email, image, name}) => {
     const {t} = useTranslation();
 
     return (

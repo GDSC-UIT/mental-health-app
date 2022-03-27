@@ -1,6 +1,6 @@
 import {scaleSize} from '@core/utils';
 import {yupResolver} from '@hookform/resolvers/yup';
-import {COLORS} from '@src/assets/const';
+import {COLORS, NON_AVATAR} from '@src/assets/const';
 import Button from '@src/components/Button';
 import Input from '@src/components/Input';
 import {emailPasswordRegister} from '@src/services/auth';
@@ -69,7 +69,7 @@ const RegisterForm: React.FC = props => {
                     firebase_user_id: user?.uid,
                     email,
                     name: user.displayName || name,
-                    picture: user.photoURL,
+                    picture: user.photoURL ?? NON_AVATAR,
                 }),
             );
             Alert.alert('Notice', 'You have successfully register!');

@@ -8,24 +8,30 @@ import Messages from '@src/screens/chat/components/Message';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import {useRoute} from '@react-navigation/native';
 
 const MainChatScreen: React.FC<UserChatStackProps<'MainChat'>> = ({navigation, route}) => {
-    const {withStranger, user: messenger, ws} = route.params;
-    const withExpert = messenger.role === 'expert';
+    const {withStranger, user: partner} = route.params;
+
+    const withExpert = partner.is_expert;
     return (
         <Box bgColor={COLORS.gray_1} container safeArea>
             <HeaderChat
                 profile={!withStranger && withExpert}
                 emotion={!withStranger && withExpert}
                 user={route?.params?.user}
-                goToProfile={() => navigation.navigate('ExpertProfileChat')}
+                goToProfile={() =>
+                    navigation.navigate('ExpertProfileChat', {
+                        expert: partner,
+                    })
+                }
             />
             <View style={{flex: 1, zIndex: -10}}>
                 <IconButton
                     style={[styles.button, {left: scaleSize(-4)}]}
                     icon={<Ionicons name="images" size={20} color={COLORS.dark_gray_2} />}
                 />
-                <Messages ws={ws} />
+                <Messages friend={route.params.user} />
 
                 <IconButton
                     style={[styles.button, {right: scaleSize(15)}]}

@@ -7,9 +7,7 @@ import RegisterScreen from '@src/screens/auth/register';
 import RoleScreen from '@src/screens/auth/role';
 import {SearchScreen} from '@src/screens/explore';
 import IntroScreen from '@src/screens/intro';
-import SendResetPassEmail from '@src/screens/reset_password';
 import SendEmailScreen from '@src/screens/reset_password';
-import SplashScreen from '@src/screens/splash';
 import {useAppSelector} from '@src/store';
 import React, {useEffect} from 'react';
 import {AppStackParamList} from './AppStackParams';
@@ -25,7 +23,6 @@ const AppNavigator: React.FC = () => {
         setToken(auth.token);
     }, [auth.token]);
 
-    console.log('Auth: ', auth);
     const renderRoot = () => {
         if (auth.user?.is_expert) {
             return <AppStack.Screen name="Expert" component={ExpertStackNavigator} />;

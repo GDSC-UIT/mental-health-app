@@ -14,7 +14,7 @@ const AvatarContainer = (props: avatarContainerProps) => {
     return (
         <View style={[styles.avatarContainer, style]}>
             <View style={styles.avatarShadow}>
-                <Image source={{uri: 'https://picsum.photos/200'}} style={styles.profileImage} />
+                <Image source={{uri: image}} style={styles.profileImage} />
             </View>
             <Text style={styles.name}>{name}</Text>
         </View>
