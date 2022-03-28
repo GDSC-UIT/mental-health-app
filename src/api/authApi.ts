@@ -1,36 +1,29 @@
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
+import {AuthState} from '@src/store/authSlice';
+import axiosInstance, {setToken} from './instance';
 const authApi = {
-    login: (data: any) => {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve({
-                    token: 'token',
-                    refreshToken: 'refreshToken',
-                    user: {
-                        id: 'userId',
-                        name: 'name',
-                        email: 'email',
-                        role: 'expert',
-                        avatar: 'https://picsum.photos/200',
-                    },
-                });
-            }, 1000);
-        });
-    },
+    login: async (firebase_user_id: string): Promise<AuthState> => {
+        setToken(firebase_user_id);
+        const {
+            data: {data},
+        } = await axiosInstance.post('/user/login');
+        console.log('Login status: ', data);
 
-    refreshToken: () => {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve({
-                    token: 'token',
-                    refreshToken: 'refreshToken',
-                    user: {
-                        id: 'userId',
-                        name: 'name',
-                        email: 'email',
-                    },
-                });
-            }, 1000);
-        });
+        return {
+            token: firebase_user_id,
+            user: {...data},
+        };
+    },
+    register: async (user: any): Promise<AuthState> => {
+        console.log('before call api register:', user);
+        const {
+            data: {data},
+        } = await axiosInstance.post('/user', user);
+        console.log('Register status: ', data);
+        return {
+            token: data.firebase_user_id,
+            user: {...data},
+        };
     },
 };
 

@@ -1,8 +1,9 @@
 import {scaleSize} from '@core/utils';
+import {unwrapResult} from '@reduxjs/toolkit';
 import {IMAGES} from '@src/assets';
 import {COLORS, FONTS} from '@src/assets/const';
 import Text from '@src/components/Text';
-import {UserLoginScreenProps} from '@src/navigation/AppStackParams';
+import {AppStackProps} from '@src/navigation/AppStackParams';
 import {facebookLogin, googleSignIn} from '@src/services/auth';
 import {useAppDispatch} from '@src/store';
 import {authActions} from '@src/store/authSlice';
@@ -12,14 +13,19 @@ import {Alert, ScrollView, StyleSheet, View} from 'react-native';
 import ImageBackground from '../../components/ImageBackground';
 import LoginForm from '../../components/LoginForm';
 import LogoButton from '../../components/LogoButton';
-const UserLoginScreen: React.FC<UserLoginScreenProps> = ({navigation}) => {
+const UserLoginScreen: React.FC<AppStackProps<'UserLogin'>> = ({navigation}) => {
     const {t} = useTranslation();
     const dispatch = useAppDispatch();
 
     const handleFacebookLogin = async () => {
         const {user, error} = await facebookLogin();
         if (user) {
-            await dispatch(authActions.login(user));
+            const result = await dispatch(authActions.login(user.uid));
+            try {
+                await unwrapResult(result);
+            } catch (errorLogin: any) {
+                await dispatch(authActions.register(user));
+            }
         } else if (error) {
             Alert.alert('Error', error);
         }
@@ -27,15 +33,21 @@ const UserLoginScreen: React.FC<UserLoginScreenProps> = ({navigation}) => {
     const handleGoogleLogin = async () => {
         //Just work only Android
         const {user, error} = await googleSignIn();
+        console.log(user);
         if (user) {
-            await dispatch(authActions.login(user));
+            const result = await dispatch(authActions.login(user.uid));
+            try {
+                await unwrapResult(result);
+            } catch (errorLogin: any) {
+                await dispatch(authActions.register(user));
+            }
         } else if (error) {
             Alert.alert('Error', error);
         }
     };
     return (
         <ImageBackground source={IMAGES.bg_intro_step_1}>
-            <ScrollView contentContainerStyle={{paddingBottom: scaleSize(10)}}>
+            <ScrollView contentContainerStyle={{paddingBottom: scaleSize(20)}}>
                 <View style={styles.contentWrapper}>
                     <View style={styles.textWrapper}>
                         <Text style={styles.title}>{t('Welcome')}</Text>
@@ -88,7 +100,8 @@ const styles = StyleSheet.create({
     contentWrapper: {
         flex: 1,
         paddingHorizontal: scaleSize(30),
-        marginTop: '30%',
+        marginTop: '25%',
+        paddingTop: scaleSize(60),
     },
     textWrapper: {
         width: '100%',

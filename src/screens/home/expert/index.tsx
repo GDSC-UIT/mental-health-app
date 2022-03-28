@@ -1,8 +1,9 @@
 import {IMAGES} from '@src/assets';
+import {ExpertMainTabProps, ExpertStackProps} from '@src/navigation/expert/type';
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 
-const ExpertHomeScreen: React.FC = () => {
+const ExpertHomeScreen: React.FC<ExpertMainTabProps<'Home'>> = ({navigation}) => {
     return (
         <View style={styles.container}>
             <Image source={IMAGES.bg_intro_step_1} style={styles.backgroundTop} />
@@ -16,7 +17,7 @@ const ExpertHomeScreen: React.FC = () => {
                     <View style={styles.wrapper}>
                         <View style={styles.dot} />
                         <View style={styles.box}>
-                            <TouchableOpacity style={styles.Post}>
+                            <TouchableOpacity style={styles.Post} onPress={() => navigation.navigate('CreatePost')}>
                                 <Text style={styles.PostText}>Create post</Text>
                             </TouchableOpacity>
                         </View>
@@ -27,7 +28,7 @@ const ExpertHomeScreen: React.FC = () => {
                     <View style={styles.wrapper}>
                         <View style={styles.dot} />
                         <View style={styles.box}>
-                            <TouchableOpacity style={styles.Post}>
+                            <TouchableOpacity style={styles.Post} onPress={() => navigation.navigate('CreateEvent')}>
                                 <Text style={styles.PostText}>Create event</Text>
                             </TouchableOpacity>
                         </View>

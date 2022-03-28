@@ -5,11 +5,11 @@ import {COLORS, STYLES} from '@src/assets/const';
 import Button from '@src/components/Button';
 import Input from '@src/components/Input';
 import Text from '@src/components/Text';
-import {UserLoginScreenProps} from '@src/navigation/AppStackParams';
+import {AppStackProps} from '@src/navigation/AppStackParams';
 import {emailPasswordLogin} from '@src/services/auth';
 import {useAppDispatch, useAppSelector} from '@src/store';
 import {authActions} from '@src/store/authSlice';
-import React from 'react';
+import React, {useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
 import {useTranslation} from 'react-i18next';
 import {Alert, StyleSheet, View} from 'react-native';
@@ -29,8 +29,9 @@ export type LoginData = {
 type LoginFormProps = {};
 const LoginForm: React.FC<LoginFormProps> = ({}) => {
     const {t} = useTranslation();
-    const {navigate} = useNavigation<UserLoginScreenProps['navigation']>();
-    const {loading, error: authError} = useAppSelector(state => state.auth);
+    const {navigate} = useNavigation<AppStackProps<'UserLogin'>['navigation']>();
+    const {error: authError} = useAppSelector(state => state.auth);
+    const [loading, setLoading] = useState(false);
     const dispatch = useAppDispatch();
     const {
         control,
@@ -43,16 +44,17 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
         },
         resolver: yupResolver(schema),
     });
+    console.log(loading);
     const onSubmit = async ({email, password}: LoginData) => {
-        dispatch(authActions.loading());
+        setLoading(true);
         const {user, error} = await emailPasswordLogin({email, password});
         console.log({user, error});
         if (!error) {
-            dispatch(authActions.login(user));
+            await dispatch(authActions.login(user?.uid));
         } else {
             Alert.alert(error);
         }
-        dispatch(authActions.stopLoading());
+        setLoading(false);
 
         // await dispatch(authActions.login(user));
     };
@@ -93,7 +95,7 @@ const LoginForm: React.FC<LoginFormProps> = ({}) => {
             />
 
             {!!authError && <Text style={STYLES.error}>{authError}</Text>}
-            <Text style={styles.link} onPress={() => navigate('SendEmail')}>
+            <Text style={styles.link} onPress={() => navigate('SendResetPassEmail')}>
                 {t('Forgot password?')}
             </Text>
             <View style={{alignItems: 'center', paddingTop: scaleSize(40)}}>

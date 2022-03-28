@@ -30,4 +30,10 @@ export default {
 
     //Chat
     lineChat: require('./chat/line.png'),
+    user_avatar: require('./user_avatar.png'),
+
+    splash: {
+        reflex: require('./splash/reflex.png'),
+        shape: require('./splash/shape.png'),
+    },
 };

@@ -1,5 +1,5 @@
 import {scaleSize} from '@core/utils';
-import {COLORS, FONTS} from '@src/assets/const';
+import {COLORS, FONTS, NON_AVATAR} from '@src/assets/const';
 import Box from '@src/components/Box';
 import Button from '@src/components/Button';
 import {ExpertChatStackProps} from '@src/navigation/expert/type';
@@ -9,9 +9,9 @@ import {ScrollView, StyleSheet, View} from 'react-native';
 import BackButton from '../components/BackButton';
 import Profile from '../components/Profile';
 
-const UserProfileChatScreen: React.FC<ExpertChatStackProps<'UserProfileChat'>> = ({navigation}) => {
+const UserProfileChatScreen: React.FC<ExpertChatStackProps<'UserProfileChat'>> = ({navigation, route}) => {
     const {t} = useTranslation();
-
+    const {user, showEmotion} = route.params;
     return (
         <Box bgColor={COLORS.gray_1} container safeArea={true}>
             <View style={{marginTop: scaleSize(15)}}>
@@ -19,18 +19,20 @@ const UserProfileChatScreen: React.FC<ExpertChatStackProps<'UserProfileChat'>> =
             </View>
 
             <ScrollView contentContainerStyle={{flexGrow: 1}}>
-                <Profile />
-                <Button
-                    title={t('Emotion Diary')}
-                    style={{
-                        marginTop: scaleSize(25),
-                        width: scaleSize(180),
-                        height: scaleSize(40),
-                        alignSelf: 'center',
-                    }}
-                    textStyle={{color: COLORS.dark_blue_2}}
-                    onPress={() => navigation.navigate('DashboardEmotionDiary')}
-                />
+                <Profile name={user.name} picture={user.picture ?? NON_AVATAR} email={user.email} />
+                {showEmotion && (
+                    <Button
+                        title={t('Emotion Diary')}
+                        style={{
+                            marginTop: scaleSize(25),
+                            width: scaleSize(180),
+                            height: scaleSize(40),
+                            alignSelf: 'center',
+                        }}
+                        textStyle={{color: COLORS.dark_blue_2}}
+                        onPress={() => navigation.navigate('DashboardEmotionDiary')}
+                    />
+                )}
             </ScrollView>
         </Box>
     );

@@ -5,7 +5,7 @@ import TabBarButton from '@src/components/TabBarButton';
 import ExpertChatHomeScreen from '@src/screens/chat/expert';
 import ExploreScreen from '@src/screens/explore';
 import ExpertHomeScreen from '@src/screens/home/expert';
-import ExpertProfileScreen from '@src/screens/profile/Expert';
+import ExpertProfileScreen from '@src/screens/profile/profile_expert';
 //Profile
 import React from 'react';
 import {View} from 'react-native';
