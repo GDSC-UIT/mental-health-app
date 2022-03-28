@@ -227,7 +227,7 @@ const HeaderChat: React.FC<IHeaderChat> = props => {
                                         }}>
                                         <Text style={styles.optionsText}>{t('Go to profile')}</Text>
                                     </TouchableOpacity>
-                                    <Image source={IMAGES.line} style={styles.lineOption} />
+                                    <Image source={IMAGES.lineChat} style={styles.lineOption} />
                                 </View>
                             )}
 
@@ -236,14 +236,14 @@ const HeaderChat: React.FC<IHeaderChat> = props => {
                                     <TouchableOpacity onPress={shareEmotionDiaryAlert}>
                                         <Text style={styles.optionsText}>{t('Show Emotion Diary')}</Text>
                                     </TouchableOpacity>
-                                    <Image source={IMAGES.line} style={styles.lineOption} />
+                                    <Image source={IMAGES.lineChat} style={styles.lineOption} />
                                 </View>
                             )}
 
                             <TouchableOpacity onPress={deleteConversationAlert}>
                                 <Text style={styles.optionsText}>{t('Delete conversation')}</Text>
                             </TouchableOpacity>
-                            <Image source={IMAGES.line} style={styles.lineOption} />
+                            <Image source={IMAGES.lineChat} style={styles.lineOption} />
                             <TouchableOpacity onPress={reportAlert}>
                                 <Text style={styles.optionsText}>{t('Report')}</Text>
                             </TouchableOpacity>
@@ -251,7 +251,7 @@ const HeaderChat: React.FC<IHeaderChat> = props => {
                     ) : null}
                 </View>
             </View>
-            <Image source={IMAGES.line} style={styles.line} />
+            <Image source={IMAGES.lineChat} style={styles.line} />
         </Box>
     );
 };
