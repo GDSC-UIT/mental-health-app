@@ -2,30 +2,51 @@ import {scaleSize} from '@core/utils';
 import {FONTS} from '@src/assets/const';
 import Box from '@src/components/Box';
 import Button from '@src/components/Button';
+import Loading from '@src/components/Loading';
 import Neumorph from '@src/components/Neumorph';
 import Stack from '@src/components/Stack';
-import React, {useState} from 'react';
+import {Post} from '@src/types';
+import {convertEmotionIntoNumber, POST_EMOTION} from '@src/utils';
+import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {FlatList, ListRenderItem, StyleSheet, Text, View} from 'react-native';
-import ReactNativeModal from 'react-native-modal';
-import DetailsModal from '../DetailsModal';
+import {FlatList, ListRenderItem, StyleSheet} from 'react-native';
 import PostDetails from '../post_details';
 import PostCard from './components/PostCard';
-import Posts from './posts';
-import {Post} from './types';
-interface IProps {}
-
-const PostsScreen = ({}: IProps) => {
+// import Posts from './posts';
+// import {Post} from './types';
+type Props = {
+    postList: Post[];
+    loading?: boolean;
+    forceRefresh?: () => void;
+};
+type Filter = 'All' | 'Happy' | 'Sad' | 'Scared' | 'Angry' | 'Worry' | 'Normal' | 'Depression';
+const PostsScreen: React.FC<Props> = ({postList, loading, forceRefresh}) => {
     const {t} = useTranslation();
-    const [modalVisible, setModalVisible] = useState(false);
+    const [post, setPost] = useState<Post>();
+    const [filteredPosts, setFilteredPost] = useState<Post[]>([]);
+    const [filter, setFilter] = useState<Filter>('All');
+
+    console.log('Filter', filter);
+    useEffect(() => {
+        if (postList) {
+            if (filter === 'All') {
+                setFilteredPost(postList);
+            } else {
+                setFilteredPost(postList.filter(p => convertEmotionIntoNumber(p.emotion) === filter));
+            }
+        }
+    }, [postList, filter]);
 
     const renderItem: ListRenderItem<Post> = ({item}) => {
         return (
+            // FIXME: now Data not correct
             <PostCard
                 title={item.title}
-                author={item.author}
-                image={item.image}
-                onPress={() => setModalVisible(true)}
+                author={item.expert.name}
+                image={item.picture}
+                onPress={() => {
+                    setPost(item);
+                }}
             />
         );
     };
@@ -33,29 +54,71 @@ const PostsScreen = ({}: IProps) => {
         <Box container safeArea={false}>
             <Stack direction="row" space={scaleSize(10)} style={styles.tabWrapper}>
                 <Neumorph borderRadius={scaleSize(60)}>
-                    <Button title={t('All')} style={styles.button} textStyle={{...FONTS.h3}} onPress={() => {}} />
+                    <Button
+                        title={t('All')}
+                        selected={filter === 'All'}
+                        style={styles.button}
+                        textStyle={{...FONTS.h3}}
+                        onPress={() => {
+                            setFilter('All');
+                        }}
+                    />
                 </Neumorph>
                 <Neumorph borderRadius={scaleSize(60)}>
-                    <Button title={t('Happy')} style={styles.button} textStyle={{...FONTS.h3}} onPress={() => {}} />
+                    <Button
+                        title={t('Happy')}
+                        selected={filter === 'Happy'}
+                        style={styles.button}
+                        textStyle={{...FONTS.h3}}
+                        onPress={() => {
+                            setFilter('Happy');
+                        }}
+                    />
                 </Neumorph>
                 <Neumorph borderRadius={scaleSize(60)}>
-                    <Button title={t('Sad')} style={styles.button} textStyle={{...FONTS.h3}} onPress={() => {}} />
+                    <Button
+                        title={t('Sad')}
+                        selected={filter === 'Sad'}
+                        style={styles.button}
+                        textStyle={{...FONTS.h3}}
+                        onPress={() => {
+                            setFilter('Sad');
+                        }}
+                    />
                 </Neumorph>
                 <Neumorph borderRadius={scaleSize(60)}>
-                    <Button title={t('Scared')} style={styles.button} textStyle={{...FONTS.h3}} onPress={() => {}} />
+                    <Button
+                        title={t('Scared')}
+                        selected={filter === 'Scared'}
+                        style={styles.button}
+                        textStyle={{...FONTS.h3}}
+                        onPress={() => {
+                            setFilter('Scared');
+                        }}
+                    />
                 </Neumorph>
             </Stack>
-            <FlatList
-                data={Posts}
-                renderItem={renderItem}
-                numColumns={2}
-                keyExtractor={item => item.id}
-                columnWrapperStyle={{justifyContent: 'space-between'}}
-                contentContainerStyle={{paddingBottom: scaleSize(76)}}
-            />
-            <DetailsModal isVisible={modalVisible} onClose={() => setModalVisible(false)}>
-                <PostDetails />
-            </DetailsModal>
+            {loading ? (
+                <Loading />
+            ) : (
+                <FlatList
+                    data={filteredPosts}
+                    renderItem={renderItem}
+                    numColumns={2}
+                    keyExtractor={item => item.id}
+                    columnWrapperStyle={{justifyContent: 'space-between'}}
+                    contentContainerStyle={{paddingBottom: scaleSize(76)}}
+                />
+            )}
+
+            {post && (
+                <PostDetails
+                    post={post}
+                    modalVisible={!!post}
+                    setModalVisible={() => setPost(undefined)}
+                    forceRefresh={forceRefresh}
+                />
+            )}
         </Box>
     );
 };

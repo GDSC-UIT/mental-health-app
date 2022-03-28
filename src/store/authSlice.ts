@@ -1,63 +1,66 @@
+import {FirebaseAuthTypes} from '@react-native-firebase/auth';
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {authApi} from '@src/api';
+import {User} from '@src/types';
 
 export type AuthState = Partial<{
     token: string;
-    refreshToken: string;
-    userId: string;
-    user: any;
-    loading: boolean;
+    user: User;
     error: string;
 }>;
 
-const login = createAsyncThunk('auth/login', async (data: any) => {
-    const response = await authApi.login(data);
-    return response;
+const login = createAsyncThunk('auth/login', async (firebase_user_id: string) => {
+    const authState = await authApi.login(firebase_user_id);
+    return authState;
+});
+const register = createAsyncThunk('auth/register', async (user: FirebaseAuthTypes.User) => {
+    const authState = await authApi.register({
+        firebase_user_id: user?.uid,
+        email: user.email,
+        name: user.displayName,
+        picture: user.photoURL,
+    });
+    return authState;
 });
 
 export const initialState: AuthState = {
     error: undefined,
-    loading: false,
-    refreshToken: undefined,
     token: undefined,
     user: undefined,
-    userId: undefined,
 };
 
 export const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        loading: state => {
-            state.loading = true;
-        },
-        logout: state => {
+        logout: () => {
             return initialState;
-        },
-        stopLoading: state => {
-            state.loading = false;
         },
         update: (state, action: PayloadAction<AuthState>) => {
             state = {...state, ...action.payload};
         },
+        refreshUser: (state, action: PayloadAction<User>) => {
+            state.user = {...state.user, ...action.payload};
+        },
     },
     extraReducers: builder => {
-        builder.addCase(login.pending, state => {
-            state.loading = true;
-        });
         builder.addCase(login.fulfilled, (state, action: PayloadAction<any>) => {
-            return {...state, loading: false, ...action.payload};
+            return {...state, ...action.payload};
         });
-        builder.addCase(login.rejected, (state, {error}) => {
+        builder.addCase(login.rejected, () => {
             return initialState;
         });
-        // builder.addCase(PURGE, state => {
-        //     customEntityAdapter.removeAll(state);
-        // });
+        builder.addCase(register.fulfilled, (state, action: PayloadAction<any>) => {
+            return {...state, ...action.payload};
+        });
+        builder.addCase(register.rejected, (state, action: PayloadAction<any>) => {
+            return initialState;
+        });
     },
 });
 
 export const authActions = {
     ...authSlice.actions,
     login,
+    register,
 };
