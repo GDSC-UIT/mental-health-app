@@ -1,6 +1,3 @@
-import UserChatHomeScreen from "@src/screens/chat/user";
-import { int32ARGBColor } from "react-native-svg";
-
 export type Post = {
     id: string;
     title: string;
@@ -38,4 +35,4 @@ export type Feel = {
     updated_at?: Date;
     deleted?: boolean;
     deleted_at?: Date;
-}
+};
