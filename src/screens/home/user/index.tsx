@@ -53,7 +53,7 @@ const HomeScreen: React.FC = () => {
             <Image source={IMAGES.home_user.tam_giac} style={styles.backgroundBottom} />
 
             <View style={styles.textContainer}>
-                <Text style={styles.text1}>Hi {user?.name},</Text>
+                <Text style={styles.text1}>t{'Hi'} {user?.name},</Text>
                 <Text style={styles.text2}>{t('Suggest for you')}</Text>
             </View>
 

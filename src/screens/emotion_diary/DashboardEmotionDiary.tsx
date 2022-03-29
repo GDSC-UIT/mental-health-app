@@ -53,7 +53,7 @@ const DashboardEmotionScreen: React.FC<Props> = props => {
         (async () => {
             try {
                 let i = 1;
-                const res = await feelApi.getUserFeel(user.firebase_user_id);
+                const res = await feelApi.getUserFeel(user!.firebase_user_id);
                 if (mounted && res) {
                     data.map(item => {
                         const feel = res.filter(detail => detail.feel_id === i);
@@ -74,7 +74,7 @@ const DashboardEmotionScreen: React.FC<Props> = props => {
         return () => {
             mounted = false;
         };
-    }, [user.firebase_user_id]);
+    }, [user!.firebase_user_id]);
 
     return (
         <Box bgColor={COLORS.gray_1} safeArea={false} container>
@@ -158,7 +158,7 @@ const DashboardEmotionScreen: React.FC<Props> = props => {
                             />
                             <View style={styles.centerCircle}>
                                 {!selectedFeel ? (
-                                    <Text style={[styles.text]}>Dashboard</Text>
+                                    <Text style={[styles.text]}>{t("Dashboard")}</Text>
                                 ) : (
                                     <>
                                         <Text style={[styles.text, {color: selectedFeel?.color}]}>

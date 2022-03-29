@@ -13,7 +13,7 @@ const ExpertHomeScreen: React.FC<ExpertMainTabProps<'Home'>> = ({navigation}) =>
             <Image source={IMAGES.bg_login_1} style={styles.backgroundBottom} resizeMode="contain" blurRadius={10} />
 
             <View style={styles.textContainer}>
-                <Text style={styles.text}>Hi {user?.name}, </Text>
+                <Text style={styles.text}>{t('Hi')} {user?.name}, </Text>
                 <Text style={styles.text}>{t('Have a nice day')} </Text>
 
                 <View style={styles.spacebetween}>
@@ -21,7 +21,7 @@ const ExpertHomeScreen: React.FC<ExpertMainTabProps<'Home'>> = ({navigation}) =>
                         <View style={styles.dot} />
                         <View style={styles.box}>
                             <TouchableOpacity style={styles.Post} onPress={() => navigation.navigate('CreatePost')}>
-                                <Text style={styles.PostText}>Create post</Text>
+                                <Text style={styles.PostText}>{t('Create post')}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -32,7 +32,7 @@ const ExpertHomeScreen: React.FC<ExpertMainTabProps<'Home'>> = ({navigation}) =>
                         <View style={styles.dot} />
                         <View style={styles.box}>
                             <TouchableOpacity style={styles.Post} onPress={() => navigation.navigate('CreateEvent')}>
-                                <Text style={styles.PostText}>Create event</Text>
+                                <Text style={styles.PostText}>{t('Create event')}</Text>
                             </TouchableOpacity>
                         </View>
                     </View>

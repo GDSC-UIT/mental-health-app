@@ -82,7 +82,7 @@ const RegisterForm: React.FC = props => {
                 }}
                 render={({field: {onChange, onBlur, value}}) => (
                     <Input
-                        placeholder="Name"
+                        placeholder={t("Name")}
                         style={{marginTop: scaleSize(16)}}
                         onBlur={onBlur}
                         onChangeText={onChange}

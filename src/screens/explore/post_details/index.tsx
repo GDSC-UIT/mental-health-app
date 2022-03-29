@@ -30,7 +30,7 @@ const PostDetails: React.FC<Props> = ({post: selectedPost, modalVisible, setModa
             await postApi.deletePost(post.id);
             forceRefresh?.();
             setOptionModalVisible(false);
-            Alert.alert('Success', 'Post deleted successfully!', [
+            Alert.alert(t('Success'), t('Post deleted successfully!'), [
                 {
                     text: 'OK',
                     onPress: () => {
@@ -40,7 +40,7 @@ const PostDetails: React.FC<Props> = ({post: selectedPost, modalVisible, setModa
             ]);
         } catch (error) {
             console.log(error);
-            Alert.alert('Error', 'Server error occurred!');
+            Alert.alert(t('Error'), t('Server error occurred!'));
         }
     };
     const handleEditPress = () => {
@@ -101,16 +101,16 @@ const PostDetails: React.FC<Props> = ({post: selectedPost, modalVisible, setModa
                 }}
                 onDeletePress={() => {
                     Alert.alert(
-                        'Delete',
-                        'Are you sure you want to delete this entry?',
+                        t('Delete'),
+                        t('Are you sure you want to delete this entry?'),
                         [
                             {
-                                text: 'Delete',
+                                text: t('Delete'),
                                 onPress: handleDeletePress,
                                 style: 'default',
                             },
                             {
-                                text: 'Cancel',
+                                text: '',
                                 style: 'cancel',
                             },
                         ],

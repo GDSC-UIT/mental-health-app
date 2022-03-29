@@ -55,7 +55,7 @@ const UserProfileScreen: React.FC<UserMainTabProps<'Profile'>> = ({navigation}) 
                 </View>
 
                 <Button
-                    title="Emotion Diary"
+                    title={t("Emotion Diary")}
                     style={{
                         width: scaleSize(155),
                         height: scaleSize(40),

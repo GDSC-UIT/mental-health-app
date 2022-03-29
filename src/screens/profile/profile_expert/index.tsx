@@ -96,7 +96,7 @@ const ExpertProfileScreen: React.FC<ExpertMainTabProps<'Profile'>> = ({navigatio
                 ) : posts.length !== 0 ? (
                     <View style={{paddingHorizontal: scaleSize(14)}}>{posts.map(renderItem)}</View>
                 ) : (
-                    <Text style={styles.noEventText}>No posts or events</Text>
+                    <Text style={styles.noEventText}>{t('No posts or events')}</Text>
                 )}
             </ScrollView>
         </SafeAreaView>

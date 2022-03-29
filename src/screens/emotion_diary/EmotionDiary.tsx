@@ -6,6 +6,7 @@ import Box from '@src/components/Box';
 import Button from '@src/components/Button';
 import Loading from '@src/components/Loading';
 import {UserProfileStackProps} from '@src/navigation/user/type';
+import { useAppSelector } from '@src/store';
 import {Feel} from '@src/types';
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -21,6 +22,7 @@ const EmotionDiaryScreen: React.FC = () => {
     const {t} = useTranslation();
     const navigation = useNavigation<UserProfileStackProps<'EmotionDiary'>['navigation']>();
     const [selectedDate, setSelectedDate] = useState<DateData | null>(null);
+    const user = useAppSelector(state => state.auth.user);
     const [loading, setLoading] = useState(false);
     const [feel, setFeel] = useState<Feel[]>([]);
 
@@ -30,7 +32,7 @@ const EmotionDiaryScreen: React.FC = () => {
             setLoading(true);
             (async () => {
                 try {
-                    const feels = await feelApi.getUserFeel();
+                    const feels = await feelApi.getUserFeel(user!.firebase_user_id);
                     console.log('Feels: ', feels);
                     if (mounted && feels) {
                         setFeel(feels);
@@ -104,14 +106,24 @@ const EmotionDiaryScreen: React.FC = () => {
                     <Loading />
                 ) : (
                     <>
-                        {feel.map(diary => (
-                            <DiaryCard
+                        {feel.map(diary => {
+                            let tmpString = diary.created_at!.toString()
+                            var tmpNumber: number = +tmpString;
+                            var getTime = new Date(tmpNumber * 1000);
+                            {getTime.getDate() == selectedDate?.day && getTime.getMonth() == selectedDate.month && getTime.getFullYear() == selectedDate.year ? (
+                                <>
+                                <DiaryCard
                                 key={diary.id}
                                 time={diary.created_at!}
                                 feel={Feelings[diary.feel_id - 1].name}
                                 reason={diary.reason}
-                            />
-                        ))}
+                                />
+                                </>
+                            ) : (
+                            <></>    
+                            )}
+                            
+                        })}
                     </>
                 )}
             </ScrollView>
