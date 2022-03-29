@@ -118,7 +118,7 @@ const EmotionDiaryScreen: React.FC = () => {
                     feel.map(diary => (
                         <DiaryCard
                             key={diary.id}
-                            time={diary?.created_at ?? new Date()}
+                            time={new Date(diary?.created_at! * 1000)}
                             feel={Feelings[diary.feel_id - 1].name}
                             reason={diary.reason}
                         />

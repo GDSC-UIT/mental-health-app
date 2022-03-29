@@ -55,12 +55,11 @@ const UserProfileScreen: React.FC<UserMainTabProps<'Profile'>> = ({navigation}) 
                 </View>
 
                 <Button
-                    title={t("Emotion Diary")}
+                    title={t('Emotion Diary')}
                     style={{
-                        width: scaleSize(155),
-                        height: scaleSize(40),
                         alignSelf: 'center',
                         marginTop: scaleSize(25),
+                        paddingVertical: scaleSize(12),
                     }}
                     textStyle={{color: COLORS.dark_blue_2, fontSize: scaleSize(16)}}
                     onPress={() =>
