@@ -4,11 +4,11 @@ import postApi from '@src/api/postApi';
 import {IMAGES} from '@src/assets';
 import {SIZES, STYLES} from '@src/assets/const';
 import Loading from '@src/components/Loading';
-import {useAppDispatch, useAppSelector} from '@src/store';
+import {useAppSelector} from '@src/store';
 import {Post} from '@src/types';
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Image, NativeModules, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FeelingModal from './components/FeelingModal';
 import PostCard from './components/PostCard';
@@ -54,7 +54,7 @@ const HomeScreen: React.FC = () => {
 
             <View style={styles.textContainer}>
                 <Text style={styles.text1}>Hi {user?.name},</Text>
-                <Text style={styles.text2}>Suggest for you </Text>
+                <Text style={styles.text2}>{t('Suggest for you')}</Text>
             </View>
 
             <View
