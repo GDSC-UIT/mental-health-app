@@ -22,11 +22,15 @@ const ExpertProfileScreen: React.FC<ExpertMainTabProps<'Profile'>> = ({navigatio
         return <EventCard event={item} key={item.id} />;
     };
     const [optionsViewVisible, setOptionsViewVisible] = useState(false);
-    const {t} = useTranslation();
+    const {t, i18n} = useTranslation();
     const user = useAppSelector(state => state.auth.user);
     const [loading, setLoading] = useState(false);
     const [posts, setPosts] = useState<Post[]>([]);
+    const selectedLanguageCode = i18n.language;
 
+    const handleChangeLanguagePress = () => {
+        return i18n.changeLanguage(selectedLanguageCode === 'en' ? 'vi' : 'en');
+    };
     useFocusEffect(
         React.useCallback(() => {
             let mounted = true;
@@ -62,8 +66,10 @@ const ExpertProfileScreen: React.FC<ExpertMainTabProps<'Profile'>> = ({navigatio
                             <Text style={styles.optionsText}>{t('Edit Profile')}</Text>
                         </TouchableOpacity>
                         <Image source={IMAGES.optionsLine} style={styles.lineOption} />
-                        <TouchableOpacity>
-                            <Text style={styles.optionsText}>{t('Change to Vietnamese')}</Text>
+                        <TouchableOpacity onPress={handleChangeLanguagePress}>
+                            <Text style={styles.optionsText}>
+                                {selectedLanguageCode === 'vn' ? t('Chuyển sang tiếng anh') : t('Change to Vietnamese')}
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 </PopupDropdown>

@@ -27,7 +27,7 @@ const PostDetails: React.FC<Props> = ({post, onClose}) => {
                         paddingHorizontal: scaleSize(20),
                         paddingBottom: scaleSize(40),
                     }}>
-                    <Text style={styles.smallText}>Thứ 6, 21/1/2022, 22:41 {formatDate}</Text>
+                    <Text style={styles.smallText}>{formatDate}</Text>
                     <View style={styles.marginY}>
                         <Text style={styles.title}>{post?.title}</Text>
                     </View>

@@ -4,7 +4,6 @@ import postApi from '@src/api/postApi';
 import {IMAGES} from '@src/assets';
 import {SIZES, STYLES} from '@src/assets/const';
 import Loading from '@src/components/Loading';
-import {useAppDispatch} from '@src/store';
 import {Post} from '@src/types';
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -53,7 +52,7 @@ const HomeScreen: React.FC = () => {
 
             <View style={styles.textContainer}>
                 <Text style={styles.text1}>Hi Tan,</Text>
-                <Text style={styles.text2}>Suggest for you </Text>
+                <Text style={styles.text2}>{t('Suggest for you')}</Text>
             </View>
 
             <View
