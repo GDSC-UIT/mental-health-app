@@ -1,5 +1,5 @@
 import {Feel} from '@src/types';
-import axiosInstance, { setToken } from './instance';
+import axiosInstance, {setToken} from './instance';
 
 const feelApi = {
     getUserFeel: async (firebase_user_id: string): Promise<Feel[]> => {

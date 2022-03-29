@@ -13,7 +13,9 @@ const ExpertHomeScreen: React.FC<ExpertMainTabProps<'Home'>> = ({navigation}) =>
             <Image source={IMAGES.bg_login_1} style={styles.backgroundBottom} resizeMode="contain" blurRadius={10} />
 
             <View style={styles.textContainer}>
-                <Text style={styles.text}>{t('Hi')} {user?.name}, </Text>
+                <Text style={styles.text}>
+                    {t('Hi')} {user?.name},
+                </Text>
                 <Text style={styles.text}>{t('Have a nice day')} </Text>
 
                 <View style={styles.spacebetween}>

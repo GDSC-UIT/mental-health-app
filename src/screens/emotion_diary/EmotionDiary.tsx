@@ -6,8 +6,10 @@ import Box from '@src/components/Box';
 import Button from '@src/components/Button';
 import Loading from '@src/components/Loading';
 import {UserProfileStackProps} from '@src/navigation/user/type';
-import { useAppSelector } from '@src/store';
+import {useAppSelector} from '@src/store';
 import {Feel} from '@src/types';
+import {isDateEqual} from '@src/utils';
+import dayjs from 'dayjs';
 import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ScrollView, StyleSheet, View} from 'react-native';
@@ -21,7 +23,7 @@ type Props = {};
 const EmotionDiaryScreen: React.FC = () => {
     const {t} = useTranslation();
     const navigation = useNavigation<UserProfileStackProps<'EmotionDiary'>['navigation']>();
-    const [selectedDate, setSelectedDate] = useState<DateData | null>(null);
+    const [selectedDate, setSelectedDate] = useState<DateData>();
     const user = useAppSelector(state => state.auth.user);
     const [loading, setLoading] = useState(false);
     const [feel, setFeel] = useState<Feel[]>([]);
@@ -32,10 +34,19 @@ const EmotionDiaryScreen: React.FC = () => {
             setLoading(true);
             (async () => {
                 try {
+                    const date = selectedDate
+                        ? new Date(selectedDate.year, selectedDate.month - 1, selectedDate.day + 1)
+                        : new Date();
+                    console.log('Date: ', date);
                     const feels = await feelApi.getUserFeel(user!.firebase_user_id);
-                    console.log('Feels: ', feels);
                     if (mounted && feels) {
-                        setFeel(feels);
+                        setFeel(
+                            feels.filter(f => {
+                                const feelDate = new Date(f.created_at! * 1000);
+                                console.log('Feel date', feelDate);
+                                return isDateEqual(feelDate, date);
+                            }),
+                        );
                     }
                 } catch (error) {
                     console.log(error);
@@ -48,7 +59,7 @@ const EmotionDiaryScreen: React.FC = () => {
             return () => {
                 mounted = false;
             };
-        }, []),
+        }, [user, selectedDate]),
     );
     const renderArrow = (direction: 'left' | 'right') => <Arrow variant={direction} />;
 
@@ -100,31 +111,18 @@ const EmotionDiaryScreen: React.FC = () => {
                     // displayLoadingIndicator={true}
                     style={styles.calendar}
                 />
-                {/* <ListDiary data={diaryList} /> */}
 
                 {loading ? (
                     <Loading />
                 ) : (
-                    <>
-                        {feel.map(diary => {
-                            let tmpString = diary.created_at!.toString()
-                            var tmpNumber: number = +tmpString;
-                            var getTime = new Date(tmpNumber * 1000);
-                            {getTime.getDate() == selectedDate?.day && getTime.getMonth() == selectedDate.month && getTime.getFullYear() == selectedDate.year ? (
-                                <>
-                                <DiaryCard
-                                key={diary.id}
-                                time={diary.created_at!}
-                                feel={Feelings[diary.feel_id - 1].name}
-                                reason={diary.reason}
-                                />
-                                </>
-                            ) : (
-                            <></>    
-                            )}
-                            
-                        })}
-                    </>
+                    feel.map(diary => (
+                        <DiaryCard
+                            key={diary.id}
+                            time={diary?.created_at ?? new Date()}
+                            feel={Feelings[diary.feel_id - 1].name}
+                            reason={diary.reason}
+                        />
+                    ))
                 )}
             </ScrollView>
         </Box>
