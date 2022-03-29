@@ -1,11 +1,12 @@
 import {IMAGES} from '@src/assets';
 import {ExpertMainTabProps, ExpertStackProps} from '@src/navigation/expert/type';
-import { useAppSelector } from '@src/store';
+import {useAppSelector} from '@src/store';
 import React from 'react';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-
+import {useTranslation} from 'react-i18next';
 const ExpertHomeScreen: React.FC<ExpertMainTabProps<'Home'>> = ({navigation}) => {
     const user = useAppSelector(state => state.auth.user);
+    const {t} = useTranslation();
     return (
         <View style={styles.container}>
             <Image source={IMAGES.bg_intro_step_1} style={styles.backgroundTop} />
@@ -13,7 +14,7 @@ const ExpertHomeScreen: React.FC<ExpertMainTabProps<'Home'>> = ({navigation}) =>
 
             <View style={styles.textContainer}>
                 <Text style={styles.text}>Hi {user?.name}, </Text>
-                <Text style={styles.text}>Have a nice day </Text>
+                <Text style={styles.text}>{t('Have a nice day')} </Text>
 
                 <View style={styles.spacebetween}>
                     <View style={styles.wrapper}>
