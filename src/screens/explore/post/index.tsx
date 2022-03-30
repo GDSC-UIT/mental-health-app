@@ -6,7 +6,7 @@ import Loading from '@src/components/Loading';
 import Neumorph from '@src/components/Neumorph';
 import Stack from '@src/components/Stack';
 import {Post} from '@src/types';
-import {convertEmotionIntoNumber, POST_EMOTION} from '@src/utils';
+import {convertEmotion, POST_EMOTION} from '@src/utils';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, ListRenderItem, ScrollView, StyleSheet} from 'react-native';
@@ -32,7 +32,7 @@ const PostsScreen: React.FC<Props> = ({postList, loading, forceRefresh}) => {
             if (filter === 'All') {
                 setFilteredPost(postList);
             } else {
-                setFilteredPost(postList.filter(p => convertEmotionIntoNumber(p.emotion - 1) === filter));
+                setFilteredPost(postList.filter(p => convertEmotion(p.emotion - 1) === filter));
             }
         }
     }, [postList, filter]);

@@ -26,17 +26,12 @@ const Messages: React.FC<MessagesProps> = ({friend}) => {
             .getMessages(user!.firebase_user_id, friend.firebase_user_id)
             .then(({data}) => {
                 if (mounted) {
-                    console.log(data);
                     if (!data?.Message) {
                         setMessageList([]);
                         setLoading(false);
 
                         return;
                     }
-                    console.log(
-                        'Data: ',
-                        data.Message.map((m: any) => m.Sender),
-                    );
                     const messages: IMessage[] = data?.Message.map((item: any) => ({
                         _id: item.ID,
                         text: item.Content,
@@ -73,9 +68,7 @@ const Messages: React.FC<MessagesProps> = ({friend}) => {
             console.log(e.message);
         };
         ws.onmessage = e => {
-            console.log('Not parse: ', e);
             const message = JSON.parse(e.data);
-            console.log('Parsed: ', message);
             const formatMessage: IMessage = {
                 _id: message.ID,
                 text: message.Content,
@@ -112,7 +105,6 @@ const Messages: React.FC<MessagesProps> = ({friend}) => {
         message.sent = false;
         setMessageList(previousMessages => GiftedChat.append(previousMessages, [message]));
         const messageObjString = JSON.stringify({Content: message.text, ReceiverID: friend.firebase_user_id});
-        console.log(messageObjString);
         ws.send(messageObjString);
     };
 
@@ -139,9 +131,11 @@ const Messages: React.FC<MessagesProps> = ({friend}) => {
                         backgroundColor: COLORS.light_blue_2,
                         ...STYLES.deepShadow,
                         marginBottom: scaleSize(20),
+                        paddingVertical: scaleSize(4),
                     },
                     left: {
                         backgroundColor: COLORS.white_3,
+                        paddingVertical: scaleSize(4),
                         ...STYLES.deepShadow,
                     },
                 }}
@@ -195,17 +189,12 @@ export default Messages;
 
 const styles = StyleSheet.create({
     toolbar: {
-        width: scaleSize(252),
         backgroundColor: COLORS.gray_1,
-        borderWidth: 1,
-        borderRadius: scaleSize(20),
-        borderColor: COLORS.dark_gray_2,
-        bottom: scaleSize(10),
-        marginLeft: scaleSize(60),
+        paddingVertical: scaleSize(2),
     },
     text: {
         color: COLORS.black_1,
-        fontSize: scaleSize(20),
+        fontSize: scaleSize(16),
     },
     timeText: {color: COLORS.gray_4, fontSize: scaleSize(12)},
 });

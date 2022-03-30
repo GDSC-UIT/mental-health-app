@@ -32,11 +32,12 @@ interface IHeaderChat {
     profile?: boolean;
     goToProfile?: () => void;
     emotion?: boolean;
+    isAnonymous?: boolean;
     user: User;
 }
 
 const HeaderChat: React.FC<IHeaderChat> = props => {
-    const {profile, emotion, user, goToProfile} = props;
+    const {profile, emotion, user, goToProfile, isAnonymous = false} = props;
     const currentUSer = useAppSelector(selectUser);
     const navigation = useNavigation();
     const {t} = useTranslation();
@@ -67,7 +68,7 @@ const HeaderChat: React.FC<IHeaderChat> = props => {
                 onPress: async () => {
                     try {
                         await chatApi.updateShowEmotionWithExpert(currentUSer!.firebase_user_id, user.firebase_user_id);
-                    } catch (error) {
+                    } catch (error: any) {
                         console.log('Error ShowEmotion: ', error?.message);
                     }
                 },
@@ -203,7 +204,7 @@ const HeaderChat: React.FC<IHeaderChat> = props => {
                 }}>
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <BackButton />
-                    <ChatTitle name={user.name} avatar={user?.picture ?? NON_AVATAR} />
+                    <ChatTitle isAnonymous={isAnonymous} name={user.name} avatar={user?.picture ?? NON_AVATAR} />
                 </View>
                 <IconButton
                     style={styles.optionsButton}

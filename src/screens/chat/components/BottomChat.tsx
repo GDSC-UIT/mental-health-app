@@ -5,6 +5,7 @@ import {COLORS, STYLES} from '@src/assets/const';
 import IconButton from '@src/components/IconButton';
 import Messages from '@src/screens/chat/components/Message';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {User} from '@src/types';
 
 type BottomChatProps = {
     friend: User;
@@ -12,16 +13,16 @@ type BottomChatProps = {
 const BottomChat: React.FC<BottomChatProps> = ({friend}) => {
     return (
         <View style={{flex: 1, zIndex: -10}}>
-            <IconButton
+            {/* <IconButton
                 style={[styles.button, {left: scaleSize(-4)}]}
                 icon={<Ionicons name="images" size={20} color={COLORS.dark_gray_2} />}
-            />
+            /> */}
             <Messages friend={friend} />
 
-            <IconButton
+            {/* <IconButton
                 style={[styles.button, {right: scaleSize(15)}]}
                 icon={<Ionicons name="heart" size={22} color={'#EFA19E'} />}
-            />
+            /> */}
         </View>
     );
 };

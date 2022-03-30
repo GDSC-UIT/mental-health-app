@@ -1,20 +1,22 @@
 import {scaleSize} from '@core/utils';
 import {IMAGES} from '@src/assets';
-import {FONTS} from '@src/assets/const';
+import {FONTS, NON_AVATAR} from '@src/assets/const';
+import {t} from 'i18next';
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 
 interface ChatTitleProps {
     name: string;
     avatar?: string;
+    isAnonymous?: boolean;
 }
 
 const ChatTitle: React.FC<ChatTitleProps> = props => {
-    const {name, avatar} = props;
+    const {name, avatar, isAnonymous = false} = props;
     return (
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image
-                source={{uri: avatar}}
+                source={{uri: isAnonymous ? NON_AVATAR : avatar}}
                 style={{
                     marginLeft: scaleSize(23),
                     width: scaleSize(60),
@@ -22,7 +24,7 @@ const ChatTitle: React.FC<ChatTitleProps> = props => {
                     borderRadius: scaleSize(60),
                 }}
             />
-            <Text style={styles.name}>{name}</Text>
+            <Text style={styles.name}>{isAnonymous ? t('Anonymous') : name}</Text>
         </View>
     );
 };

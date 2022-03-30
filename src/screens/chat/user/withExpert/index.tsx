@@ -19,7 +19,6 @@ const ChooseExpertScreen: React.FC = () => {
     const navigation = useNavigation<UserChatStackProps<'ChooseExpert'>['navigation']>();
     const [experts, setExperts] = useState<User[]>([]);
 
-    console.log('ChooseExpertScreen');
     useEffect(() => {
         let mounted = true;
         userApi
@@ -28,8 +27,6 @@ const ChooseExpertScreen: React.FC = () => {
                 if (!Array.isArray(data)) {
                     return;
                 }
-                const expertsList = data.filter(user => user.is_expert);
-                console.log('expertsList: ', expertsList);
                 if (mounted) {
                     setExperts(data.filter(user => user.is_expert));
                 }
@@ -67,9 +64,9 @@ const ChooseExpertScreen: React.FC = () => {
                     title={t('Random Expert')}
                     style={{
                         marginBottom: scaleSize(55),
-                        width: scaleSize(211),
-                        height: scaleSize(44),
                         alignSelf: 'center',
+                        paddingHorizontal: scaleSize(30),
+                        paddingVertical: scaleSize(10),
                     }}
                     onPress={() => navigation.push('MainChat', {user: getRandomUser(experts)})}
                 />
