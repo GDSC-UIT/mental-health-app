@@ -16,17 +16,26 @@ const ChatTitle: React.FC<ChatTitleProps> = props => {
     const {name, avatar, isAnonymous = false} = props;
     return (
         <DismissKeyboardView>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View
+                style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    // flexWrap: 'wrap',
+                    paddingVertical: scaleSize(6),
+                    width: '70%',
+                }}>
                 <Image
                     source={{uri: isAnonymous ? NON_AVATAR : avatar}}
                     style={{
-                        marginLeft: scaleSize(23),
-                        width: scaleSize(60),
-                        height: scaleSize(60),
+                        marginLeft: scaleSize(20),
+                        width: scaleSize(40),
+                        height: scaleSize(40),
                         borderRadius: scaleSize(60),
                     }}
                 />
-                <Text style={styles.name}>{isAnonymous ? t('Anonymous') : name}</Text>
+                <Text style={styles.name} ellipsizeMode="tail" numberOfLines={1}>
+                    {isAnonymous ? t('Anonymous') : name}
+                </Text>
             </View>
         </DismissKeyboardView>
     );

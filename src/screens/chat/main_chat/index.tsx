@@ -4,6 +4,7 @@ import {UserChatStackProps} from '@src/navigation/user/type';
 import HeaderChat from '@src/screens/chat/components/HeaderChat/HeaderChat';
 import Messages from '@src/screens/chat/components/Message';
 import React from 'react';
+import {View} from 'react-native';
 const MainChatScreen: React.FC<UserChatStackProps<'MainChat'>> = ({navigation, route}) => {
     const {withStranger, user: partner} = route.params;
 
@@ -22,8 +23,9 @@ const MainChatScreen: React.FC<UserChatStackProps<'MainChat'>> = ({navigation, r
                     })
                 }
             />
-
-            <Messages friend={route.params.user} />
+            <View style={{flex: 1, zIndex: -10}}>
+                <Messages friend={route.params.user} />
+            </View>
         </Box>
     );
 };

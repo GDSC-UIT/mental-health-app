@@ -100,7 +100,7 @@ const HeaderChat: React.FC<IHeaderChat> = props => {
     };
 
     return (
-        <Box bgColor={COLORS.gray_1}>
+        <Box bgColor={COLORS.gray_1} elevation={12}>
             <Modal animationType="fade" transparent={true} visible={typeProblemModalVisible}>
                 <View style={styles.centeredView}>
                     <KeyboardAvoidingView enabled behavior={isIOS ? 'padding' : 'height'}>
@@ -203,9 +203,15 @@ const HeaderChat: React.FC<IHeaderChat> = props => {
                     paddingVertical: scaleSize(10),
                     zIndex: 1000,
                     // ...STYLES.shadow,
-                    // elevation: 5,
+                    elevation: 30,
                 }}>
-                <View style={{flexDirection: 'row', alignItems: 'center', ...STYLES.mediumShadow}}>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        ...STYLES.mediumShadow,
+                        flex: 1,
+                    }}>
                     <BackButton />
                     <ChatTitle isAnonymous={isAnonymous} name={user.name} avatar={user?.picture ?? NON_AVATAR} />
                 </View>
@@ -220,6 +226,7 @@ const HeaderChat: React.FC<IHeaderChat> = props => {
                         right: scaleSize(12),
                         position: 'absolute',
                         zIndex: 10,
+                        elevation: 20,
                     }}>
                     {optionsViewVisible ? (
                         <View style={styles.optionsView}>

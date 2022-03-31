@@ -38,7 +38,9 @@ const ExpertProfileScreen: React.FC<ExpertMainTabProps<'Profile'>> = ({navigatio
             (async () => {
                 try {
                     const data = await postApi.getAllPostOfUser(user!.firebase_user_id);
-                    setPosts(data);
+                    if (mounted) {
+                        setPosts(data);
+                    }
                 } catch (error) {
                     console.log(error);
                 }
@@ -68,7 +70,7 @@ const ExpertProfileScreen: React.FC<ExpertMainTabProps<'Profile'>> = ({navigatio
                         <Image source={IMAGES.optionsLine} style={styles.lineOption} />
                         <TouchableOpacity onPress={handleChangeLanguagePress}>
                             <Text style={styles.optionsText}>
-                                {selectedLanguageCode === 'vn' ? t('Chuyển sang tiếng anh') : t('Change to Vietnamese')}
+                                {t('Change languages')}: {selectedLanguageCode === 'vi' ? 'VN' : 'EN'}
                             </Text>
                         </TouchableOpacity>
                     </View>

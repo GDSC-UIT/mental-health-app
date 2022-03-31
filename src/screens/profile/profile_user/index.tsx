@@ -40,7 +40,7 @@ const UserProfileScreen: React.FC<UserMainTabProps<'Profile'>> = ({navigation}) 
                         <Image source={IMAGES.optionsLine} style={styles.lineOption} />
                         <TouchableOpacity onPress={handleChangeLanguagePress}>
                             <Text style={styles.optionsText}>
-                                {selectedLanguageCode === 'vn' ? t('Chuyển sang tiếng anh') : t('Change to Vietnamese')}
+                                {t('Change languages')}: {selectedLanguageCode === 'vi' ? 'VN' : 'EN'}
                             </Text>
                         </TouchableOpacity>
                     </View>

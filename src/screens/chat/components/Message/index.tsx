@@ -46,7 +46,7 @@ const Messages: React.FC<MessagesProps> = ({friend}) => {
                     }));
                     messages.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
 
-                    console.log('First loading messages ');
+                    console.log('First loading messages: ');
                     if (mounted) {
                         setMessageList(messages);
                         setLoading(false);
@@ -88,13 +88,13 @@ const Messages: React.FC<MessagesProps> = ({friend}) => {
                         .catch(e => {
                             console.log('error message:', e);
                         });
-            }, 5000);
+            }, 10000);
             return () => {
                 mounted = false;
                 console.log('Mounted', mounted);
                 clearInterval(timer);
             };
-        }, [user, friend.firebase_user_id, sending]),
+        }, [user, friend.firebase_user_id]),
     );
 
     const submitMessage = async (messages: IMessage[]) => {
@@ -156,15 +156,16 @@ const Messages: React.FC<MessagesProps> = ({friend}) => {
                 {...propsBubble}
                 wrapperStyle={{
                     right: {
-                        // backgroundColor: COLORS.light_blue_2,
-                        // ...STYLES.deepShadow,
+                        backgroundColor: COLORS.light_blue_2,
+                        ...STYLES.deepShadow,
                         marginBottom: scaleSize(20),
                         paddingVertical: scaleSize(4),
                     },
                     left: {
                         backgroundColor: COLORS.white_3,
                         paddingVertical: scaleSize(4),
-                        // ...STYLES.deepShadow,
+
+                        ...STYLES.deepShadow,
                     },
                 }}
                 textStyle={{
@@ -184,6 +185,7 @@ const Messages: React.FC<MessagesProps> = ({friend}) => {
                         />
                     )
                 }
+                containerStyle={{right: {elevation: -1}}}
             />
         );
     };

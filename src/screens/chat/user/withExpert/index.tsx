@@ -11,7 +11,7 @@ import {User} from '@src/types';
 import {getRandomUser} from '@src/utils/User';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {StyleSheet, Text, View} from 'react-native';
+import {Alert, StyleSheet, Text, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import ContactList from '../../components/ContactList';
 const ChooseExpertScreen: React.FC = () => {
@@ -68,7 +68,14 @@ const ChooseExpertScreen: React.FC = () => {
                         paddingHorizontal: scaleSize(30),
                         paddingVertical: scaleSize(10),
                     }}
-                    onPress={() => navigation.push('MainChat', {user: getRandomUser(experts)})}
+                    onPress={() => {
+                        if (!experts || experts.length === 0) {
+                            Alert.alert('Notice', 'No experts available');
+                            return;
+                        }
+
+                        navigation.push('MainChat', {user: getRandomUser(experts)});
+                    }}
                 />
             </View>
         </Box>
