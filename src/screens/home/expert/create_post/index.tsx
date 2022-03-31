@@ -169,7 +169,7 @@ const CreatePostScreen: React.FC<ExpertStackProps<'CreatePost'>> = ({navigation}
                                         }}>
                                         <Image
                                             source={{uri: image}}
-                                            style={{backgroundColor: 'red', zIndex: 1000}}
+                                            style={{zIndex: 1000}}
                                             width={250}
                                             height={150}
                                             resizeMode="cover"

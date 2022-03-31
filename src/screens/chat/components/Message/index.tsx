@@ -157,7 +157,6 @@ const Messages: React.FC<MessagesProps> = ({friend}) => {
                 wrapperStyle={{
                     right: {
                         // backgroundColor: COLORS.light_blue_2,
-                        backgroundColor: 'red',
                         // ...STYLES.deepShadow,
                         marginBottom: scaleSize(20),
                         paddingVertical: scaleSize(4),
