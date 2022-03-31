@@ -5,8 +5,6 @@ import {COLORS, FONTS, SIZES, STYLES} from '@src/assets/const';
 import IMAGES from '@src/assets/images';
 import Loading from '@src/components/Loading';
 import {ExpertMainTabProps} from '@src/navigation/expert/type';
-import Events from '@src/screens/explore/event/events';
-import {Event} from '@src/screens/explore/event/types';
 import {useAppSelector} from '@src/store';
 import {Post} from '@src/types';
 import React, {useState} from 'react';
@@ -70,7 +68,7 @@ const ExpertProfileScreen: React.FC<ExpertMainTabProps<'Profile'>> = ({navigatio
                         <Image source={IMAGES.optionsLine} style={styles.lineOption} />
                         <TouchableOpacity onPress={handleChangeLanguagePress}>
                             <Text style={styles.optionsText}>
-                                {t('Change languages')}: {selectedLanguageCode === 'vi' ? 'VN' : 'EN'}
+                                {t('Change languages')}: {selectedLanguageCode === 'vi' ? 'EN' : 'VN'}
                             </Text>
                         </TouchableOpacity>
                     </View>

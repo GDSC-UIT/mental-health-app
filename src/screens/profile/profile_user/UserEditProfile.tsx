@@ -35,7 +35,7 @@ const UserEditProfileScreen: React.FC<UserProfileStackProps<'EditProfile'>> = ({
     }, [user]);
 
     function alertLogout() {
-        Alert.alert(t('Notice'), t("Are you sure you want to log out"), [
+        Alert.alert(t('Notice'), t('Are you sure you want to log out'), [
             {
                 text: 'OK',
                 onPress: async () => {
@@ -75,7 +75,7 @@ const UserEditProfileScreen: React.FC<UserProfileStackProps<'EditProfile'>> = ({
 
                 setIsImageChange(false);
                 setIsDirty(false);
-                Alert.alert('', t('Update profile successfully') );
+                Alert.alert('', t('Update profile successfully'));
             } else {
                 Alert.alert(t('Error'), error);
             }
@@ -112,12 +112,12 @@ const UserEditProfileScreen: React.FC<UserProfileStackProps<'EditProfile'>> = ({
     return (
         <Box container bgColor={COLORS.gray_1} safeArea loading={loading}>
             <Header
-                title={t("Edit Profile")}
+                title={t('Edit Profile')}
                 canGoBack={navigation.canGoBack()}
                 goBack={() => navigation.goBack()}
                 headerRight={() => (
                     <Button
-                        title={t("Done")}
+                        title={t('Done')}
                         loading={loading}
                         onPress={handleSubmit}
                         disabled={!isDirty || !(profile?.uri || profile?.name)}
@@ -131,7 +131,7 @@ const UserEditProfileScreen: React.FC<UserProfileStackProps<'EditProfile'>> = ({
             <View style={styles.buttonWrapper}>
                 <Neumorph borderRadius={scaleSize(60)}>
                     <Button
-                        title={t("Log out")}
+                        title={t('Log out')}
                         style={{paddingHorizontal: scaleSize(40)}}
                         textStyle={{color: COLORS.black_1}}
                         onPress={() => alertLogout()}

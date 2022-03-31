@@ -1,26 +1,38 @@
 import {scaleSize} from '@core/utils';
 import {useFocusEffect} from '@react-navigation/native';
 import chatApi from '@src/api/chatApi';
-import {COLORS, RANDOM_IMAGE, STYLES} from '@src/assets/const';
+import {COLORS, NON_AVATAR, RANDOM_IMAGE, STYLES} from '@src/assets/const';
 import {DismissKeyboardView} from '@src/components';
 import {useChat} from '@src/context/ChatContext';
 import SplashScreen from '@src/screens/splash';
 import {useAppSelector} from '@src/store';
 import {User} from '@src/types';
 import React, {useCallback, useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 import {Bubble, GiftedChat, IMessage, InputToolbar, Send} from 'react-native-gifted-chat';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 type MessagesProps = {
     friend: User;
+    isAnonymous?: boolean;
 };
-const Messages: React.FC<MessagesProps> = ({friend}) => {
+const Messages: React.FC<MessagesProps> = ({friend, isAnonymous}) => {
     const user = useAppSelector(state => state.auth.user);
+    const {t} = useTranslation();
     const [messageList, setMessageList] = useState<IMessage[]>([]);
     const [loading, setLoading] = useState(false);
     const [sending, setSending] = useState(false);
-
+    if (isAnonymous) {
+        friend = {
+            ...friend,
+            name: t('Anonymous'),
+            firebase_user_id: friend.firebase_user_id,
+            picture: NON_AVATAR,
+            is_expert: false,
+            email: friend.email,
+        };
+    }
     useFocusEffect(
         useCallback(() => {
             let mounted = true;
@@ -164,7 +176,6 @@ const Messages: React.FC<MessagesProps> = ({friend}) => {
                     left: {
                         backgroundColor: COLORS.white_3,
                         paddingVertical: scaleSize(4),
-
                         ...STYLES.deepShadow,
                     },
                 }}
