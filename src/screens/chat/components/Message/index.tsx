@@ -23,16 +23,8 @@ const Messages: React.FC<MessagesProps> = ({friend, isAnonymous}) => {
     const [messageList, setMessageList] = useState<IMessage[]>([]);
     const [loading, setLoading] = useState(false);
     const [sending, setSending] = useState(false);
-    if (isAnonymous) {
-        friend = {
-            ...friend,
-            name: t('Anonymous'),
-            firebase_user_id: friend.firebase_user_id,
-            picture: NON_AVATAR,
-            is_expert: false,
-            email: friend.email,
-        };
-    }
+    const [fetchingMessage, setFetchingMessage] = useState(false);
+
     useFocusEffect(
         useCallback(() => {
             let mounted = true;
@@ -71,6 +63,7 @@ const Messages: React.FC<MessagesProps> = ({friend, isAnonymous}) => {
                     }
                 });
             const timer = setInterval(() => {
+                setFetchingMessage(true);
                 !sending &&
                     !loading &&
                     chatApi
@@ -93,14 +86,17 @@ const Messages: React.FC<MessagesProps> = ({friend, isAnonymous}) => {
                             }));
                             console.log('Messages successfully ');
                             messages.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
-                            if (mounted && !sending && !loading) {
+                            if (mounted && !sending && !loading && messages.length > messageList.length) {
                                 setMessageList(messages);
                             }
                         })
                         .catch(e => {
                             console.log('error message:', e);
                         });
-            }, 10000);
+                setFetchingMessage(false);
+            }, 12000);
+            console.log('User: ', user);
+            console.log('Friend: ', friend);
             return () => {
                 mounted = false;
                 console.log('Mounted', mounted);

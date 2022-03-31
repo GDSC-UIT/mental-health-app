@@ -18,33 +18,24 @@ import {Feeling, feelingStatistics as data} from './data';
 type Props = {};
 
 const size = scaleSize(SIZES.WindowWidth) - 100;
-const DashboardEmotionScreen: React.FC<Props> = props => {
+const DashboardEmotionScreen: React.FC<any> = ({route}) => {
     const {t} = useTranslation();
     const [feelingStatistic, setFeelingStatistic] = useState<Feeling[]>([]);
     const [selectedFeel, setSelectedFeel] = useState<Feeling | null>(null);
     const [diaryList, setDiaryList] = useState<Feel[]>([]);
     const user = useAppSelector(state => state.auth.user);
     const [loading, setLoading] = useState(false);
-
     useEffect(() => {
         setSelectedFeel(prev => feelingStatistic.find(f => f.name === prev?.name) || null);
     }, [feelingStatistic]);
 
+    console.log('Route: ', route);
     const calculatePercent = (statistics: Feeling[]): Feeling[] => {
         const total = statistics.reduce((a, b) => a + (b.value || 0), 0);
         return statistics.map(feel => {
             const percentage = feel.value / total;
             return {...feel, y: feel.value !== 0 ? percentage : 0, percentage: `${Math.round(percentage * 100)}%`};
         });
-    };
-    const handleChange = (value: string) => {
-        setFeelingStatistic(
-            calculatePercent(
-                data.map(feel => {
-                    return {...feel, value: Math.random() * 10 + 20};
-                }),
-            ),
-        );
     };
 
     useFocusEffect(
@@ -54,7 +45,9 @@ const DashboardEmotionScreen: React.FC<Props> = props => {
             (async () => {
                 try {
                     let i = 1;
-                    const res = await feelApi.getUserFeel(user!.firebase_user_id);
+
+                    const userId = route?.params?.userId ?? user?.firebase_user_id;
+                    const res = await feelApi.getUserFeel(userId);
                     if (mounted && res) {
                         data.map(item => {
                             const feel = res.filter(detail => detail.feel_id === i);
@@ -77,7 +70,7 @@ const DashboardEmotionScreen: React.FC<Props> = props => {
             return () => {
                 mounted = false;
             };
-        }, [user]),
+        }, [user, route?.params?.userId]),
     );
 
     return (

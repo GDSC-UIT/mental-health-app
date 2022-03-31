@@ -1,4 +1,4 @@
-import {COLORS} from '@src/assets/const';
+import {COLORS, NON_AVATAR} from '@src/assets/const';
 import Box from '@src/components/Box';
 import {UserChatStackProps} from '@src/navigation/user/type';
 import HeaderChat from '@src/screens/chat/components/HeaderChat/HeaderChat';
@@ -24,7 +24,7 @@ const MainChatScreen: React.FC<UserChatStackProps<'MainChat'>> = ({navigation, r
                 }
             />
             <View style={{flex: 1, zIndex: -10}}>
-                <Messages friend={route.params.user} />
+                <Messages friend={withStranger ? {...partner, name: 'Anonymous', picture: NON_AVATAR} : partner} />
             </View>
         </Box>
     );
