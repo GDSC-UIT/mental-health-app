@@ -94,7 +94,7 @@ const Messages: React.FC<MessagesProps> = ({friend, isAnonymous}) => {
                             console.log('error message:', e);
                         });
                 setFetchingMessage(false);
-            }, 12000);
+            }, 10000);
             console.log('User: ', user);
             console.log('Friend: ', friend);
             return () => {
