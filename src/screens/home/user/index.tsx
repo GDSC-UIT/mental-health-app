@@ -94,7 +94,7 @@ const HomeScreen: React.FC = () => {
                     }}>
                     <TouchableOpacity style={styles.Slide} onPress={() => setModalVisible(true)}>
                         <Ionicons name="chevron-up" size={30} color="#8F9BB2" />
-                        <Text style={styles.SlideText}>How are you feeling?</Text>
+                        <Text style={styles.SlideText}>{t('How are you feeling')}</Text>
                         <Ionicons name="chevron-up" size={30} color="#8F9BB2" />
                     </TouchableOpacity>
                 </View>

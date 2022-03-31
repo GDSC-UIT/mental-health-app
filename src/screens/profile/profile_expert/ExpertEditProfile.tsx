@@ -115,12 +115,12 @@ const ExpertEditProfileScreen: React.FC<ExpertStackProps<'EditProfile'>> = ({nav
     return (
         <Box container safeArea bgColor={COLORS.gray_1} loading={loading}>
             <Header
-                title={t("Edit Profile")}
+                title={t('Edit Profile')}
                 canGoBack={navigation.canGoBack()}
                 goBack={() => navigation.goBack()}
                 headerRight={() => (
                     <Button
-                        title={t("Done")}
+                        title={t('Done')}
                         onPress={handleSubmit}
                         disabled={!isDirty || !(profile?.uri || profile?.name)}
                         variant="secondary"
@@ -140,7 +140,7 @@ const ExpertEditProfileScreen: React.FC<ExpertStackProps<'EditProfile'>> = ({nav
                 <View style={styles.buttonWrapper}>
                     <Neumorph borderRadius={scaleSize(60)}>
                         <Button
-                            title={t("Log out")}
+                            title={t('Log out')}
                             style={{paddingHorizontal: scaleSize(40)}}
                             textStyle={{color: COLORS.black_1}}
                             onPress={() => alertLogout()}
