@@ -59,14 +59,6 @@ const UserChatHomeScreen: React.FC<UserMainTabProps<'Chat'>> = ({navigation}) =>
                     />
                 </View>
                 <Text style={styles.label}>{t('Messages')}</Text>
-
-                <SearchBar
-                    onInputPress={() =>
-                        navigation.navigate('ChatStack', {
-                            screen: 'ChatSearch',
-                        })
-                    }
-                />
             </Box>
 
             <ConversationList

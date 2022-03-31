@@ -46,71 +46,104 @@ const ConversationList: React.FC<Props> = props => {
     useFocusEffect(
         useCallback(() => {
             let mounted = true;
-            if (user) {
-                setLoading(true);
-                chatApi
-                    .getUserConversations(user.firebase_user_id)
-                    .then(data => {
-                        const conversationsData: Conversation[] =
-                            data?.map((d: any) => ({
-                                id: d.ChatID,
-                                friend: {...d.Friend},
-                                lastMessage: d.LastMessage,
-                                showEmotion: d.ShowEmotion,
-                            })) ?? [];
-                        console.log('List conversations: ', conversationsData);
-                        if (mounted) {
-                            setConversations(conversationsData);
-                            setLoading(false);
-                        }
-                    })
-                    .catch(e => {
-                        console.log('Error in ConversationList:', e);
-                    });
-            }
+            setLoading(true);
+            chatApi
+                .getUserConversations(user!.firebase_user_id)
+                .then(data => {
+                    if (!Array.isArray(data)) {
+                        return;
+                    }
+                    const conversationsData: Conversation[] =
+                        data?.map((d: any) => ({
+                            id: d.ChatID,
+                            friend: {...d.Friend},
+                            lastMessage: d.LastMessage,
+                            showEmotion: d.ShowEmotion,
+                        })) ?? [];
+                    console.log('List conversations: ', conversationsData);
+                    if (mounted) {
+                        setConversations(conversationsData);
+                        setLoading(false);
+                    }
+                })
+                .catch((error: any) => {
+                    console.log('Error in ConversationList:', error);
+                });
+            const timer = setInterval(() => {
+                !loading &&
+                    chatApi
+                        .getUserConversations(user!.firebase_user_id)
+                        .then(data => {
+                            if (!Array.isArray(data)) {
+                                return;
+                            }
+                            const conversationsData: Conversation[] =
+                                data?.map((d: any) => ({
+                                    id: d.ChatID,
+                                    friend: {...d.Friend},
+                                    lastMessage: d.LastMessage,
+                                    showEmotion: d.ShowEmotion,
+                                })) ?? [];
+                            console.log('List conversations: ', conversationsData);
+                            if (mounted) {
+                                setConversations(conversationsData);
+                                setLoading(false);
+                            }
+                        })
+                        .catch((error: any) => {
+                            console.log('Error in ConversationList:', error);
+                        });
+            }, 5000);
 
             return () => {
                 mounted = false;
+                console.log('Mounted', mounted);
+                clearInterval(timer);
             };
         }, [user]),
     );
 
-    useEffect(() => {
-        let mounted = true;
-        ws.onmessage = e => {
-            const message = JSON.parse(e.data);
-            if (message && user) {
-                chatApi
-                    .getUserConversations(user.firebase_user_id)
-                    .then(data => {
-                        console.log('checck emotions: ', data);
-                        if (!Array.isArray(data)) {
-                            return;
-                        }
-                        const conversationsData: Conversation[] =
-                            data?.map((d: any) => ({
-                                id: d.ChatID,
-                                friend: {...d.Friend},
-                                lastMessage: d.LastMessage,
-                                showEmotion: d.ShowEmotion,
-                            })) ?? [];
-                        console.log('List conversations: ', conversationsData);
-                        if (mounted) {
-                            setConversations(conversationsData);
-                            setLoading(false);
-                        }
-                    })
-                    .catch((error: any) => {
-                        console.log('Error in ConversationList:', error);
-                    });
-            }
-        };
+    // useEffect(() => {
+    //     let mounted = true;
 
-        return () => {
-            mounted = false;
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    //     const timer = setInterval(() => {
+    //         // const message = JSON.parse(e.data);
+    //         // if (message && user) {
+    //         console.log('Timer: ');
+    //         chatApi
+    //             .getUserConversations(user!.firebase_user_id)
+    //             .then(data => {
+    //                 if (!Array.isArray(data)) {
+    //                     return;
+    //                 }
+    //                 const conversationsData: Conversation[] =
+    //                     data?.map((d: any) => ({
+    //                         id: d.ChatID,
+    //                         friend: {...d.Friend},
+    //                         lastMessage: d.LastMessage,
+    //                         showEmotion: d.ShowEmotion,
+    //                     })) ?? [];
+    //                 console.log('List conversations: ', conversationsData);
+    //                 if (mounted) {
+    //                     setConversations(conversationsData);
+    //                     setLoading(false);
+    //                 }
+    //             })
+    //             .catch((error: any) => {
+    //                 console.log('Error in ConversationList:', error);
+    //             });
+    //         // }
+    //     }, 5000);
+    //     // ws.onmessage = e => {
+
+    //     // };
+
+    //     return () => {
+    //         mounted = false;
+    //         console.log('Mounted', mounted);
+    //         clearInterval(timer);
+    //     };
+    // }, [user]);
 
     const renderItem: ListRenderItem<Conversation> = ({item}) => {
         return (

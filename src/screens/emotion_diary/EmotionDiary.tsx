@@ -18,8 +18,6 @@ import {Feelings} from '../home/user/feeling';
 import Arrow from './components/Arrow';
 import DiaryCard from './components/DiaryCard';
 
-type Props = {};
-
 const EmotionDiaryScreen: React.FC = () => {
     const {t} = useTranslation();
     const navigation = useNavigation<UserProfileStackProps<'EmotionDiary'>['navigation']>();
@@ -37,7 +35,6 @@ const EmotionDiaryScreen: React.FC = () => {
                     const date = selectedDate
                         ? new Date(selectedDate.year, selectedDate.month - 1, selectedDate.day + 1)
                         : new Date();
-                    console.log('Date: ', date);
                     const feels = await feelApi.getUserFeel(user!.firebase_user_id);
                     if (mounted && feels) {
                         setFeel(

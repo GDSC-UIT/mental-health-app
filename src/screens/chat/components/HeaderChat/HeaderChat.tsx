@@ -201,8 +201,11 @@ const HeaderChat: React.FC<IHeaderChat> = props => {
                     alignItems: 'center',
                     position: 'relative',
                     paddingVertical: scaleSize(10),
+                    zIndex: 1000,
+                    // ...STYLES.shadow,
+                    // elevation: 5,
                 }}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{flexDirection: 'row', alignItems: 'center', ...STYLES.mediumShadow}}>
                     <BackButton />
                     <ChatTitle isAnonymous={isAnonymous} name={user.name} avatar={user?.picture ?? NON_AVATAR} />
                 </View>

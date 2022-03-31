@@ -6,7 +6,7 @@ import Box from '@src/components/Box';
 import Loading from '@src/components/Loading';
 import {useAppSelector} from '@src/store';
 import {Feel} from '@src/types';
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import {VictoryPie} from 'victory-native';
@@ -47,34 +47,38 @@ const DashboardEmotionScreen: React.FC<Props> = props => {
         );
     };
 
-    useEffect(() => {
-        let mounted = true;
-        setLoading(true);
-        (async () => {
-            try {
-                let i = 1;
-                const res = await feelApi.getUserFeel(user!.firebase_user_id);
-                if (mounted && res) {
-                    data.map(item => {
-                        const feel = res.filter(detail => detail.feel_id === i);
-                        item.value = feel.length;
-                        i++;
-                    });
-                    setDiaryList(res);
-                    setFeelingStatistic(calculatePercent(data));
+    useFocusEffect(
+        useCallback(() => {
+            let mounted = true;
+            setLoading(true);
+            (async () => {
+                try {
+                    let i = 1;
+                    const res = await feelApi.getUserFeel(user!.firebase_user_id);
+                    if (mounted && res) {
+                        data.map(item => {
+                            const feel = res.filter(detail => detail.feel_id === i);
+                            item.value = feel.length;
+                            i++;
+                        });
+                        setDiaryList(res);
+                        if (mounted) {
+                            setFeelingStatistic(calculatePercent(data));
+                        }
+                    }
+                } catch (error) {
+                    console.log(error);
                 }
-            } catch (error) {
-                console.log(error);
-            }
-            if (mounted) {
-                setLoading(false);
-            }
-        })();
+                if (mounted) {
+                    setLoading(false);
+                }
+            })();
 
-        return () => {
-            mounted = false;
-        };
-    }, [user]);
+            return () => {
+                mounted = false;
+            };
+        }, [user]),
+    );
 
     return (
         <Box bgColor={COLORS.gray_1} safeArea={false} container>
